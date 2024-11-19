@@ -1,0 +1,21 @@
+.btn {
+  cursor: pointer;
+  filter: blur(0.5rem);
+  animation:
+    glow 1s linear infinite,
+    rotate 1s linear infinite;
+}
+
+@keyframes glow {
+  0% {
+    fill: rgb(255 195 30 / 0.2);
+  }
+
+  50% {
+    fill: rgb(255 195 30 / 0.6);
+  }
+
+  100% {
+    fill: rgb(255 195 30 / 0.2);
+  }
+}

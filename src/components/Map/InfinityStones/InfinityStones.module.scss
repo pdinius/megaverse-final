@@ -1,0 +1,15 @@
+.stone {
+  animation: glow 1s infinite linear;
+}
+
+@keyframes glow {
+  0% {
+    filter: brightness(1) blur(0px);
+  }
+  50% {
+    filter: brightness(1.3) blur(0.75px);
+  }
+  100% {
+    filter: brightness(1) blur(0px);
+  }
+}

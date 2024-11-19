@@ -1,0 +1,16 @@
+@use "../../../colors" as *;
+
+.checkmark {
+  fill: $checkmark-green;
+  stroke: black;
+  stroke-width: 4;
+  paint-order: stroke;
+}
+
+.slash{
+  --fill-color: $slash-red;
+  fill: var(--fill-color);
+  stroke: var(--fill-color);
+  stroke-width: 2;
+  filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.6));
+}

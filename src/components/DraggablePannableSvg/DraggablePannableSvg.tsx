@@ -29,7 +29,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
   height,
   setMoved,
   children,
-  style,
+  style = {},
   className,
   ...props
 }) => {
@@ -78,6 +78,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
     return () => {
       window?.removeEventListener("resize", resizeIfNecessary);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dragHandler = (e: MouseEvent) => {
@@ -204,6 +205,11 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
     animateZoom(newScale - scale, newTop - top, newLeft - left);
   };
 
+  useEffect(() => {
+    console.log(scale);
+    console.log(style);
+  }, [scale, style]);
+
   return (
     <div ref={wrapperRef} className={styles.OverflowWrapper}>
       <svg
@@ -212,7 +218,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
           ...style,
           top: top === undefined ? "auto" : `${top}px`,
           left: left === undefined ? "auto" : `${left}px`,
-          scale,
+          transform: `scale(${scale})`,
           cursor,
         }}
         className={`${className} ${styles.drag}`}
