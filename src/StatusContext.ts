@@ -75,7 +75,7 @@ const generateBlankStatus = (): IGameStatus => {
     heroesDead: [],
     heroChoices: [],
     infinityStones: [],
-    isHeroClickable: () => true,
+    isRosterHeroClickable: () => true,
     lost: () => {},
     modalOpen: false,
     resetClickHandler: () => {},
@@ -93,8 +93,8 @@ const generateBlankStatus = (): IGameStatus => {
       MKRAAN_CRYSTAL: 0,
       PORTAL: 2,
     },
-    spendButtonClickHandler: () => () => {},
-    tagClickHandler: () => () => {},
+    spendButtonClickHandler: () => {},
+    tagClickHandler: () => {},
     tags: {
       BOLT: 0,
       BRAIN: 0,
@@ -121,7 +121,7 @@ const generateBlankStatus = (): IGameStatus => {
     undo: () => {},
     undoDisabled: false,
     unearnedPaths: () => [],
-    unlockedHeroesClickHandler: () => () => {},
+    unlockedHeroesClickHandler: () => {},
     won: () => {},
     generateTeamChoiceListProps: () => ({
       title: "",
@@ -164,6 +164,8 @@ const generateBlankStatus = (): IGameStatus => {
       WILD: 0,
     },
     modifyActionTokens: () => {},
+    isTagClickable: () => false,
+    isDrawerHeroClickable: () => false,
   };
 };
 

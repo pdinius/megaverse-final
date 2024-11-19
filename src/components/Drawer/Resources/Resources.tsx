@@ -5,25 +5,24 @@ import { statusContext } from "../../../StatusContext";
 import { resourceSrcs } from "../../../lib/resource-icons";
 
 const Resources: FC = () => {
-  const { tags, tagClickHandler } = useContext(statusContext);
+  const { tags, tagClickHandler, isTagClickable } = useContext(statusContext);
 
   return TAGS.map((t, i) => {
     const qtx = tags[t];
-    const clickHandler = tagClickHandler(t);
 
     return (
       <div
         key={i}
         className={`${styles.resourceContainer} ${
-          qtx > 0 || clickHandler ? "" : styles.transparent
+          qtx > 0 || isTagClickable(t) ? "" : styles.transparent
         }`}
       >
         <img
           src={resourceSrcs[t]}
           className={`${styles.resourceIcon} ${
-            clickHandler ? "clickable-pulse" : ""
+            isTagClickable(t) ? "clickable-pulse" : ""
           }`}
-          onClick={clickHandler}
+          onClick={() => tagClickHandler(t)}
         />
         <span className={styles.qtx}>{qtx}</span>
       </div>

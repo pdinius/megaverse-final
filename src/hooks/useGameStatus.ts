@@ -119,7 +119,7 @@ export const useGameStatus = (): IGameStatus => {
     MAPLE: 0,
     PLANET: 0,
     PUZZLE: 0,
-    STAR: 0,
+    STAR: 20,
     SPARKLE: 0,
   });
   const [actionTokens, setActionTokens] = useState<{
@@ -552,6 +552,8 @@ export const useGameStatus = (): IGameStatus => {
         if (!prev) return;
         localStorage?.setItem("save-data", prev);
         setStack(newStack);
+      } else {
+        setStack([prev]);
       }
       const prevState = JSON.parse(prev);
       setScore(prevState.score);
@@ -579,6 +581,7 @@ export const useGameStatus = (): IGameStatus => {
 
   // LOAD DATA
   useEffect(() => {
+    return;
     const saveData = localStorage?.getItem("save-data");
     if (saveData) {
       undo(saveData);
@@ -852,11 +855,13 @@ export const useGameStatus = (): IGameStatus => {
       ...misc,
     ];
 
-    return Object.entries(combinedOverlays)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .filter(([key, _]) => !combinedRewards.includes(key))
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .map(([_, d]) => d);
+    return (
+      Object.entries(combinedOverlays)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([key, _]) => !combinedRewards.includes(key))
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .map(([_, d]) => d)
+    );
   };
 
   const toggleModalOpen = (b?: boolean) => {
@@ -871,11 +876,9 @@ export const useGameStatus = (): IGameStatus => {
     return false;
   };
 
-  const spendButtonClickHandler =
-    (action: CurrentAction): MouseEventHandler =>
-    () => {
-      setCurrentAction(currentAction === action ? "" : action);
-    };
+  const spendButtonClickHandler = (action: CurrentAction) => {
+    setCurrentAction(currentAction === action ? "" : action);
+  };
 
   const modifyTag = (t: Tag, qtx: number) => {
     setTags((curr) => ({
@@ -898,70 +901,77 @@ export const useGameStatus = (): IGameStatus => {
     }));
   };
 
-  const tagClickHandler = (t: Tag): MouseEventHandler | undefined => {
+  const isTagClickable = (t: Tag): boolean => {
+    switch (currentAction) {
+      case "choosingOrTag":
+        return (
+          orTagChoosingQueue.length > 0 && orTagChoosingQueue[0].includes(t)
+        );
+      default:
+        return false;
+    }
+  };
+
+  const tagClickHandler = (t: Tag) => {
     switch (currentAction) {
       case "choosingOrTag":
         if (
           orTagChoosingQueue.length === 0 ||
           orTagChoosingQueue[0].includes(t)
-        )
+        ) {
           return;
-        return () => {
-          modifyTag(t, 1);
-          setOrTagChoosingQueue(orTagChoosingQueue.slice(1));
-          if (
-            currentAction === "choosingOrTag" &&
-            orTagChoosingQueue.length === 0
-          ) {
-            setCurrentAction("");
-          }
-        };
+        }
+        modifyTag(t, 1);
+        setOrTagChoosingQueue(orTagChoosingQueue.slice(1));
+        if (
+          currentAction === "choosingOrTag" &&
+          orTagChoosingQueue.length === 0
+        ) {
+          setCurrentAction("");
+        }
+        break;
       default:
         return;
     }
   };
 
-  const unlockedHeroesClickHandler = (
-    h: HeroKey
-  ): MouseEventHandler | undefined => {
+  const unlockedHeroesClickHandler = (h: HeroKey) => {
     switch (currentAction) {
       case "tradingHero":
       case "removingHero":
-        return () => {
-          killHero(h);
-          setCooldown((cd) => {
-            const res: [Array<HeroKey>, Array<HeroKey>] = [
-              cd[0].slice(),
-              cd[1].slice(),
-            ];
-            const idxA = res.findIndex((c) => c.includes(h));
-            if (idxA === -1) return res;
-            const idxB = res[idxA].indexOf(h);
-            res[idxA].splice(idxB, 1);
-            return res;
-          });
-          if (currentAction === "removingHero") {
-            setCurrentAction("");
-            setToast("");
-            addRewards(currentBtnClicked);
-          } else {
-            setCurrentAction("resolvingRecover");
-            setToast("Choose a hero to recover.");
-          }
-        };
+        killHero(h);
+        setCooldown((cd) => {
+          const res: [Array<HeroKey>, Array<HeroKey>] = [
+            cd[0].slice(),
+            cd[1].slice(),
+          ];
+          const idxA = res.findIndex((c) => c.includes(h));
+          if (idxA === -1) return res;
+          const idxB = res[idxA].indexOf(h);
+          res[idxA].splice(idxB, 1);
+          return res;
+        });
+        if (currentAction === "removingHero") {
+          setCurrentAction("");
+          setToast("");
+          addRewards(currentBtnClicked);
+        } else {
+          setCurrentAction("resolvingRecover");
+          setToast("Choose a hero to recover.");
+        }
+        break;
       case "spendingPortal":
         if (heroesCrossover.includes(h)) {
           return;
         }
-        return () => {
-          setHeroesCrossover([...heroesCrossover, h]);
-          setCurrentAction("");
-          setSpecialRewards((curr) => {
-            const res = { ...curr };
-            --res.PORTAL;
-            return res;
-          });
-        };
+        setHeroesCrossover([...heroesCrossover, h]);
+        setCurrentAction("");
+        setSpecialRewards((curr) => {
+          const res = { ...curr };
+          --res.PORTAL;
+          return res;
+        });
+        break;
       default:
         return;
     }
@@ -1335,7 +1345,14 @@ export const useGameStatus = (): IGameStatus => {
     }, 100);
   };
 
-  const isHeroClickable = (h: HeroKey): boolean => {
+  const isDrawerHeroClickable = (h: HeroKey): boolean => {
+    if (currentAction === "spendingPortal") {
+      return !heroesCrossover.includes(h);
+    }
+    return false;
+  };
+
+  const isRosterHeroClickable = (h: HeroKey): boolean => {
     if (currentAction === "choosingDeadpoolVictim") {
       return true;
     }
@@ -1463,7 +1480,7 @@ export const useGameStatus = (): IGameStatus => {
     } else {
       setToast("");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roster, petRoster]);
 
   const isTooManyPets = () => {
@@ -1519,7 +1536,9 @@ export const useGameStatus = (): IGameStatus => {
     heroChoices,
     heroesDead,
     infinityStones,
-    isHeroClickable,
+    isDrawerHeroClickable,
+    isRosterHeroClickable,
+    isTagClickable,
     isTooManyPets,
     lost,
     modalOpen,

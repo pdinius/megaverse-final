@@ -9,12 +9,27 @@ interface SpecialLocationsProps {}
 const SpecialLocations: FC<SpecialLocationsProps> = () => {
   const { specialRewards } = useContext(statusContext);
 
+  const LocationRow = (n: number, s: string) => {
+    return (
+      <span className={n ? "" : styles.transparent}>
+        {s} &times; {n}
+      </span>
+    );
+  };
+
   return (
     <div className={upperStyles.item}>
-      <img src={location} />
+      <img
+        src={location}
+        className={
+          specialRewards.DANGER_ROOM === 0 && specialRewards.CAMP_HAMMOND === 0
+            ? styles.transparent
+            : ""
+        }
+      />
       <div className={styles.infoContainer}>
-        <span>Camp Hammond &times; {specialRewards.CAMP_HAMMOND}</span>
-        <span>Danger Room &times; {specialRewards.DANGER_ROOM}</span>
+        {LocationRow(specialRewards.CAMP_HAMMOND, "Camp Hammond")}
+        {LocationRow(specialRewards.DANGER_ROOM, "Danger Room")}
       </div>
     </div>
   );

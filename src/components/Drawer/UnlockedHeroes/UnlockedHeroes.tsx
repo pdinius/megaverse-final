@@ -13,11 +13,12 @@ const UnlockedHeroes: FC = () => {
     getHeroesCrossover,
     getHeroesMultiverse,
     unlockedHeroesClickHandler,
+    isDrawerHeroClickable,
   } = useContext(statusContext);
 
   const conditionalHeroClasses = [
     {
-      fn: (h: HeroKey) => Boolean(unlockedHeroesClickHandler(h)),
+      fn: isDrawerHeroClickable,
       c: "clickable-pulse",
     },
   ];

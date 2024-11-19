@@ -19,7 +19,7 @@ const SpendButton: FC<SpendButtonProps> = ({ actionName, disabled }) => {
     <button
       disabled={disabled}
       className={`${styles.btn} ${active ? styles.cancelBtn : ""}`}
-      onClick={spendButtonClickHandler(actionName)}
+      onClick={() => spendButtonClickHandler(actionName)}
     >
       {active ? "cancel" : "spend"}
     </button>

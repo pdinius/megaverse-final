@@ -23,7 +23,7 @@ const GameSetup: FC<GameSetupProps> = ({ closeModal }) => {
     roster,
     toggleRosterHero,
     heroChoices,
-    isHeroClickable,
+    isRosterHeroClickable,
     generateTeamChoiceListProps,
     generatePetChoiceListProps,
     generateEquipChoiceListProps,
@@ -45,7 +45,7 @@ const GameSetup: FC<GameSetupProps> = ({ closeModal }) => {
           clickHandler={toggleRosterHero}
           conditionalHeroClasses={[
             {
-              fn: isHeroClickable,
+              fn: isRosterHeroClickable,
               c: "clickable",
             },
             {

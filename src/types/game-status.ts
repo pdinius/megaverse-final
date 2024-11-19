@@ -112,7 +112,9 @@ export interface IGameStatus {
   heroChoices: Array<HeroKey>;
   heroesDead: Array<HeroKey>;
   infinityStones: Array<InfinityStone>;
-  isHeroClickable: (h: HeroKey) => boolean;
+  isDrawerHeroClickable: (h: HeroKey) => boolean;
+  isRosterHeroClickable: (h: HeroKey) => boolean;
+  isTagClickable: (t: Tag) => boolean;
   isTooManyPets: () => boolean;
   lost: () => void;
   modalOpen: boolean;
@@ -126,9 +128,9 @@ export interface IGameStatus {
   roster: Set<HeroKey>;
   score: number;
   specialRewards: { [key in SpecialReward]: number };
-  spendButtonClickHandler: (action: CurrentAction) => MouseEventHandler;
+  spendButtonClickHandler: (action: CurrentAction) => void;
   spentActionTokens: { [key in ActionType]: number };
-  tagClickHandler: (t: Tag) => MouseEventHandler | undefined;
+  tagClickHandler: (t: Tag) => void;
   tags: { [key in Tag]: number };
   teamRoster: Set<TeamKey>;
   toast: string;
@@ -139,7 +141,7 @@ export interface IGameStatus {
   undo: (prev?: string) => void;
   undoDisabled: boolean;
   unearnedPaths: () => Array<string>;
-  unlockedHeroesClickHandler: (h: HeroKey) => MouseEventHandler | undefined;
+  unlockedHeroesClickHandler: (h: HeroKey) => void;
   useCampHammond: boolean;
   useDangerRoom: boolean;
   won: () => void;
