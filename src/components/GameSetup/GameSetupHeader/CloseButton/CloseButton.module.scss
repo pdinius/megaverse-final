@@ -1,0 +1,22 @@
+@use "../../../../colors" as *;
+
+.container {
+  width: 1rem;
+  height: 1rem;
+  background: $slash-red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.125rem;
+  position: relative;
+  top: 1px;
+  cursor: pointer;
+  outline: transparent;
+  border: none;
+}
+
+.x {
+  position: relative;
+  width: 0.75rem;
+  fill: white;
+}

@@ -1,0 +1,12 @@
+.villain {
+  position: absolute;
+  z-index: -1;
+  top: -5%;
+  left: 98%;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 10px rgb(0 0 0 / 0.6));
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+}

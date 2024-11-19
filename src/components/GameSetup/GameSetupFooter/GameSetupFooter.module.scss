@@ -1,0 +1,68 @@
+@use "../../../colors" as *;
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: Amboy;
+  align-items: center;
+  color: $light-blue;
+  height: 2rem;
+
+  & > button {
+    border: none;
+    height: 100%;
+    outline: transparent;
+    padding-inline: 1rem 0.75rem;
+    border-radius: 0.25rem;
+    font-family: Amboy;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: $blue;
+
+    &:hover {
+      cursor: pointer;
+      background: $light-blue;
+    }
+
+    &:disabled {
+      cursor: default;
+      filter: saturate(0);
+      background: #ccc;
+      color: #999;
+    }
+  }
+}
+
+.text {
+  width: 3rem;
+  height: 100%;
+  outline: transparent;
+  border-radius: 0.25rem;
+  border: 2px solid #ddd;
+  background: white;
+  color: $light-blue;
+  text-align: center;
+  font-family: Amboy;
+  font-size: 1.325rem;
+}
+
+.disabledText {
+  color: #bbb;
+}
+
+.container {
+  padding: 0.5rem 1rem 0.75rem;
+  border-top: 1px dashed #aaa;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.emoji {
+  position: relative;
+  font-size: 1.125rem;
+  top: -1px;
+}

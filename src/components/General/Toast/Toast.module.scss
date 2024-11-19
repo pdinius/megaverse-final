@@ -1,0 +1,47 @@
+@use "../../../colors" as *;
+
+.container {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.innerContainer {
+  background: white;
+  color: $blue;
+  font-family: Figtree;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 2px solid #ddd;
+  box-shadow: 0 5px 10px black;
+}
+
+.star {
+  height: 2rem;
+  fill: white;
+  stroke: $blue;
+  stroke-width: 20;
+  animation: rotate 5s linear infinite;
+}
+
+.starContainer {
+  filter: drop-shadow(0 5px 10px black);
+
+  &:last-child > .star {
+    animation-direction: reverse;
+  }
+}
+
+@keyframes rotate {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}

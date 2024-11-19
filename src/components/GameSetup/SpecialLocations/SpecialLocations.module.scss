@@ -1,0 +1,29 @@
+@use "../../../colors" as *;
+
+.container {
+  color: black;
+  border-top: 1px dashed #aaa;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn {
+  font-family: Amboy;
+  padding: 0.25rem 0.5rem;
+  background: #eee;
+  border: 2px solid $dark-blue;
+  color: $dark-blue;
+  outline: transparent;
+  border-radius: 0.25rem;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.active {
+  opacity: 1;
+  background: $dark-blue;
+  color: #eee;
+}

@@ -1265,7 +1265,7 @@ export const useGameStatus = (): IGameStatus => {
     }
   };
 
-  const toggleRosterHero = (h: HeroKey) => () => {
+  const toggleRosterHero = (h: HeroKey) => {
     if (currentAction === "choosingDeadpoolVictim") {
       let newRoster = new Set([h]);
       if (roster.has(h)) {

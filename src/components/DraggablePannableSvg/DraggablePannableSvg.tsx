@@ -124,7 +124,6 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
     }
     if (e.targetTouches.length === 1) {
       setMoved(true);
-      console.log(e.changedTouches);
 
       // GET BOUNDS:
       const wrapperWidth = wrapperRef.current.clientWidth;
@@ -204,11 +203,6 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
 
     animateZoom(newScale - scale, newTop - top, newLeft - left);
   };
-
-  useEffect(() => {
-    console.log(scale);
-    console.log(style);
-  }, [scale, style]);
 
   return (
     <div ref={wrapperRef} className={styles.OverflowWrapper}>

@@ -1,0 +1,14 @@
+.container {
+  position: absolute;
+  bottom: 0.125rem;
+  right: 0.125rem;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+
+.badge {
+  height: 1.25rem;
+  filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white);
+}

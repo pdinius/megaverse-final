@@ -1,0 +1,46 @@
+@use "../../../../colors" as *;
+
+.container {
+  display: flex;
+  gap: 0.25rem;
+  color: $blue;
+  align-items: center;
+  justify-content: center;
+  font-family: Amboy;
+
+  & > img {
+    height: 2rem;
+  }
+}
+
+.caretBtn {
+  background: none;
+  border: none;
+  outline: transparent;
+  display: flex;
+  align-items: center;
+  padding-inline: 0.25rem;
+  cursor: pointer;
+
+  & > svg {
+    height: 1.5rem;
+    fill: $light-blue;
+  }
+
+  &:hover > svg {
+    stroke: $dark-blue;
+    stroke-width: 20;
+  }
+
+  &:disabled {
+    cursor: default;
+
+    & > svg {
+      opacity: 0.5;
+    }
+
+    &:hover > svg {
+      stroke-width: 0;
+    }
+  }
+}
