@@ -1,4 +1,4 @@
-import { SvgProps } from "@/types/svg";
+import { SvgProps } from "../../types/svg";
 
 export const darknessSvgs: SvgProps = {
   paths: {

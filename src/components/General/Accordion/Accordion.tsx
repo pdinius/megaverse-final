@@ -1,6 +1,7 @@
 import { FC, HTMLProps, useContext, useEffect, useRef, useState } from "react";
 import styles from "./Accordion.module.scss";
-import { Icon } from "@/components/General/Icon";
+import { statusContext } from "../../../StatusContext";
+import { Icon } from "../Icon";
 
 interface AccordionProps extends HTMLProps<HTMLDivElement> {
   title: string;
@@ -8,13 +9,13 @@ interface AccordionProps extends HTMLProps<HTMLDivElement> {
 }
 
 const Accordion: FC<AccordionProps> = ({ children, title, subtitle }) => {
-  // const { currentAction } = useContext(statusContext);
+  const { currentAction } = useContext(statusContext);
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   if (currentAction === "") setOpen(false);
-  // }, [currentAction]);
+  useEffect(() => {
+    if (currentAction === "") setOpen(false);
+  }, [currentAction]);
 
   return (
     <div

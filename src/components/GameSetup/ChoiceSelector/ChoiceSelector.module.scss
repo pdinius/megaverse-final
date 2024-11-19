@@ -1,0 +1,48 @@
+@use "../../../colors.scss" as *;
+
+.container {
+  display: flex;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+}
+
+.items {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+  height: 3.8125rem;
+
+  & > div {
+    position: absolute;
+    display: flex;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    opacity: 1;
+  }
+}
+
+.item {
+  width: 4rem;
+}
+
+.switchPageBtn {
+  background: none;
+  border: none;
+  outline: transparent;
+
+  & > svg {
+    height: 1.25rem;
+    fill: $blue;
+    cursor: pointer;
+  }
+
+  &:disabled > svg {
+    fill: #aaa;
+  }
+}
+
+.title {
+  font-family: Amboy;
+  color: $dark-blue;
+}

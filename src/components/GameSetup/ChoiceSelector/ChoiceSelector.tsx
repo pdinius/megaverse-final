@@ -1,9 +1,9 @@
-import { partition } from "@/lib/utils";
 import { useState } from "react";
 import styles from "./ChoiceSelector.module.scss";
-import { Icon } from "@/components/General/Icon";
-import Dots from "@/components/General/Dots/Dots";
-import Accordion from "@/components/General/Accordion/Accordion";
+import { partition } from "../../../lib/utils";
+import Accordion from "../../General/Accordion/Accordion";
+import { Icon } from "../../General/Icon";
+import Dots from "../../General/Dots/Dots";
 
 export interface ChoiceSelectorProps<T extends string> {
   title: string;
@@ -55,7 +55,6 @@ const ChoiceSelector = <T extends string>({
           {pages.map((p, i) => (
             <div
               key={i}
-              className={styles.page}
               style={{
                 left: `calc(${100 * (i - page)}%)`,
               }}

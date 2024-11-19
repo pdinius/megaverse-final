@@ -38,7 +38,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
 
   const [top, setTop] = useState<number>(0);
   const [left, setLeft] = useState<number>(0);
-  const [tpCache, setTpCache] = useState<Array<React.Touch>>([]);
+  // const [tpCache, setTpCache] = useState<Array<React.Touch>>([]);
   const [scale, setScale] = useState(0);
   const [cursor, setCursor] = useState("pointer");
 
@@ -119,7 +119,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
       if (e.changedTouches.length !== 2) return;
       // TODO: Handle pinch
     } else {
-      setTpCache([]);
+      // setTpCache([]);
     }
     if (e.targetTouches.length === 1) {
       setMoved(true);
@@ -232,7 +232,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
         onTouchStart={(e) => {
           e.preventDefault();
           const { screenX, screenY } = e.nativeEvent.changedTouches[0];
-          setTpCache((curr) => [...curr, ...Array.from(e.targetTouches)]);
+          // setTpCache((curr) => [...curr, ...Array.from(e.targetTouches)]);
           handleX = Math.round((screenX - left) * (1 / scale));
           handleY = Math.round((screenY - top) * (1 / scale));
           setMoved(false);
