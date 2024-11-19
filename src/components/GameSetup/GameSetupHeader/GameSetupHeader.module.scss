@@ -5,7 +5,7 @@
   flex-direction: column;
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px dashed #aaa;
+  border-bottom: $dash-border;
 }
 
 .subtitle {

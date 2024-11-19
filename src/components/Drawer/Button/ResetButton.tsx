@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import styles from "./Button.module.scss";
-import { statusContext } from "@/app/page";
-import { Icon } from "../Icon";
+import { statusContext } from "../../../StatusContext";
+import { Icon } from "../../General/Icon";
 
 const ResetButton: FC = () => {
   const { currentAction, resetClickHandler, clearCurrentAction } =

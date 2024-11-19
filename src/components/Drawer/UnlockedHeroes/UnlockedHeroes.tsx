@@ -1,18 +1,17 @@
 import { FC, useContext } from "react";
 import styles from "./UnlockedHeroes.module.scss";
-import HeroGrid from "../HeroGrid/HeroGrid";
-import portal from "@/assets/icons/portal.png";
-import DrawerContainer from "./DrawerContainer";
-import { statusContext } from "@/app/page";
-import BackgroundImage from "../BackgroundImage";
-import { HeroKey } from "@/app/types/hero";
+import portal from "../../../assets/icons/portal.png";
+import { statusContext } from "../../../StatusContext";
+import { HeroKey } from "../../../types/heroes";
+import DrawerContainer from "../DrawerContainer/DrawerContainer";
+import HeroGrid from "../../HeroGrid/HeroGrid";
+import BackgroundImage from "../../General/BackgroundImage/BackgroundImage";
 
 const UnlockedHeroes: FC = () => {
   const {
     getHeroesAvX,
     getHeroesCrossover,
     getHeroesMultiverse,
-    heroesDead,
     unlockedHeroesClickHandler,
   } = useContext(statusContext);
 
@@ -37,7 +36,7 @@ const UnlockedHeroes: FC = () => {
       <div className={styles.innerContainer}>
         <div className={styles.title}>Crossover</div>
         <div className={styles.portalContainer}>
-          <BackgroundImage src={portal.src} />
+          <BackgroundImage src={portal} />
           <HeroGrid
             containerClass={styles.portalGrid}
             heroes={getHeroesCrossover()}

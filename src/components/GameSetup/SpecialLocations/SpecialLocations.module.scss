@@ -2,7 +2,7 @@
 
 .container {
   color: black;
-  border-top: 1px dashed #aaa;
+  border-top: $dash-border;
   width: 100%;
   padding: 0.5rem 1rem;
   display: flex;

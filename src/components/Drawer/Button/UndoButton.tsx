@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import styles from "./Button.module.scss";
-import { Icon } from "../Icon";
-import { statusContext } from "@/app/page";
+import { statusContext } from "../../../StatusContext";
+import { Icon } from "../../General/Icon";
 
 const UndoButton: FC = () => {
   const { blocked, undo, undoDisabled } = useContext(statusContext);

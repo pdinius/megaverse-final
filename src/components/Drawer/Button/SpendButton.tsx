@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import styles from "./SpendButton.module.scss";
-import { statusContext } from "@/app/page";
-import { CurrentAction } from "@/lib/useGameStatus";
+import { statusContext } from "../../../StatusContext";
+import { CurrentAction } from "../../../types/game-status";
 
 interface SpendButtonProps {
   actionName: CurrentAction;

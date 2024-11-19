@@ -1,25 +1,15 @@
 import { FC, useContext } from "react";
 import styles from "./ActionTokens.module.scss";
-import { ActionType } from "@/app/types/rewards";
-import MOVE from "@/assets/icons/move-icon.png";
-import FIGHT from "@/assets/icons/fight-icon.png";
-import HEROIC from "@/assets/icons/heroic-icon.png";
-import WILD from "@/assets/icons/wild-icon.png";
-import { statusContext } from "@/app/page";
-
-export const TOKEN_SRCS: { [key in ActionType]: string } = {
-  MOVE: MOVE.src,
-  FIGHT: FIGHT.src,
-  HEROIC: HEROIC.src,
-  WILD: WILD.src,
-};
+import { statusContext } from "../../../../StatusContext";
+import { ACTION_TYPES, ActionType } from "../../../../types/general";
+import { TOKEN_SRCS } from "../../../../lib/token-images";
 
 const ActionTokens: FC = () => {
   const { actionTokens } = useContext(statusContext);
 
   return (
     <div className={styles.actionRow}>
-      {Object.keys(TOKEN_SRCS).map((t, i) => {
+      {ACTION_TYPES.map((t, i) => {
         const qtx = actionTokens[t as ActionType];
 
         return (

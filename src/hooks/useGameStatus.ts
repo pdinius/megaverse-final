@@ -370,7 +370,6 @@ export const useGameStatus = (): IGameStatus => {
 
   // PUSH TO STACK
   useEffect(() => {
-    // if (currentAction !== "") return;
     if (
       undoing ||
       currentAction === "resolvingRecover" ||
@@ -403,7 +402,7 @@ export const useGameStatus = (): IGameStatus => {
       availableButtons: [...availableButtons],
     });
     setStack((curr) => [...curr, newState]);
-    localStorage?.setItem("save-data", newState);
+    if (connected.length > 1) localStorage?.setItem("save-data", newState);
   }, [
     score,
     orTagChoosingQueue,
@@ -425,6 +424,7 @@ export const useGameStatus = (): IGameStatus => {
   ]);
 
   const hardResetThatDestroysAllData = () => {
+    localStorage?.removeItem("save-data");
     setScore(0);
     setCurrentAction("");
     setCurrentBtnClicked("");
@@ -577,12 +577,13 @@ export const useGameStatus = (): IGameStatus => {
     [stack]
   );
 
+  // LOAD DATA
   useEffect(() => {
     const saveData = localStorage?.getItem("save-data");
     if (saveData) {
       undo(saveData);
     }
-  }, [undo]);
+  }, []);
 
   const clearCurrentAction = () => {
     setCurrentAction("");

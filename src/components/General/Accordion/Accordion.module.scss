@@ -2,7 +2,7 @@
 
 .container {
   width: 100%;
-  border-top: 1px dashed #aaa;
+  border-top: $dash-border;
   transition: margin 0.2s ease;
 }
 

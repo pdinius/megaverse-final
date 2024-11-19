@@ -1,10 +1,10 @@
 import { FC } from "react";
-import Score from "./Score";
-import Portals from "./Portals";
-import MkraanCrystals from "./MkraanCrystals";
-import ActionTokens from "./ActionTokens";
-import InfinityStatus from "./InfinityStatus";
-import SpecialLocations from "./SpecialLocations";
+import Score from "./Score/Score";
+import Portals from "./Portals/Portals";
+import MkraanCrystals from "./MkraanCrystals/MkraanCrystals";
+import ActionTokens from "./ActionTokens/ActionTokens";
+import InfinityStatus from "./InfinityStatus/InfinityStatus";
+import SpecialLocations from "./SpecialLocations/SpecialLocations";
 import styles from "./ScoreAndSpecial.module.scss";
 
 const ScoreAndSpecial: FC = () => {

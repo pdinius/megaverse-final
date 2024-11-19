@@ -1,11 +1,7 @@
 import { FC, useContext } from "react";
 import styles from "./Graveyard.module.scss";
-import HeroGrid from "../HeroGrid/HeroGrid";
-import { statusContext } from "@/app/page";
-
-const conditionalStyles = {
-  cursor: "pointer",
-};
+import HeroGrid from "../../HeroGrid/HeroGrid";
+import { statusContext } from "../../../StatusContext";
 
 const Graveyard: FC = () => {
   const { recoverHero, heroesDead, canRecover } = useContext(statusContext);

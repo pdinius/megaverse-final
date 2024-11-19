@@ -8,9 +8,8 @@
 }
 
 .slash{
-  --fill-color: $slash-red;
-  fill: var(--fill-color);
-  stroke: var(--fill-color);
+  fill: $slash-red;
+  stroke: $slash-red;
   stroke-width: 2;
   filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.6));
 }

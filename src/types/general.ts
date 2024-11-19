@@ -19,7 +19,7 @@ export type Section =
   | "GALAXY"
   | "MIST";
 
-const TAGS = [
+export const TAGS = [
   "BOLT",
   "BRAIN",
   "CHIMI",
@@ -40,7 +40,7 @@ const TAGS = [
 export type Tag = (typeof TAGS)[number];
 export const isTag = (s: string): s is Tag => TAGS.includes(s as Tag);
 
-const ACTION_TYPES = ["MOVE", "FIGHT", "HEROIC", "WILD"] as const;
+export const ACTION_TYPES = ["MOVE", "FIGHT", "HEROIC", "WILD"] as const;
 export type ActionType = (typeof ACTION_TYPES)[number];
 export const isActionType = (s: string): s is ActionType =>
   ACTION_TYPES.includes(s as ActionType);

@@ -1,21 +1,27 @@
 import { FC, useContext, useEffect, useRef, useState } from "react";
 import styles from "./Drawer.module.scss";
 import Divider from "./Divider";
-import UnlockedHeroes from "./UnlockedHeroes";
-import Resources from "./Resources";
 import ScoreAndSpecial from "./ScoreAndSpecial/ScoreAndSpecial";
-import DrawerContainer from "./DrawerContainer";
-import Handle from "./Handle";
-import Graveyard from "./Graveyard";
-import UndoButton from "./UndoButton";
-import { statusContext } from "@/app/page";
-import ResetButton from "./ResetButton";
-import { DRAWER_ACTIONS } from "@/types/GameStatus";
+import DrawerContainer from "./DrawerContainer/DrawerContainer";
+import Handle from "./Handle/Handle";
+import Graveyard from "./Graveyard/Graveyard";
+import UndoButton from "./Button/UndoButton";
+import ResetButton from "./Button/ResetButton";
+import { statusContext } from "../../StatusContext";
+import { DRAWER_ACTIONS } from "../../types/game-status";
+import Resources from "./Resources/Resources";
+import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
 
 const Drawer: FC = () => {
   const { currentAction, heroesDead } = useContext(statusContext);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [translateYamt, setTranslateYamt] = useState(999);
+
+  useEffect(() => {
+    if (containerRef.current === null) return;
+    setTranslateYamt(containerRef.current.offsetHeight);
+  }, [containerRef.current?.offsetHeight]);
 
   useEffect(() => {
     if (DRAWER_ACTIONS.includes(currentAction)) {
@@ -26,7 +32,7 @@ const Drawer: FC = () => {
   return (
     <div
       className={styles.container}
-      style={{ transform: isOpen ? "none" : `translateY(-${containerRef.current?.offsetHeight || 999}px)` }}
+      style={{ transform: isOpen ? "none" : `translateY(-${translateYamt}px)` }}
       ref={containerRef}
     >
       <DrawerContainer className={styles.scoreAndSpecialContainer}>
@@ -37,9 +43,7 @@ const Drawer: FC = () => {
         </div>
       </DrawerContainer>
       <Divider />
-      <DrawerContainer
-        className={styles.resourceGridContainer}
-      >
+      <DrawerContainer className={styles.resourceGridContainer}>
         <Resources />
       </DrawerContainer>
       <Divider />
