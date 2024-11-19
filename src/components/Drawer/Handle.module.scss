@@ -1,0 +1,19 @@
+@use "../../app/colors.scss" as *;
+
+.handle {
+  position: absolute;
+  top: 100%;
+  fill: var(--fill-color);
+  cursor: pointer;
+  stroke: $dark-blue;
+  stroke-width: 2px;
+  width: 100px;
+  max-width: 100vw;
+}
+
+.handleText {
+  font-family: Amboy;
+  stroke: none;
+  fill: $dark-blue;
+  font-size: 12pt;
+}

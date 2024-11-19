@@ -1,0 +1,51 @@
+@use "../../app/colors.scss" as *;
+
+.container {
+  --fill-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--fill-color);
+  border-bottom: 2px solid $dark-blue;
+  transition: transform 0.3s ease;
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scoreAndSpecialContainer {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.resourceGridContainer {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.undoButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  & > svg {
+    height: 1rem;
+    fill: white;
+  }
+}
+
+.btnContainer {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

@@ -1,0 +1,56 @@
+@use "../../../app/colors.scss" as *;
+
+.portal {
+  height: 2.25rem;
+  margin-right: -0.35rem;
+  animation: spin 0.5s linear infinite, gleam 2s ease infinite,
+    beat 5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    rotate: 0deg;
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.15;
+  }
+
+  100% {
+    rotate: 360deg;
+    scale: 1;
+  }
+}
+
+@keyframes gleam {
+  0% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.7);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes beat {
+  0% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.25;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
+.portalText {
+  color: $orange-red;
+}

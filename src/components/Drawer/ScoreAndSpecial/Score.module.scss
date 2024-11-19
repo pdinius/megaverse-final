@@ -1,0 +1,38 @@
+@use "../../../app/colors.scss" as *;
+
+.trophy {
+  height: 1.5rem;
+}
+
+.scoreText {
+  color: $gold;
+}
+
+.trophyStar {
+  position: absolute;
+  height: 1.5rem;
+  top: 0.0625rem;
+  left: 0.25rem;
+  animation: rocket 3s ease infinite;
+}
+
+@keyframes rocket {
+  0% {
+    rotate: 0deg;
+    scale: 0;
+  }
+
+  25% {
+    rotate: 180deg;
+    scale: 1;
+  }
+
+  80% {
+    rotate: 0deg;
+    scale: 0;
+  }
+  
+  100% {
+    scale: 0;
+  }
+}

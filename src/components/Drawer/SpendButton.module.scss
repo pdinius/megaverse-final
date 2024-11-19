@@ -1,0 +1,21 @@
+@use "../../app/colors.scss" as *;
+
+.btn {
+  padding: 0.125rem 0.25rem;
+  border: none;
+  border-radius: 0.1875rem;
+  background: $dark-blue;
+  color: white;
+  cursor: pointer;
+  font-family: Amboy;
+
+  &:disabled {
+    opacity: 0.5;
+    filter: saturate(0);
+    cursor: default;
+  }
+}
+
+.cancelBtn {
+  background: $red;
+}

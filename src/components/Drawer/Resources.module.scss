@@ -1,0 +1,29 @@
+@use "../../app/colors.scss" as *;
+
+.resourceIcon {
+  position: relative;
+  left: -0.25rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.resourceContainer {
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  background: #eee;
+  padding: 0.125rem;
+  padding-left: 0;
+  padding-right: 0.25rem;
+  border-radius: 0.3125rem;
+  border: 2px solid $dark-blue;
+}
+
+.qtx {
+  color: $dark-blue;
+  font-family: Amboy;
+}
+
+.transparent {
+  opacity: 0.2;
+}

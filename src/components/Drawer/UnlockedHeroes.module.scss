@@ -1,0 +1,66 @@
+@use "../../app/colors.scss" as *;
+
+.container {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+
+  @media (max-width: $cutoff) {
+    flex-direction: column;
+  }
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+
+  &:has(> .avxContainer) {
+    --color: #5291d8;
+  }
+
+  &:has(> .portalContainer) {
+    --color: #2a55b3;
+  }
+
+  &:has(> .multiverseContainer) {
+    --color: #504899;
+  }
+
+  & > * {
+    color: var(--color);
+  }
+
+  & > div:nth-child(2) {
+    background: var(--color);
+  }
+}
+
+.avxContainer,
+.portalContainer,
+.multiverseContainer {
+  position: relative;
+  border-radius: 0.25rem;
+  min-height: 4.5rem;
+  flex-grow: 1;
+
+  @media (max-width: $cutoff) {
+    flex-basis: revert;
+  }
+}
+
+.avxContainer,
+.multiverseContainer,
+.portalGrid {
+  padding: 0.5rem;
+}
+
+.title {
+  padding-left: 0.25rem;
+  font-family: Amboy;
+}
+
+.portalGrid {
+  position: relative;
+}

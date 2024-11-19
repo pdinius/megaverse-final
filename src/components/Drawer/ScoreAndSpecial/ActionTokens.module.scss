@@ -1,0 +1,42 @@
+.actionRow {
+  display: flex;
+  gap: 1rem;
+  background: #eee;
+  padding: 0.25rem 0.75rem 0.3rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  > * {
+    font-family: Amboy;
+  }
+}
+
+.actionIcon {
+  height: 2rem;
+  filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.1));
+}
+
+.moveText {
+  color: #09723d;
+}
+
+.fightText {
+  color: #cc2b1f;
+}
+
+.heroicText {
+  color: #998f00;
+}
+
+.wildText {
+  color: #666;
+}
+
+.transparent {
+  opacity: 0.3;
+}

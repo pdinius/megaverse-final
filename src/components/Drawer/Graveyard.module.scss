@@ -1,0 +1,53 @@
+@use "../../app/colors.scss" as *;
+
+.container {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.recover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recoverItem {
+  display: flex;
+  align-items: center;
+  font-family: Amboy;
+  color: $dark-blue;
+  gap: 0.25rem;
+
+  & > button {
+    margin-left: 0.25rem;
+  }
+
+  & > img {
+    height: 2.5rem;
+  }
+}
+
+.graveyard {
+  padding: 0.5rem;
+  background: #ddd;
+  border-radius: 0.5rem;
+  min-height: 4.5rem;
+}
+
+.deadHero {
+  filter: saturate(0.4) blur(1px);
+  outline: 1px solid #333;
+  transition: filter 0.2s linear;
+
+  &:hover {
+    filter: saturate(1) blur(0);
+  }
+}
+
+.title {
+  font-family: Amboy;
+  color: #999;
+}

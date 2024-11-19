@@ -1,0 +1,10 @@
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+
+  & > span {
+    font-family: Amboy;
+    color: #333;
+    font-size: smaller;
+  }
+}
