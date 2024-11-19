@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap");
+
+@font-face {
+  font-family: "Amboy";
+  src: url("../assets/fonts/Amboy-Black.woff2") format("woff2"),
+    url("../assets/fonts/Amboy-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "American Captain";
+  src: url("../assets/fonts/AmericanCaptain.woff2") format("woff2"),
+    url("../assets/fonts/AmericanCaptain.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Imaginary Friend";
+  src: url("../assets/fonts/ImaginaryFriend.woff2") format("woff2"),
+    url("../assets/fonts/ImaginaryFriend.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: "Roboto Mono";
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+.clickable-pulse {
+  animation: pulse 2s linear infinite;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  0% {
+    rotate: 0deg;
+    filter: brightness(1);
+  }
+
+  25% {
+    rotate: 5deg;
+  }
+
+  50% {
+    filter: brightness(1.3);
+  }
+
+  75% {
+    rotate: -5deg;
+  }
+
+  100% {
+    rotate: 0deg;
+    filter: brightness(1);
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.semi-transparent {
+  opacity: 0.4;
+}

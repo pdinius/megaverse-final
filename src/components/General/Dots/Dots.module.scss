@@ -1,0 +1,24 @@
+@use "../app/colors.scss" as *;
+
+.container {
+  padding-block: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: $light-blue;
+  transition: all 0.2s ease;
+  opacity: 0.5;
+}
+
+.active {
+  margin-inline: 0.25rem;
+  opacity: 1;
+  width: 2rem;
+}

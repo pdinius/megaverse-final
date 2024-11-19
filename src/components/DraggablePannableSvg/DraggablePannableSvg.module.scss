@@ -1,0 +1,12 @@
+.OverflowWrapper {
+  position: absolute;
+  inset: 0;
+  background: black;
+  overflow: hidden;
+  display: flex;
+}
+
+.drag {
+  position: absolute;
+  transform-origin: top left;
+}

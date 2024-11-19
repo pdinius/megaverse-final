@@ -1,0 +1,78 @@
+import TEAM_A_FORCE from "../assets/rewards/teams/A_FORCE.jpg";
+import TEAM_ALPHA_FLIGHT from "../assets/rewards/teams/ALPHA_FLIGHT.jpg";
+import TEAM_ASGARDIANS_ALLIES from "../assets/rewards/teams/ASGARDIANS.jpg";
+import TEAM_AVENGERS from "../assets/rewards/teams/AVENGERS.jpg";
+import TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS from "../assets/rewards/teams/TEAM_CAPTAIN_AMERICA.jpg";
+import TEAM_DARK_AVENGERS from "../assets/rewards/teams/DARK_AVENGERS.jpg";
+import TEAM_DEADPOOL_TEAMUP from "../assets/rewards/teams/DEADPOOL.jpg";
+import TEAM_DEFENDERS_MANHATTAN from "../assets/rewards/teams/DEFENDERS_MANHATTAN.jpg";
+import TEAM_EXCALIBUR from "../assets/rewards/teams/EXCALIBUR.jpg";
+import TEAM_FANTASTIC_FOUR from "../assets/rewards/teams/FANTASTIC_FOUR.jpg";
+import TEAM_FORCE_WORKS from "../assets/rewards/teams/FORCE_WORKS.jpg";
+import TEAM_GENX from "../assets/rewards/teams/GEN_X.jpg";
+import TEAM_GUARDIANS_OF_THE_GALAXY from "../assets/rewards/teams/GUARDIANS_OF_THE_GALAXY.jpg";
+import TEAM_ILLUMINATI from "../assets/rewards/teams/ILLUMINATI.jpg";
+import TEAM_INFINITY_WATCH from "../assets/rewards/teams/INFINITY_WATCH.jpg";
+import TEAM_INHUMANS from "../assets/rewards/teams/INHUMANS.jpg";
+import TEAM_IRON_MAN_PROREGISTRATION from "../assets/rewards/teams/TEAM_IRON_MAN.jpg";
+import TEAM_MARVEL_KNIGHTS from "../assets/rewards/teams/MARVEL_KNIGHTS.jpg";
+import TEAM_MIDNIGHT_SONS from "../assets/rewards/teams/MIDNIGHT_SONS.jpg";
+import TEAM_NEW_AVENGERS from "../assets/rewards/teams/NEW_AVENGERS.jpg";
+import TEAM_NEW_MUTANTS from "../assets/rewards/teams/NEW_MUTANTS.jpg";
+import TEAM_RED_HULKS_THUNDERBOLTS from "../assets/rewards/teams/RED_HULKS_THUNDERBOLTS.jpg";
+import TEAM_RESISTANCE_AGAINST_APOCALYPSE from "../assets/rewards/teams/RESISTANCE_AGAINST_APOCALYPSE.jpg";
+import TEAM_SAVAGE_AVENGERS from "../assets/rewards/teams/SAVAGE_AVENGERS.jpg";
+import TEAM_SHIELD from "../assets/rewards/teams/SHIELD.jpg";
+import TEAM_SPIDER_ARMY from "../assets/rewards/teams/SPIDER_ARMY.jpg";
+import TEAM_STARJAMMERS from "../assets/rewards/teams/STARJAMMERS.jpg";
+import TEAM_SWORDBEARERS_OF_KRAKOA from "../assets/rewards/teams/SWORDBEARERS.jpg";
+import TEAM_UNCANNY_XFORCE from "../assets/rewards/teams/UNCANNY_X_FORCE.jpg";
+import TEAM_UNITED_HEROES from "../assets/rewards/teams/UNITED_HEROES.jpg";
+import TEAM_WAKANDANS from "../assets/rewards/teams/WAKANDANS.jpg";
+import TEAM_WEST_COAST_AVENGERS from "../assets/rewards/teams/WEST_COAST_AVENGERS.jpg";
+import TEAM_XFACTOR from "../assets/rewards/teams/X_FACTOR.jpg";
+import TEAM_XFORCE from "../assets/rewards/teams/X_FORCE.jpg";
+import TEAM_XMEN from "../assets/rewards/teams/X_MEN.jpg";
+import TEAM_YOUNG_AVENGERS from "../assets/rewards/teams/YOUNG_AVENGERS.jpg";
+import { TeamKey } from "../types/teams";
+
+export const teamIconSrcs: { [key in TeamKey]?: string } = {
+  TEAM_A_FORCE: TEAM_A_FORCE,
+  TEAM_ALPHA_FLIGHT: TEAM_ALPHA_FLIGHT,
+  TEAM_ASGARDIANS_ALLIES: TEAM_ASGARDIANS_ALLIES,
+  TEAM_AVENGERS: TEAM_AVENGERS,
+  TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS: TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS,
+  // TEAM_CHAMPIONS: TEAM_CHAMPIONS,
+  TEAM_DARK_AVENGERS: TEAM_DARK_AVENGERS,
+  TEAM_DEADPOOL_TEAMUP: TEAM_DEADPOOL_TEAMUP,
+  TEAM_DEFENDERS_MANHATTAN: TEAM_DEFENDERS_MANHATTAN,
+  // TEAM_DEFENDERS: TEAM_DEFENDERS,
+  TEAM_EXCALIBUR: TEAM_EXCALIBUR,
+  TEAM_FANTASTIC_FOUR: TEAM_FANTASTIC_FOUR,
+  TEAM_FORCE_WORKS: TEAM_FORCE_WORKS,
+  TEAM_GENX: TEAM_GENX,
+  TEAM_GUARDIANS_OF_THE_GALAXY: TEAM_GUARDIANS_OF_THE_GALAXY,
+  TEAM_ILLUMINATI: TEAM_ILLUMINATI,
+  TEAM_INFINITY_WATCH: TEAM_INFINITY_WATCH,
+  TEAM_INHUMANS: TEAM_INHUMANS,
+  TEAM_IRON_MAN_PROREGISTRATION: TEAM_IRON_MAN_PROREGISTRATION,
+  TEAM_MARVEL_KNIGHTS: TEAM_MARVEL_KNIGHTS,
+  TEAM_MIDNIGHT_SONS: TEAM_MIDNIGHT_SONS,
+  TEAM_NEW_AVENGERS: TEAM_NEW_AVENGERS,
+  TEAM_NEW_MUTANTS: TEAM_NEW_MUTANTS,
+  TEAM_RED_HULKS_THUNDERBOLTS: TEAM_RED_HULKS_THUNDERBOLTS,
+  TEAM_RESISTANCE_AGAINST_APOCALYPSE: TEAM_RESISTANCE_AGAINST_APOCALYPSE,
+  TEAM_SAVAGE_AVENGERS: TEAM_SAVAGE_AVENGERS,
+  TEAM_SHIELD: TEAM_SHIELD,
+  TEAM_SPIDER_ARMY: TEAM_SPIDER_ARMY,
+  TEAM_STARJAMMERS: TEAM_STARJAMMERS,
+  TEAM_SWORDBEARERS_OF_KRAKOA: TEAM_SWORDBEARERS_OF_KRAKOA,
+  TEAM_UNCANNY_XFORCE: TEAM_UNCANNY_XFORCE,
+  TEAM_UNITED_HEROES: TEAM_UNITED_HEROES,
+  TEAM_WAKANDANS: TEAM_WAKANDANS,
+  TEAM_WEST_COAST_AVENGERS: TEAM_WEST_COAST_AVENGERS,
+  TEAM_XFACTOR: TEAM_XFACTOR,
+  TEAM_XFORCE: TEAM_XFORCE,
+  TEAM_XMEN: TEAM_XMEN,
+  TEAM_YOUNG_AVENGERS: TEAM_YOUNG_AVENGERS,
+};

@@ -1,0 +1,41 @@
+@use "../../../app/colors.scss" as *;
+
+.container {
+  width: 100%;
+  border-top: 1px dashed #aaa;
+  transition: margin 0.2s ease;
+}
+
+.summary {
+  display: flex;
+  padding: 0.75rem 1rem;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.375rem;
+}
+
+.chevron {
+  height: 1.25rem;
+  stroke-width: 20;
+  fill: $blue;
+  stroke: $blue;
+  transition: rotate 0.2s ease;
+}
+
+.contentContainer {
+  overflow: hidden;
+  transition: height 0.2s ease;
+}
+
+.title, .subtitle {
+  font-family: Amboy;
+}
+
+.title {
+  color: $dark-blue;
+}
+
+.subtitle {
+  color: $light-blue;
+  flex-grow: 1;
+}
