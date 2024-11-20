@@ -114,7 +114,7 @@ export interface IGameStatus {
   infinityStones: Array<InfinityStone>;
   isDrawerHeroClickable: (h: HeroKey) => boolean;
   isRosterHeroClickable: (h: HeroKey) => boolean;
-  isTagClickable: (t: Tag) => boolean;
+  isTagClickable: (t: Tag | SpecialReward) => boolean;
   isTooManyPets: () => boolean;
   lost: () => void;
   modalOpen: boolean;
@@ -130,7 +130,7 @@ export interface IGameStatus {
   specialRewards: { [key in SpecialReward]: number };
   spendButtonClickHandler: (action: CurrentAction) => void;
   spentActionTokens: { [key in ActionType]: number };
-  tagClickHandler: (t: Tag) => void;
+  tagClickHandler: (t: Tag | SpecialReward) => void;
   tags: { [key in Tag]: number };
   teamRoster: Set<TeamKey>;
   toast: string;

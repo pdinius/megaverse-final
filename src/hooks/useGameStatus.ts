@@ -309,6 +309,7 @@ export const useGameStatus = (): IGameStatus => {
     legalBtns.delete("AVENGERS_START");
 
     setAvailableButtons(Array.from(legalBtns));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, completed, currentAction]);
 
   const checkAchievement = (
@@ -366,6 +367,7 @@ export const useGameStatus = (): IGameStatus => {
       "CASTLE_GROUP_3"
     );
     checkAchievement("win_with_pet", "GALAXY_PATH_12", "GALAXY_PATH_10");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, achievements]);
 
   // PUSH TO STACK
@@ -403,6 +405,7 @@ export const useGameStatus = (): IGameStatus => {
     });
     setStack((curr) => [...curr, newState]);
     if (connected.length > 1) localStorage?.setItem("save-data", newState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     score,
     orTagChoosingQueue,
@@ -411,6 +414,7 @@ export const useGameStatus = (): IGameStatus => {
     heroesAvX,
     heroesMultiverse,
     heroesMultiverse,
+    heroesCrossover,
     heroesDead,
     cooldown,
     teams,
@@ -581,11 +585,11 @@ export const useGameStatus = (): IGameStatus => {
 
   // LOAD DATA
   useEffect(() => {
-    return;
     const saveData = localStorage?.getItem("save-data");
     if (saveData) {
       undo(saveData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearCurrentAction = () => {
@@ -762,6 +766,14 @@ export const useGameStatus = (): IGameStatus => {
 
   const canPayCost = (btn: string) => {
     const { cost } = combinedButtons[btn];
+
+    if (
+      COLLECTOR_BTNS.includes(btn) &&
+      tags.KEY < COLLECTOR_COSTS[collectorsBought]
+    ) {
+      return false;
+    }
+
     if (cost === undefined) return true;
     const testResources = { ...tags };
 
@@ -770,13 +782,6 @@ export const useGameStatus = (): IGameStatus => {
     );
 
     if (Object.values(testResources).some((v) => v < 0)) return false;
-
-    if (
-      COLLECTOR_BTNS.includes(btn) &&
-      testResources.KEY < COLLECTOR_COSTS[collectorsBought]
-    ) {
-      return false;
-    }
 
     return true;
   };
@@ -901,20 +906,26 @@ export const useGameStatus = (): IGameStatus => {
     }));
   };
 
-  const isTagClickable = (t: Tag): boolean => {
+  const isTagClickable = (t: Tag | SpecialReward): boolean => {
     switch (currentAction) {
       case "choosingOrTag":
         return (
-          orTagChoosingQueue.length > 0 && orTagChoosingQueue[0].includes(t)
+          orTagChoosingQueue.length > 0 &&
+          orTagChoosingQueue[0].includes(t as Tag)
         );
+      case "resolvingRecover":
+        return specialRewards.RECOVER > 0 && t === "RECOVER";
+      case "resolvingRecoverF4":
+        return specialRewards.RECOVER_F4 > 0 && t === "RECOVER_F4";
       default:
         return false;
     }
   };
 
-  const tagClickHandler = (t: Tag) => {
+  const tagClickHandler = (t: Tag | SpecialReward) => {
     switch (currentAction) {
       case "choosingOrTag":
+        if (isSpecialReward(t)) return;
         if (
           orTagChoosingQueue.length === 0 ||
           orTagChoosingQueue[0].includes(t)

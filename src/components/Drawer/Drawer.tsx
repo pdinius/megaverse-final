@@ -30,32 +30,36 @@ const Drawer: FC = () => {
   }, [currentAction]);
 
   return (
-    <div
-      className={styles.container}
-      style={{ transform: isOpen ? "none" : `translateY(-${translateYamt}px)` }}
-      ref={containerRef}
-    >
-      <DrawerContainer className={styles.scoreAndSpecialContainer}>
-        <ScoreAndSpecial />
-        <div className={styles.btnContainer}>
-          <UndoButton />
-          <ResetButton />
-        </div>
-      </DrawerContainer>
-      <Divider />
-      <DrawerContainer className={styles.resourceGridContainer}>
-        <Resources />
-      </DrawerContainer>
-      <Divider />
-      <UnlockedHeroes />
-      {heroesDead.length > 0 ? (
-        <>
-          <Divider />
-          <Graveyard />
-        </>
-      ) : null}
-      <Handle onClick={() => setIsOpen(!isOpen)} />
-    </div>
+    <>
+      <div
+        className={styles.container}
+        style={{
+          transform: isOpen ? "none" : `translateY(-${translateYamt}px)`,
+        }}
+        ref={containerRef}
+      >
+        <DrawerContainer className={styles.scoreAndSpecialContainer}>
+          <ScoreAndSpecial />
+          <div className={styles.btnContainer}>
+            <UndoButton />
+            <ResetButton />
+          </div>
+        </DrawerContainer>
+        <Divider />
+        <DrawerContainer className={styles.resourceGridContainer}>
+          <Resources />
+        </DrawerContainer>
+        <Divider />
+        <UnlockedHeroes />
+        {heroesDead.length > 0 ? (
+          <>
+            <Divider />
+            <Graveyard />
+          </>
+        ) : null}
+      </div>
+      <Handle onClick={() => setIsOpen(!isOpen)} translateY={translateYamt} isOpen={isOpen} />
+    </>
   );
 };
 

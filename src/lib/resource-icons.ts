@@ -15,22 +15,27 @@ import PLANET from "../assets/icons/planet.png";
 import PUZZLE from "../assets/icons/puzzle.png";
 import SPARKLE from "../assets/icons/sparkle.png";
 import STAR from "../assets/icons/star.png";
+import RECOVER from "../assets/icons/recover-alt.png";
+import RECOVER_F4 from "../assets/icons/recover-f4-alt.png";
 
-export const resourceSrcs: { [key in Tag]: string } = {
-  BOLT: BOLT,
-  BRAIN: BRAIN,
-  CHIMI: CHIMI,
-  CHOICE: CHOICE,
-  DNA: DNA,
-  EYE: EYE,
-  FLAG: FLAG,
-  GEAR: GEAR,
-  HOURGLASS: HOURGLASS,
-  KEY: KEY,
-  MAGIC: MAGIC,
-  MAPLE: MAPLE,
-  PLANET: PLANET,
-  PUZZLE: PUZZLE,
-  SPARKLE: SPARKLE,
-  STAR: STAR,
-};
+export const resourceSrcs: { [key in Tag | "RECOVER" | "RECOVER_F4"]: string } =
+  {
+    BOLT: BOLT,
+    BRAIN: BRAIN,
+    CHIMI: CHIMI,
+    CHOICE: CHOICE,
+    DNA: DNA,
+    EYE: EYE,
+    FLAG: FLAG,
+    GEAR: GEAR,
+    HOURGLASS: HOURGLASS,
+    KEY: KEY,
+    MAGIC: MAGIC,
+    MAPLE: MAPLE,
+    PLANET: PLANET,
+    PUZZLE: PUZZLE,
+    SPARKLE: SPARKLE,
+    STAR: STAR,
+    RECOVER: RECOVER,
+    RECOVER_F4: RECOVER_F4,
+  };

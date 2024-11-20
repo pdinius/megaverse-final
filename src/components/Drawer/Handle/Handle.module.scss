@@ -1,14 +1,22 @@
 @use "../../../colors" as *;
 
+.container {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  top: -2px;
+}
+
 .handle {
-  position: absolute;
-  top: 100%;
-  fill: var(--fill-color);
+  position: fixed;
+  fill: white;
   cursor: pointer;
   stroke: $dark-blue;
   stroke-width: 2px;
   width: 100px;
-  max-width: 100vw;
+  filter: drop-shadow(0 5px 3px rgb(0 0 0 / 0.3));
 }
 
 .handleText {

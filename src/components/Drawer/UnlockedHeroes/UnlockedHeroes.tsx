@@ -2,7 +2,6 @@ import { FC, useContext } from "react";
 import styles from "./UnlockedHeroes.module.scss";
 import portal from "../../../assets/icons/portal.png";
 import { statusContext } from "../../../StatusContext";
-import { HeroKey } from "../../../types/heroes";
 import DrawerContainer from "../DrawerContainer/DrawerContainer";
 import HeroGrid from "../../HeroGrid/HeroGrid";
 import BackgroundImage from "../../General/BackgroundImage/BackgroundImage";

@@ -1,2 +1,2 @@
 add recover functionality
-fix collector
+first-win ebony blade doesn't work? or resources don't work?
