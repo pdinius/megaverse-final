@@ -7,6 +7,7 @@ import Toast from "./components/General/Toast/Toast";
 import Modal from "./components/General/Modal/Modal";
 import GameSetup from "./components/GameSetup/GameSetup";
 import Drawer from "./components/Drawer/Drawer";
+import styles from "./App.module.scss";
 
 function App() {
   const status = useGameStatus();
@@ -23,6 +24,10 @@ function App() {
         <GameSetup closeModal={closeModal} />
       </Modal>
       <Toast />
+      <pre className={styles.debug}>
+        currentAction: "{status.currentAction}"
+        {/* {JSON.stringify(status, null, 2)} */}
+      </pre>
     </statusContext.Provider>
   );
 }

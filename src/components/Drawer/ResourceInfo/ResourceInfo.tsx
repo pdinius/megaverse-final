@@ -23,7 +23,7 @@ const ResourceInfo: FC<ResourceInfoProps> = ({ t }) => {
       <img
         src={resourceSrcs[t]}
         className={`${styles.resourceIcon} ${
-          isTagClickable(t) ? "clickable-pulse" : ""
+          isTagClickable(t) ? "clickable-resource" : ""
         }`}
         onClick={() => tagClickHandler(t)}
       />

@@ -1,2 +1,4 @@
 add recover functionality
-first-win ebony blade doesn't work? or resources don't work?
+Toggle equipment off when hero is unselected
+figure out how to make toast disappear without text disappearing first
+fix styling on heros when choosing one to remove

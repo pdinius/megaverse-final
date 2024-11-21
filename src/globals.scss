@@ -1,4 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300.900&display=swap");
+@font-face {
+  font-family: "Figtree";
+  src: url("./assets/fonts/Figree-Light.woff2") format("woff2"),
+    url("./assets/fonts/Figtree-Light.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: "Amboy";
@@ -109,4 +116,34 @@ a {
 
 .semi-transparent {
   opacity: 0.4;
+}
+
+.clickable-resource {
+  animation: highlit 2s linear infinite;
+  cursor: pointer;
+}
+
+@keyframes highlit {
+  0% {
+    rotate: 0deg;
+    filter: hue-rotate(0deg);
+    
+  }
+
+  25% {
+    rotate: 5deg;
+  }
+
+  50% {
+    filter: hue-rotate(-90deg);
+  }
+
+  75% {
+    rotate: -5deg;
+  }
+
+  100% {
+    rotate: 0deg;
+    filter: hue-rotate(0deg);
+  }
 }

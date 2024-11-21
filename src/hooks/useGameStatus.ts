@@ -275,7 +275,7 @@ export const useGameStatus = (): IGameStatus => {
     // Create a set of legal buttons
     const legalBtns = new Set(
       connected
-        .map((path) => pathToBtnConnections[path])
+        .map((path) => pathToBtnConnections[path] || [])
         .flat()
         .filter((btn) => !completed.includes(btn) && canPayCost(btn))
     );
@@ -327,7 +327,10 @@ export const useGameStatus = (): IGameStatus => {
       if (Array.isArray(rewardPath)) {
         rewardPath.forEach(addRewards);
       } else {
-        addRewards(rewardPath);
+        resolvePathRewards(
+          rewardPath,
+          rewardPath.startsWith("AVX") ? "AVX" : "MULTIVERSE"
+        );
       }
     }
   };
@@ -404,7 +407,7 @@ export const useGameStatus = (): IGameStatus => {
       availableButtons: [...availableButtons],
     });
     setStack((curr) => [...curr, newState]);
-    if (connected.length > 1) localStorage?.setItem("save-data", newState);
+    // if (connected.length > 1) localStorage?.setItem("save-data", newState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     score,
@@ -435,7 +438,7 @@ export const useGameStatus = (): IGameStatus => {
     setOrTagChoosingQueue([]);
     setTags({
       BOLT: 0,
-      BRAIN: 0,
+      BRAIN: 1,
       CHIMI: 0,
       CHOICE: 0,
       DNA: 0,
@@ -443,12 +446,12 @@ export const useGameStatus = (): IGameStatus => {
       FLAG: 0,
       GEAR: 0,
       HOURGLASS: 0,
-      KEY: 0,
+      KEY: 1,
       MAGIC: 0,
       MAPLE: 0,
       PLANET: 0,
       PUZZLE: 0,
-      STAR: 0,
+      STAR: 20,
       SPARKLE: 0,
     });
     setActionTokens({
@@ -592,8 +595,116 @@ export const useGameStatus = (): IGameStatus => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (orTagChoosingQueue.length) {
+      setCurrentAction("choosingOrTag");
+    }
+  }, [orTagChoosingQueue, currentAction]);
+
   const clearCurrentAction = () => {
     setCurrentAction("");
+  };
+
+  const resolvePathRewards = (path: string, area: Area) => {
+    if (connected.includes(path)) return;
+    if (path === "AVX_PATH_235") {
+      const newPaths = INFINITY_PATHS.slice(0, infinityStones.length);
+      setConnected((curr) => [...curr, ...newPaths]);
+    }
+
+    // connection
+    setConnected((curr) => [...curr, path]);
+
+    // rewards
+    const rewards = pathRewards[path];
+    if (rewards === undefined) return;
+
+    if (OR_PATHS.includes(path)) {
+      setOrTagChoosingQueue([...orTagChoosingQueue, rewards as Array<Tag>]);
+      return;
+    }
+
+    for (const reward of rewards) {
+      if (isEquipKey(reward)) {
+        const hero = equipmentLookup[reward];
+        setEquipment((curr) => {
+          const res = { ...curr };
+          if (res[hero] === undefined) res[hero] = [];
+          res[hero].push(reward);
+          return res;
+        });
+      } else if (isTeamKey(reward)) {
+        setTeams((curr) => [...curr, reward]);
+      } else if (isPetKey(reward)) {
+        setPets((curr) => [...curr, reward]);
+      } else if (isActionType(reward)) {
+        setActionTokens((curr) => ({
+          ...curr,
+          [reward]: curr[reward] + 1,
+        }));
+      } else if (isTag(reward)) {
+        setTags((curr) => ({
+          ...curr,
+          [reward]: curr[reward] + 1,
+        }));
+        if (reward === "BOLT") {
+          setAchievements((curr) => {
+            const res = { ...curr };
+            res.total_bolts += 1;
+            return res;
+          });
+        }
+        if (reward === "STAR") {
+          setAchievements((curr) => {
+            const res = { ...curr };
+            res.total_stars += 1;
+            return res;
+          });
+        }
+      } else if (isSpecialReward(reward)) {
+        if (reward === "CAMP_HAMMOND") {
+          setSpecialRewards((curr) => {
+            const res = { ...curr };
+            res.CAMP_HAMMOND += 3;
+            return res;
+          });
+        } else {
+          setSpecialRewards((curr) => {
+            const res = { ...curr };
+            res[reward] += 1;
+            return res;
+          });
+          if (reward === "PORTAL") {
+            setAchievements((curr) => {
+              const res = { ...curr };
+              res.total_portals += 1;
+              return res;
+            });
+          }
+        }
+      } else if (isHeroKey(reward)) {
+        recruitedHeroes.push(reward);
+        const updater = (curr: Array<HeroKey>) => {
+          if (reward !== "DEADPOOL" && curr.includes(reward)) return curr;
+          return [...curr, reward];
+        };
+        switch (area) {
+          case "AVX":
+            setHeroesAvX(updater);
+            break;
+          case "MULTIVERSE":
+            setHeroesMultiverse(updater);
+            break;
+          case "DC":
+            console.error(`Hero ${reward} seems to be from DC United.`);
+            break;
+        }
+      } else if (isMiscKey(reward)) {
+        setMisc([...misc, reward]);
+      } else {
+        console.error(`Reward: ${reward} did not have a matching type.`);
+      }
+    }
   };
 
   const addRewards = (btnKey: string) => {
@@ -613,108 +724,9 @@ export const useGameStatus = (): IGameStatus => {
     }
 
     // add connections and rewards
-    btnToPathConnections[btnKey].forEach((path) => {
-      if (connected.includes(path)) return;
-      if (path === "AVX_PATH_235") {
-        const newPaths = INFINITY_PATHS.slice(0, infinityStones.length);
-        setConnected((curr) => [...curr, ...newPaths]);
-      }
-
-      // connection
-      setConnected((curr) => [...curr, path]);
-
-      // rewards
-      const rewards = pathRewards[path];
-      if (rewards === undefined) return;
-
-      if (OR_PATHS.includes(path)) {
-        setOrTagChoosingQueue([...orTagChoosingQueue, rewards as Array<Tag>]);
-        setCurrentAction("choosingOrTag");
-        return;
-      }
-
-      for (const reward of rewards) {
-        if (isEquipKey(reward)) {
-          const hero = equipmentLookup[reward];
-          setEquipment((curr) => {
-            const res = { ...curr };
-            if (res[hero] === undefined) res[hero] = [];
-            res[hero].push(reward);
-            return res;
-          });
-        } else if (isTeamKey(reward)) {
-          setTeams((curr) => [...curr, reward]);
-        } else if (isPetKey(reward)) {
-          setPets((curr) => [...curr, reward]);
-        } else if (isActionType(reward)) {
-          setActionTokens((curr) => ({
-            ...curr,
-            [reward]: curr[reward] + 1,
-          }));
-        } else if (isTag(reward)) {
-          setTags((curr) => ({
-            ...curr,
-            [reward]: curr[reward] + 1,
-          }));
-          if (reward === "BOLT") {
-            setAchievements((curr) => {
-              const res = { ...curr };
-              res.total_bolts += 1;
-              return res;
-            });
-          }
-          if (reward === "STAR") {
-            setAchievements((curr) => {
-              const res = { ...curr };
-              res.total_stars += 1;
-              return res;
-            });
-          }
-        } else if (isSpecialReward(reward)) {
-          if (reward === "CAMP_HAMMOND") {
-            setSpecialRewards((curr) => {
-              const res = { ...curr };
-              res.CAMP_HAMMOND += 3;
-              return res;
-            });
-          } else {
-            setSpecialRewards((curr) => {
-              const res = { ...curr };
-              res[reward] += 1;
-              return res;
-            });
-            if (reward === "PORTAL") {
-              setAchievements((curr) => {
-                const res = { ...curr };
-                res.total_portals += 1;
-                return res;
-              });
-            }
-          }
-        } else if (isHeroKey(reward)) {
-          recruitedHeroes.push(reward);
-          const updater = (curr: Array<HeroKey>) => {
-            if (reward !== "DEADPOOL" && curr.includes(reward)) return curr;
-            return [...curr, reward];
-          };
-          switch (area) {
-            case "AVX":
-              setHeroesAvX(updater);
-              break;
-            case "MULTIVERSE":
-              setHeroesMultiverse(updater);
-              break;
-            case "DC":
-              console.error(`Hero ${reward} seems to be from DC United.`);
-              break;
-          }
-        } else if (isMiscKey(reward)) {
-          setMisc([...misc, reward]);
-        } else {
-          console.error(`Reward: ${reward} did not have a matching type.`);
-        }
-      }
-    });
+    btnToPathConnections[btnKey].forEach((path) =>
+      resolvePathRewards(path, area)
+    );
 
     // INFINITY STONES
     const stone = villainInfo[btnKey]?.infinity;
@@ -928,18 +940,21 @@ export const useGameStatus = (): IGameStatus => {
         if (isSpecialReward(t)) return;
         if (
           orTagChoosingQueue.length === 0 ||
-          orTagChoosingQueue[0].includes(t)
+          !orTagChoosingQueue[0].includes(t)
         ) {
           return;
         }
+
         modifyTag(t, 1);
         setOrTagChoosingQueue(orTagChoosingQueue.slice(1));
+
         if (
           currentAction === "choosingOrTag" &&
-          orTagChoosingQueue.length === 0
+          orTagChoosingQueue.length === 1
         ) {
           setCurrentAction("");
         }
+
         break;
       default:
         return;
@@ -1393,7 +1408,7 @@ export const useGameStatus = (): IGameStatus => {
     return heroesCrossover.filter((h) => !heroesDead.includes(h));
   };
 
-  // USER SELECTION STUFF
+  // HERO SELECTION STUFF
   useEffect(() => {
     if (teamRoster.size) {
       const team = teamRoster.keys().next().value as TeamKey;
@@ -1403,6 +1418,7 @@ export const useGameStatus = (): IGameStatus => {
         }
       });
     }
+    // TODO: Add check for illegal equipment
   }, [roster, teamRoster]);
 
   const generateTeamChoiceListProps = (): ChoiceSelectorProps<TeamKey> => {
