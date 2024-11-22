@@ -588,10 +588,10 @@ export const useGameStatus = (): IGameStatus => {
 
   // LOAD DATA
   useEffect(() => {
-    const saveData = localStorage?.getItem("save-data");
-    if (saveData) {
-      undo(saveData);
-    }
+    // const saveData = localStorage?.getItem("save-data");
+    // if (saveData) {
+    //   undo(saveData);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
