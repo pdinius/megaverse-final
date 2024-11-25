@@ -10,24 +10,23 @@ interface TokenSelectorProps {
 }
 
 const TokenSelector: FC<TokenSelectorProps> = ({ actionKey }) => {
-  const { actionTokens, spentActionTokens, modifyActionTokens } =
-    useContext(statusContext);
+  const { actionTokens, modifySpendingActionTokens, spendingActionTokens } = useContext(statusContext);
 
   return (
     <div className={styles.container}>
       <img src={TOKEN_SRCS[actionKey]} />
       <button
         className={styles.caretBtn}
-        disabled={spentActionTokens[actionKey] === 0}
-        onClick={() => modifyActionTokens(actionKey, -1)}
+        disabled={spendingActionTokens[actionKey] === 0}
+        onClick={() => modifySpendingActionTokens(actionKey, -1)}
       >
         <Icon which={"caret-left"} />
       </button>
-      {spentActionTokens[actionKey]}
+      {spendingActionTokens[actionKey]}
       <button
         className={styles.caretBtn}
-        disabled={spentActionTokens[actionKey] === actionTokens[actionKey]}
-        onClick={() => modifyActionTokens(actionKey, 1)}
+        disabled={spendingActionTokens[actionKey] === actionTokens[actionKey]}
+        onClick={() => modifySpendingActionTokens(actionKey, 1)}
       >
         <Icon which={"caret-right"} />
       </button>

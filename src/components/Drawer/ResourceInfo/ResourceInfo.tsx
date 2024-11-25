@@ -5,27 +5,34 @@ import { isTag, Tag } from "../../../types/general";
 import { resourceSrcs } from "../../../lib/resource-icons";
 
 interface ResourceInfoProps {
-  t: Tag | "RECOVER" | "RECOVER_F4";
+  item: Tag | "RECOVER" | "RECOVER_F4";
 }
 
-const ResourceInfo: FC<ResourceInfoProps> = ({ t }) => {
-  const { isTagClickable, tagClickHandler, tags, specialRewards } =
-    useContext(statusContext);
+const ResourceInfo: FC<ResourceInfoProps> = ({ item }) => {
+  const {
+    isTagOrSpecialRewardClickable,
+    tags,
+    specialRewards,
+    tagClickHandler,
+    specialRewardClickHandler,
+  } = useContext(statusContext);
 
-  const qtx = isTag(t) ? tags[t] : specialRewards[t];
+  const qtx = isTag(item) ? tags[item] : specialRewards[item];
 
   return (
     <div
       className={`${styles.resourceContainer} ${
-        qtx > 0 || isTagClickable(t) ? "" : styles.transparent
+        qtx > 0 || isTagOrSpecialRewardClickable(item) ? "" : styles.transparent
       }`}
     >
       <img
-        src={resourceSrcs[t]}
+        src={resourceSrcs[item]}
         className={`${styles.resourceIcon} ${
-          isTagClickable(t) ? "clickable-resource" : ""
+          isTagOrSpecialRewardClickable(item) ? "clickable-resource" : ""
         }`}
-        onClick={() => tagClickHandler(t)}
+        onClick={() =>
+          isTag(item) ? tagClickHandler(item) : specialRewardClickHandler(item)
+        }
       />
       <span className={styles.qtx}>{qtx}</span>
     </div>

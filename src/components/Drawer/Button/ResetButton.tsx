@@ -4,34 +4,29 @@ import { statusContext } from "../../../StatusContext";
 import { Icon } from "../../General/Icon";
 
 const ResetButton: FC = () => {
-  const { currentAction, resetClickHandler, clearCurrentAction } =
-    useContext(statusContext);
+  const { currentAction, resetClickHandler } = useContext(statusContext);
   const disabled = currentAction !== "" && !currentAction.startsWith("reset");
+
+  const resetText =
+    currentAction === ""
+      ? "RESET DATA"
+      : currentAction === "reset1"
+      ? "REALLY RESET?"
+      : "REALLY REALLY??";
 
   return (
     <div className={styles.container}>
       <button
-        onClick={resetClickHandler}
+        onClick={() => resetClickHandler()}
         disabled={disabled}
         className={`${styles.btn} ${disabled ? styles.disabled : ""}`}
       >
-        {currentAction === "reset1" ? (
-          <>
-            REALLY RESET? <Icon which="trash" />
-          </>
-        ) : currentAction === "reset2" ? (
-          <>
-            REALLY REALLY? <Icon which="trash" />
-          </>
-        ) : (
-          <>
-            RESET DATA <Icon which="trash" />
-          </>
-        )}
+        {resetText}
+        <Icon which="trash" />
       </button>
       {currentAction.startsWith("reset") ? (
         <button
-          onClick={clearCurrentAction}
+          onClick={() => resetClickHandler(true)}
           className={`${styles.btn} ${disabled ? styles.disabled : ""}`}
           style={{ background: "#fa1414" }}
         >

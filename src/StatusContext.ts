@@ -1,7 +1,8 @@
 import { createContext } from "react";
 import { IGameStatus } from "./types/game-status";
+import { useGameStatus } from "./hooks/useGameStatus";
 
-const generateBlankStatus = (): IGameStatus => {
+const generateBlankStatus = (): ReturnType<typeof useGameStatus> => {
   return {
     achievements: {
       win_with_beast: false,
@@ -45,15 +46,17 @@ const generateBlankStatus = (): IGameStatus => {
       unlock_colossus_and_kitty: false,
       unlock_jessica_and_luke: false,
       unlock_chod_corsair_hepzibah_raza: false,
-      total_bolts: 0,
-      total_portals: 0,
-      total_stars: 0,
     },
     actionTokens: {
       MOVE: 0,
       FIGHT: 0,
       HEROIC: 0,
       WILD: 0,
+    },
+    counts: {
+      total_bolts: 0,
+      total_portals: 0,
+      total_stars: 0,
     },
     availableButtons: [],
     blocked: false,

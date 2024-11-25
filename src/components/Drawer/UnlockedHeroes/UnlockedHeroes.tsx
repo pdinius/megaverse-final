@@ -5,22 +5,13 @@ import { statusContext } from "../../../StatusContext";
 import DrawerContainer from "../DrawerContainer/DrawerContainer";
 import HeroGrid from "../../HeroGrid/HeroGrid";
 import BackgroundImage from "../../General/BackgroundImage/BackgroundImage";
+import { HeroKey } from "../../../types/heroes";
 
 const UnlockedHeroes: FC = () => {
-  const {
-    getHeroesAvX,
-    getHeroesCrossover,
-    getHeroesMultiverse,
-    unlockedHeroesClickHandler,
-    isDrawerHeroClickable,
-  } = useContext(statusContext);
-
-  const conditionalHeroClasses = [
-    {
-      fn: isDrawerHeroClickable,
-      c: "clickable-pulse",
-    },
-  ];
+  const { avxHeroes, multiverseHeroes, crossoverHeroes, isHeroClickable } =
+    useContext(statusContext);
+  const conditionalHeroClass = (h: HeroKey) =>
+    isHeroClickable(h) ? "clickable-pulse" : "";
 
   return (
     <DrawerContainer className={styles.container}>
@@ -28,9 +19,8 @@ const UnlockedHeroes: FC = () => {
         <div className={styles.title}>Avengers & X-Men</div>
         <HeroGrid
           containerClass={styles.avxContainer}
-          heroes={getHeroesAvX()}
-          clickHandler={unlockedHeroesClickHandler}
-          conditionalHeroClasses={conditionalHeroClasses}
+          heroes={avxHeroes}
+          conditionalHeroClass={conditionalHeroClass}
         />
       </div>
       <div className={styles.innerContainer}>
@@ -39,9 +29,8 @@ const UnlockedHeroes: FC = () => {
           <BackgroundImage src={portal} />
           <HeroGrid
             containerClass={styles.portalGrid}
-            heroes={getHeroesCrossover()}
-            clickHandler={unlockedHeroesClickHandler}
-            conditionalHeroClasses={conditionalHeroClasses}
+            heroes={crossoverHeroes}
+            conditionalHeroClass={conditionalHeroClass}
           />
         </div>
       </div>
@@ -49,9 +38,8 @@ const UnlockedHeroes: FC = () => {
         <div className={styles.title}>Multiverse</div>
         <HeroGrid
           containerClass={styles.multiverseContainer}
-          heroes={getHeroesMultiverse()}
-          clickHandler={unlockedHeroesClickHandler}
-          conditionalHeroClasses={conditionalHeroClasses}
+          heroes={multiverseHeroes}
+          conditionalHeroClass={conditionalHeroClass}
         />
       </div>
     </DrawerContainer>

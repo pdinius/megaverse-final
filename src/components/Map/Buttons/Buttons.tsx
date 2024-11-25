@@ -9,19 +9,20 @@ interface ButtonsProps {
 }
 
 const Buttons: FC<ButtonsProps> = ({ moved }) => {
-  const { availableButtons, currentAction, btnClickHandler } =
-    useContext(statusContext);
+  const { availableButtons, btnClickHandler } = useContext(statusContext);
 
-  return currentAction
-    ? null
-    : availableButtons.map((key) => (
-        <path
-          key={key}
-          d={villainInfo[key]?.overlay || combinedButtons[key].d}
-          className={styles.btn}
-          onClick={btnClickHandler(key, moved)}
-        />
-      ));
+  return availableButtons.map((key, i) => (
+    <path
+      key={i}
+      d={villainInfo[key]?.overlay || combinedButtons[key].d}
+      className={styles.btn}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (moved) return;
+        btnClickHandler(key);
+      }}
+    />
+  ));
 };
 
 export default Buttons;

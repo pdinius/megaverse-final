@@ -1,17 +1,14 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import styles from "./HeroGrid.module.scss";
 import { HeroKey } from "../../types/heroes";
 import HeroIcon from "./HeroIcon/HeroIcon";
+import { statusContext } from "../../StatusContext";
 
 interface HeroGridProps {
   heroes: Array<HeroKey>;
   containerClass?: string;
   heroClass?: string;
-  clickHandler?: (h: HeroKey) => void;
-  conditionalHeroClasses?: Array<{
-    fn: (h: HeroKey) => boolean;
-    c: string;
-  }>;
+  conditionalHeroClass?: (h: HeroKey) => string;
   maxRowSize?: number | "auto-fill";
 }
 
@@ -19,10 +16,11 @@ const HeroGrid: FC<HeroGridProps> = ({
   heroes,
   containerClass = "",
   heroClass = "",
-  clickHandler,
-  conditionalHeroClasses = [],
+  conditionalHeroClass = () => "",
   maxRowSize = "auto-fill",
 }) => {
+  const { isHeroClickable, heroClickHandler } = useContext(statusContext);
+
   return (
     <div
       className={`${containerClass} ${styles.container}`}
@@ -32,10 +30,8 @@ const HeroGrid: FC<HeroGridProps> = ({
         <HeroIcon
           key={i}
           hero={h}
-          onClick={() => clickHandler && clickHandler(h)}
-          className={`${heroClass} ${conditionalHeroClasses
-            .map(({ fn, c }) => (fn(h) ? c : ""))
-            .join(" ")}`}
+          onClick={isHeroClickable(h) ? () => heroClickHandler(h) : undefined}
+          className={`${heroClass} ${conditionalHeroClass(h)}`}
         />
       ))}
     </div>

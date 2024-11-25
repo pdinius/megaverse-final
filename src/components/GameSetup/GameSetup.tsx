@@ -1,7 +1,6 @@
 import { FC, useContext } from "react";
 import styles from "./GameSetup.module.scss";
 import { statusContext } from "../../StatusContext";
-import { villainInfo } from "../../lib/villain-info";
 import ChoiceSelector from "./ChoiceSelector/ChoiceSelector";
 import Accordion from "../General/Accordion/Accordion";
 import { VillainBackdrop } from "./VillainBackdrop/VillainBackdrop";
@@ -11,52 +10,43 @@ import SpecialLocations from "./SpecialLocations/SpecialLocations";
 import ActionTokenSelection from "./ActionTokenSelection/ActionTokenSelection";
 import HeroGrid from "../HeroGrid/HeroGrid";
 
-interface GameSetupProps {
-  closeModal: () => void;
-}
-
-const GameSetup: FC<GameSetupProps> = ({ closeModal }) => {
+const GameSetup: FC = () => {
   const {
-    actionTokens,
-    chained,
-    currentBtnClicked,
-    roster,
-    toggleRosterHero,
-    heroChoices,
-    isRosterHeroClickable,
+    getLegalHeroesForFight,
+    heroRoster,
+    isHeroClickable,
+    showActionTokensAccordion,
     generateTeamChoiceListProps,
     generatePetChoiceListProps,
     generateEquipChoiceListProps,
   } = useContext(statusContext);
 
-  const choices = chained.concat(heroChoices);
   const teamProps = generateTeamChoiceListProps();
   const petProps = generatePetChoiceListProps();
   const equipProps = generateEquipChoiceListProps();
 
-  return currentBtnClicked in villainInfo ? (
+  return (
     <div className={styles.container}>
       <VillainBackdrop />
       <div className={styles.innerContainer}>
-        <GameSetupHeader closeModal={closeModal} />
+        <GameSetupHeader />
         <HeroGrid
-          heroes={choices}
+          heroes={getLegalHeroesForFight()}
           containerClass={styles.grid}
-          clickHandler={toggleRosterHero}
-          conditionalHeroClasses={[
-            {
-              fn: isRosterHeroClickable,
-              c: "clickable",
-            },
-            {
-              fn: (h) => !roster.has(h),
-              c: "semi-transparent",
-            },
-          ]}
-          maxRowSize={Math.min(choices.length, 7)}
+          conditionalHeroClass={(h) => {
+            const res: Array<string> = [];
+            if (isHeroClickable(h)) {
+              res.push("clickable");
+            }
+            if (!heroRoster.has(h)) {
+              res.push("semi-transparent");
+            }
+            return res.join(" ");
+          }}
+          maxRowSize={Math.min(getLegalHeroesForFight().length, 7)}
         />
         <SpecialLocations />
-        {Object.values(actionTokens).reduce((a, b) => a + b) ? (
+        {showActionTokensAccordion() ? (
           <Accordion title="Action Tokens">
             <ActionTokenSelection />
           </Accordion>
@@ -67,7 +57,7 @@ const GameSetup: FC<GameSetupProps> = ({ closeModal }) => {
         <GameSetupFooter />
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default GameSetup;

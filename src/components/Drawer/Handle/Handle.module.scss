@@ -1,12 +1,11 @@
 @use "../../../colors" as *;
 
 .container {
-  position: fixed;
+  position: absolute;
   width: 100%;
   display: flex;
   justify-content: center;
   transition: transform 0.3s ease;
-  top: -2px;
 }
 
 .handle {

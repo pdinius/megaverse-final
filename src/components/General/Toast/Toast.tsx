@@ -6,7 +6,9 @@ import { statusContext } from "../../../StatusContext";
 interface ToastProps {}
 
 const Toast: FC<ToastProps> = () => {
-  const { toast } = useContext(statusContext);
+  const {
+    toast: { open, message },
+  } = useContext(statusContext);
 
   const star = (
     <div className={styles.starContainer}>
@@ -17,10 +19,10 @@ const Toast: FC<ToastProps> = () => {
   return (
     <div
       className={styles.container}
-      style={{ bottom: toast ? "2rem" : "-2rem", opacity: toast ? 1 : 0 }}
+      style={{ bottom: open ? "2rem" : "-2rem", opacity: open ? 1 : 0 }}
     >
       {star}
-      <div className={styles.innerContainer}>{toast}</div>
+      <div className={styles.innerContainer}>{message}</div>
       {star}
     </div>
   );

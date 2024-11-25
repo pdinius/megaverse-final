@@ -9,26 +9,26 @@ const SpecialLocations: FC<SpecialLocationsProps> = () => {
     specialRewards,
     toggleCampHammond,
     toggleDangerRoom,
-    useCampHammond,
-    useDangerRoom,
+    usingCampHammond,
+    usingDangerRoom,
   } = useContext(statusContext);
 
   return specialRewards.DANGER_ROOM || specialRewards.CAMP_HAMMOND ? (
     <div className={styles.container}>
-      {specialRewards.DANGER_ROOM ? (
-        <button
-          className={`${styles.btn} ${useDangerRoom ? styles.active : ""}`}
-          onClick={toggleDangerRoom}
-        >
-          Use Danger Room
-        </button>
-      ) : null}
       {specialRewards.CAMP_HAMMOND ? (
         <button
-          className={`${styles.btn} ${useCampHammond ? styles.active : ""}`}
+          className={`${styles.btn} ${usingCampHammond ? styles.active : ""}`}
           onClick={toggleCampHammond}
         >
           Use Camp Hammond
+        </button>
+      ) : null}
+      {specialRewards.DANGER_ROOM ? (
+        <button
+          className={`${styles.btn} ${usingDangerRoom ? styles.active : ""}`}
+          onClick={toggleDangerRoom}
+        >
+          Use Danger Room
         </button>
       ) : null}
     </div>

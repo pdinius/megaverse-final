@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useContext } from "react";
+import { FC, useContext } from "react";
 import styles from "./HeroIcon.module.scss";
 import { statusContext } from "../../../StatusContext";
 import { HeroKey } from "../../../types/heroes";
@@ -8,29 +8,27 @@ import Badges from "./Badges/Badges";
 
 interface HeroIconProps {
   hero: HeroKey;
-  onClick?: MouseEventHandler;
+  onClick?: (h: HeroKey) => void;
   className?: string;
 }
 
 const HeroIcon: FC<HeroIconProps> = ({ hero, onClick, className = "" }) => {
-  const { cooldown } = useContext(statusContext);
+  const { heroes } = useContext(statusContext);
 
-  const cd = cooldown.findIndex((cd) => cd.includes(hero)) + 1;
-
-  return (
+  return hero in heroes ? (
     <div className={styles.container}>
       <img
         src={heroIconSrcs[hero]}
         alt={hero}
         title={translations[hero]}
         className={`${styles.icon} ${
-          cd > 0 ? styles.coolingDown : ""
+          heroes[hero]?.cooldown! > 0 ? styles.coolingDown : ""
         } ${className}`}
-        onClick={onClick}
+        onClick={onClick && (() => onClick(hero))}
       />
-      <Badges hero={hero} cdTimer={cd} />
+      <Badges hero={hero} />
     </div>
-  );
+  ) : null;
 };
 
 export default HeroIcon;

@@ -1,25 +1,21 @@
-import { FC, HTMLProps, useEffect, useState } from "react";
+import { FC, HTMLProps, useContext, useEffect, useState } from "react";
 import styles from "./Modal.module.scss";
+import { statusContext } from "../../../StatusContext";
+import { ANIM_TIME } from "../../../lib/constants";
 
-interface ModalProps extends HTMLProps<HTMLDivElement> {
-  isOpen: boolean;
-  toggleOpen: () => void;
-}
-
-const Modal: FC<ModalProps> = ({
-  isOpen,
-  toggleOpen,
+const Modal: FC<HTMLProps<HTMLDivElement>> = ({
   children,
   className,
   onClick,
   ...props
 }) => {
+  const { modalOpen, toggleModalOpen } = useContext(statusContext);
   const [hidden, setHidden] = useState(true);
   const [topMoved, setTopMoved] = useState(true);
   const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
-    if (isOpen) {
+    if (modalOpen) {
       setHidden(false);
       setTimeout(() => {
         setOpacity(1);
@@ -30,9 +26,9 @@ const Modal: FC<ModalProps> = ({
       setOpacity(0);
       setTimeout(() => {
         setHidden(true);
-      }, 100);
+      }, ANIM_TIME);
     }
-  }, [isOpen]);
+  }, [modalOpen]);
 
   return (
     <div
@@ -40,7 +36,7 @@ const Modal: FC<ModalProps> = ({
       style={{ opacity, display: hidden ? "none" : "grid" }}
       onClick={(e) => {
         e.stopPropagation();
-        toggleOpen();
+        toggleModalOpen(false);
       }}
     >
       <div

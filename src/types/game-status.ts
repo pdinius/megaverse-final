@@ -16,51 +16,56 @@ interface ChoiceListProps<T extends string> {
   titleGenerator: (v: T) => string;
 }
 
-export interface Achievements {
-  win_with_beast: boolean;
-  win_with_iceman: boolean;
-  win_with_jean: boolean;
-  win_with_cyclops: boolean;
-  win_with_forge: boolean;
-  win_with_storm: boolean;
-  win_with_miles: boolean;
-  win_with_iron_man: boolean;
-  win_with_hulk: boolean;
-  win_with_cap: boolean;
-  win_with_widow: boolean;
-  win_with_wanda: boolean;
-  win_with_black_panther: boolean;
-  win_with_starlord: boolean;
-  win_with_antman: boolean;
-  win_with_wasp: boolean;
-  win_with_moon_knight: boolean;
-  win_with_inhumans: boolean;
-  win_with_new_avengers: boolean;
-  win_with_midnight_sons: boolean;
-  win_with_dark_avengers: boolean;
-  win_with_asgardians: boolean;
-  win_with_starjammers: boolean;
-  win_with_guardians_galaxy: boolean;
-  win_with_illuminati: boolean;
-  win_with_thunderbolts: boolean;
-  win_with_ebony_blade: boolean;
-  win_with_mjolnir: boolean;
-  win_with_pet: boolean;
-  unlock_rogue_and_gambit: boolean;
-  unlock_colossus_and_kitty: boolean;
-  unlock_jessica_and_luke: boolean;
-  unlock_chod_corsair_hepzibah_raza: boolean;
-  war_machine_removed: boolean;
-  vision_removed: boolean;
-  win_with_guardian: boolean;
-  win_with_puck: boolean;
-  win_with_sasquatch: boolean;
-  win_with_snowbird: boolean;
-  win_with_northstar: boolean;
-  thanos_defeated: boolean;
-  total_bolts: number;
-  total_portals: number;
-  total_stars: number;
+export type Achievement =
+  | "win_with_beast"
+  | "win_with_iceman"
+  | "win_with_jean"
+  | "win_with_cyclops"
+  | "win_with_forge"
+  | "win_with_storm"
+  | "win_with_miles"
+  | "win_with_iron_man"
+  | "win_with_hulk"
+  | "win_with_cap"
+  | "win_with_widow"
+  | "win_with_wanda"
+  | "win_with_black_panther"
+  | "win_with_starlord"
+  | "win_with_antman"
+  | "win_with_wasp"
+  | "win_with_moon_knight"
+  | "win_with_inhumans"
+  | "win_with_new_avengers"
+  | "win_with_midnight_sons"
+  | "win_with_dark_avengers"
+  | "win_with_asgardians"
+  | "win_with_starjammers"
+  | "win_with_guardians_galaxy"
+  | "win_with_illuminati"
+  | "win_with_thunderbolts"
+  | "win_with_ebony_blade"
+  | "win_with_mjolnir"
+  | "win_with_pet"
+  | "unlock_rogue_and_gambit"
+  | "unlock_colossus_and_kitty"
+  | "unlock_jessica_and_luke"
+  | "unlock_chod_corsair_hepzibah_raza"
+  | "war_machine_removed"
+  | "vision_removed"
+  | "win_with_guardian"
+  | "win_with_puck"
+  | "win_with_sasquatch"
+  | "win_with_snowbird"
+  | "win_with_northstar"
+  | "thanos_defeated";
+
+export type Achievements = { [key in Achievement]: boolean };
+
+export interface Counts {
+  bolts: number;
+  portals: number;
+  stars: number;
+  collector_items: number;
 }
 
 export type CurrentAction =
@@ -72,10 +77,10 @@ export type CurrentAction =
   | "choosingOrTag"
   | "removingHero"
   | "tradingHero"
-  | "fightingDeadpool"
   | "choosingDeadpoolVictim"
   | "reset1"
-  | "reset2";
+  | "reset2"
+  | "undoing";
 
 export const DRAWER_ACTIONS: Array<CurrentAction> = [
   "choosingOrTag",
@@ -84,6 +89,12 @@ export const DRAWER_ACTIONS: Array<CurrentAction> = [
   "resolvingRecoverF4",
   "tradingHero",
 ];
+
+export interface HeroState {
+  crossover: boolean;
+  dead: boolean;
+  cooldown: number;
+}
 
 export interface IGameStatus {
   achievements: Achievements;

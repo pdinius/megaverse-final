@@ -13,19 +13,27 @@ import Resources from "./Resources/Resources";
 import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
 
 const Drawer: FC = () => {
-  const { currentAction, heroesDead } = useContext(statusContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const { currentAction, areHeroesDead, drawerOpen, toggleDrawerOpen } =
+    useContext(statusContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const [translateYamt, setTranslateYamt] = useState(999);
 
   useEffect(() => {
-    if (containerRef.current === null) return;
-    setTranslateYamt(containerRef.current.offsetHeight);
-  }, [containerRef.current?.offsetHeight]);
+    if (window === undefined) return;
+    const updateDrawerHeight = () => {
+      if (containerRef.current === null) return;
+      setTranslateYamt(containerRef.current.getBoundingClientRect().height);
+    };
+    updateDrawerHeight();
+    window.addEventListener("resize", updateDrawerHeight);
+    return () => {
+      window.removeEventListener("resize", updateDrawerHeight);
+    };
+  }, [containerRef.current?.getBoundingClientRect().height]);
 
   useEffect(() => {
     if (DRAWER_ACTIONS.includes(currentAction)) {
-      setIsOpen(true);
+      toggleDrawerOpen(true);
     }
   }, [currentAction]);
 
@@ -34,7 +42,7 @@ const Drawer: FC = () => {
       <div
         className={styles.container}
         style={{
-          transform: isOpen ? "none" : `translateY(-${translateYamt}px)`,
+          transform: drawerOpen ? "none" : `translateY(-${translateYamt}px)`,
         }}
         ref={containerRef}
       >
@@ -51,14 +59,14 @@ const Drawer: FC = () => {
         </DrawerContainer>
         <Divider />
         <UnlockedHeroes />
-        {heroesDead.length > 0 ? (
+        {areHeroesDead ? (
           <>
             <Divider />
             <Graveyard />
           </>
         ) : null}
+        <Handle top={translateYamt} />
       </div>
-      <Handle onClick={() => setIsOpen(!isOpen)} translateY={translateYamt} isOpen={isOpen} />
     </>
   );
 };

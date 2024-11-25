@@ -26,17 +26,19 @@ export type Challenge =
   | "titania"
   | "winter-guard";
 
+export interface VillainInfo {
+  key: VillainKey;
+  points: number;
+  challenge?: Array<Challenge>;
+  location?: Array<string>;
+  infinity?: InfinityStone;
+  checkmark: string;
+  overlay: string;
+  slash: string;
+};
+
 export const villainInfo: {
-  [key: string]: {
-    key: VillainKey;
-    points: number;
-    challenge?: Array<Challenge>;
-    location?: Array<string>;
-    infinity?: InfinityStone;
-    checkmark: string;
-    overlay: string;
-    slash: string;
-  };
+  [key: string]: VillainInfo;
 } = {
   CHARIOT_NEMESIS_1: {
     key: "NEMESIS",

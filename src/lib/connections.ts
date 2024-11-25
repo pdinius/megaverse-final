@@ -1,4 +1,4 @@
-export const btnToPathConnections: { [key: string]: Array<string> } = {
+const btnToPathConnections: { [key: string]: Array<string> } = {
   AVX_TRADE_243: ["AVX_PATH_164"],
   SABRETOOTH_BTN: ["SABRETOOTH_REWARDS", "XMEN_START", "X23"],
   FIRST_JEAN_GREY_WIN_BTN: ["FIRST_JEAN_WIN", "XMEN_START"],
@@ -1524,7 +1524,7 @@ export const btnToPathConnections: { [key: string]: Array<string> } = {
   XMEN_START: ["AVX_PATH_27"],
 };
 
-export const pathToBtnConnections: { [key: string]: Array<string> } = {
+const pathToBtnConnections: { [key: string]: Array<string> } = {
   SABRETOOTH_REWARDS: ["SABRETOOTH_BTN"],
   XMEN_START: [
     "SABRETOOTH_BTN",
@@ -3553,3 +3553,19 @@ export const pathToBtnConnections: { [key: string]: Array<string> } = {
   AVX_PATH_135: ["AVX_TASKMASTER_187"],
   AVX_PATH_133: ["AVX_GATE_44", "AVX_GATE_99"],
 };
+
+export const pathToConnectedButtons = (path: string) => {
+  if (path in pathToBtnConnections) {
+    return pathToBtnConnections[path];
+  } else {
+    return [];
+  }
+}
+
+export const buttonToConnectedPaths = (btn: string) => {
+  if (btn in btnToPathConnections) {
+    return btnToPathConnections[btn];
+  } else {
+    return [];
+  }
+}

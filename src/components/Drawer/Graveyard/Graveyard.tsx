@@ -5,32 +5,23 @@ import { statusContext } from "../../../StatusContext";
 import ResourceInfo from "../ResourceInfo/ResourceInfo";
 
 const Graveyard: FC = () => {
-  const { recoverHero, heroesDead, canRecover } =
-    useContext(statusContext);
+  const { deadHeroes, isHeroClickable } = useContext(statusContext);
 
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <span className={styles.title}>Lost Heroes</span>
         <HeroGrid
-          heroes={heroesDead}
+          heroes={deadHeroes}
           heroClass={styles.deadHero}
-          clickHandler={(h) => () => {
-            if (canRecover(h)) {
-              recoverHero(h);
-            }
-          }}
-          conditionalHeroClasses={[
-            {
-              fn: canRecover,
-              c: "clickable-pulse",
-            },
-          ]}
+          conditionalHeroClass={(h) =>
+            isHeroClickable(h) ? "clickable-pulse" : ""
+          }
         />
       </div>
       <div className={styles.right}>
-        <ResourceInfo t="RECOVER" />
-        <ResourceInfo t="RECOVER_F4" />
+        <ResourceInfo item="RECOVER" />
+        <ResourceInfo item="RECOVER_F4" />
       </div>
     </div>
   );

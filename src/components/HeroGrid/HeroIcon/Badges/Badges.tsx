@@ -12,22 +12,25 @@ import { translations } from "../../../../lib/translations";
 
 interface BadgesProps {
   hero: HeroKey;
-  cdTimer: number;
 }
 
-const Badges: FC<BadgesProps> = ({ hero, cdTimer }) => {
-  const { chained, equipment, getHeroesCrossover } = useContext(statusContext);
+const Badges: FC<BadgesProps> = ({ hero }) => {
+  const { chained, equipment, heroes } = useContext(statusContext);
+  
+  const data = heroes[hero];
+  if (data === undefined) return null;
+  const { cooldown, crossover } = data;
 
   const badges: Array<JSX.Element> = [];
 
   // Cooldown Badge
-  if (cdTimer > 0) {
+  if (cooldown > 0) {
     badges.push(
       <img
-        src={cdTimer === 2 ? timer2 : timer1}
+        src={cooldown === 1 ? timer1 : timer2}
         className={styles.badge}
         key="cooldown"
-        title={`Ready after ${cdTimer} more fight${cdTimer > 1 ? "s" : ""}.`}
+        title={`Ready after ${cooldown} more fight${cooldown > 1 ? "s" : ""}.`}
       />
     );
   }
@@ -69,7 +72,7 @@ const Badges: FC<BadgesProps> = ({ hero, cdTimer }) => {
   }
 
   // Portal
-  if (getHeroesCrossover().includes(hero)) {
+  if (crossover) {
     badges.push(
       <img
         src={portalBadge}

@@ -1,4 +1,4 @@
-import { Achievements } from "../types/game-status";
+import { Achievement } from "../types/game-status";
 
 export const achievementPaths = {
   AVX_WIN_CYCLOPS:
@@ -100,7 +100,7 @@ export const achievementPaths = {
 };
 
 export const achievementToKeyLookup: {
-  [key in keyof typeof achievementPaths]?: keyof Achievements;
+  [key in keyof typeof achievementPaths]?: Achievement;
 } = {
   AVX_WIN_BEAST: "win_with_beast",
   AVX_WIN_ICEMAN: "win_with_iceman",
