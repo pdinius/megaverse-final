@@ -97,7 +97,6 @@ export const getStartingAchievements = (): Achievements => ({
   win_with_snowbird: false,
   win_with_northstar: false,
   win_with_pet: false,
-  thanos_defeated: false,
   war_machine_removed: false,
   vision_removed: false,
   unlock_rogue_and_gambit: false,

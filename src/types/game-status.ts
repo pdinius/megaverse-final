@@ -56,10 +56,9 @@ export type Achievement =
   | "win_with_puck"
   | "win_with_sasquatch"
   | "win_with_snowbird"
-  | "win_with_northstar"
-  | "thanos_defeated";
+  | "win_with_northstar";
 
-export type Achievements = { [key in Achievement]: boolean };
+export type Achievements = { [key in Achievement]: boolean | "pending" };
 
 export interface Counts {
   bolts: number;

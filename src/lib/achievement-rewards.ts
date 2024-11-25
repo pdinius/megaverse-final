@@ -1,0 +1,86 @@
+import { Achievement } from "../types/game-status";
+import { ActionType, Tag } from "../types/general";
+import { HeroKey } from "../types/heroes";
+import { TeamKey } from "../types/teams";
+
+export const heroWinToAchievementLookup: { [key in HeroKey]?: Achievement } = {
+  BEAST: "win_with_beast",
+  ICEMAN: "win_with_iceman",
+  JEAN_GREY: "win_with_jean",
+  CYCLOPS: "win_with_cyclops",
+  FORGE: "win_with_forge",
+  STORM: "win_with_storm",
+  MILES_MORALES: "win_with_miles",
+  IRON_MAN: "win_with_iron_man",
+  HULK: "win_with_hulk",
+  CAPTAIN_AMERICA: "win_with_cap",
+  BLACK_WIDOW: "win_with_widow",
+  SCARLET_WITCH: "win_with_wanda",
+  BLACK_PANTHER: "win_with_black_panther",
+  STAR_LORD: "win_with_starlord",
+  ANT_MAN: "win_with_antman",
+  WASP: "win_with_wasp",
+  MOON_KNIGHT: "win_with_moon_knight",
+  GUARDIAN: "win_with_guardian",
+  PUCK: "win_with_puck",
+  SASQUATCH: "win_with_sasquatch",
+  SNOWBIRD: "win_with_snowbird",
+  NORTHSTAR: "win_with_northstar",
+};
+
+export const teamWinToAchievementLookup: { [key in TeamKey]?: Achievement } = {
+  TEAM_INHUMANS: "win_with_inhumans",
+  TEAM_NEW_AVENGERS: "win_with_new_avengers",
+  TEAM_MIDNIGHT_SONS: "win_with_midnight_sons",
+  TEAM_DARK_AVENGERS: "win_with_dark_avengers",
+  TEAM_ASGARDIANS_ALLIES: "win_with_asgardians",
+  TEAM_STARJAMMERS: "win_with_starjammers",
+  TEAM_GUARDIANS_OF_THE_GALAXY: "win_with_guardians_galaxy",
+  TEAM_ILLUMINATI: "win_with_illuminati",
+  TEAM_RED_HULKS_THUNDERBOLTS: "win_with_thunderbolts",
+};
+
+export const achievementRewards: {
+  [key in Achievement]: Tag | ActionType | [Array<string>, string];
+} = {
+  win_with_beast: "KEY",
+  win_with_iceman: "MOVE",
+  win_with_jean: "BRAIN",
+  win_with_cyclops: "KEY",
+  win_with_forge: "GEAR",
+  win_with_storm: "MOVE",
+  win_with_miles: "GEAR",
+  win_with_iron_man: "KEY",
+  win_with_hulk: "FIGHT",
+  win_with_cap: "GEAR",
+  win_with_widow: "BRAIN",
+  win_with_wanda: "MAGIC",
+  win_with_black_panther: "GEAR",
+  win_with_starlord: "KEY",
+  win_with_antman: "GEAR",
+  win_with_wasp: "BRAIN",
+  win_with_moon_knight: "MAGIC",
+  win_with_inhumans: [["MIST_PATH_6"], "MIST_PATH_31"],
+  win_with_new_avengers: [["GALAXY_PATH_1"], "GALAXY_PATH_2"],
+  win_with_midnight_sons: [["MIDNIGHT_PATH_4"], "MIDNIGHT_PATH_5"],
+  win_with_dark_avengers: [["DARKNESS_PATH_24"], "DARKNESS_PATH_23"],
+  win_with_asgardians: [["CASTLE_PATH_1"], "CASTLE_PATH_2"],
+  win_with_starjammers: [["STARS_PATH_13"], "STARS_PATH_15"],
+  win_with_guardians_galaxy: [["STARS_PATH_12"], "STARS_PATH_11"],
+  win_with_illuminati: [["EXILE_PATH_8"], "EXILE_PATH_25"],
+  win_with_thunderbolts: [["EXILE_PATH_14"], "EXILE_PATH_10"],
+  win_with_ebony_blade: [["MIDNIGHT_PATH_14"], "MIDNIGHT_PATH_13"],
+  win_with_mjolnir: [["CASTLE_PATH_28", "CASTLE_PATH_29"], "CASTLE_GROUP_3"],
+  win_with_pet: [["GALAXY_PATH_12"], "GALAXY_PATH_10"],
+  unlock_rogue_and_gambit: "HEROIC",
+  unlock_colossus_and_kitty: "HEROIC",
+  unlock_jessica_and_luke: "HEROIC",
+  unlock_chod_corsair_hepzibah_raza: "BOLT", // TODO: WHAT IS THE CORRECT REWARD
+  war_machine_removed: "GEAR",
+  vision_removed: "GEAR",
+  win_with_guardian: "MAPLE",
+  win_with_puck: "MAPLE",
+  win_with_sasquatch: "MAPLE",
+  win_with_snowbird: "MAPLE",
+  win_with_northstar: "MAPLE",
+};

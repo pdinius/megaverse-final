@@ -65,8 +65,6 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
       const boundedScale = bounded(scale, 1, minScale);
 
       setScale(boundedScale);
-      // setTop((Math.round(height * boundedScale) - window.innerHeight) / 2);
-      // setLeft((Math.round(width * boundedScale) - window.innerWidth) / 2);
       setTop(0);
       setLeft(0);
     };

@@ -56,32 +56,3 @@ export const setRemover =
     res.delete(el);
     return res;
   };
-
-export const arrayAdder =
-  <T>(el: T) =>
-  (curr: Array<T>) =>
-    [...curr, el];
-
-export const arrayToggler =
-  <T>(el: T) =>
-  (curr: Array<T>) => {
-    const res = curr.slice();
-    const idx = res.indexOf(el);
-    if (idx > -1) {
-      res.splice(idx, 1);
-    } else {
-      res.push(el);
-    }
-    return res;
-  };
-
-export const arrayRemover =
-  <T>(el: T) =>
-  (curr: Array<T>) => {
-    const res = curr.slice();
-    const idx = res.indexOf(el);
-    if (idx > -1) {
-      res.splice(idx, 1);
-    }
-    return res;
-  };

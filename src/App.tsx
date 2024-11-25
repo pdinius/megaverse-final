@@ -19,6 +19,20 @@ function App() {
         <GameSetup />
       </Modal>
       <Toast />
+      <div
+        style={{
+          position: "fixed",
+          padding: "1rem",
+          borderRadius: "0.25rem",
+          background: "white",
+          color: "#333",
+          top: "1rem",
+          left: "1rem",
+          fontFamily: "Figtree",
+        }}
+      >
+        "{status.currentAction}"
+      </div>
     </statusContext.Provider>
   );
 }
