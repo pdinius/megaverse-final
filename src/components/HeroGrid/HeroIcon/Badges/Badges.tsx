@@ -17,22 +17,34 @@ interface BadgesProps {
 const Badges: FC<BadgesProps> = ({ hero }) => {
   const { chained, equipment, heroes } = useContext(statusContext);
   
-  const data = heroes[hero];
-  if (data === undefined) return null;
-  const { cooldown, crossover } = data;
-
   const badges: Array<JSX.Element> = [];
+  const data = heroes[hero];
+  if (data !== undefined) {
+    const { cooldown, crossover } = data;
 
-  // Cooldown Badge
-  if (cooldown > 0) {
-    badges.push(
-      <img
-        src={cooldown === 1 ? timer1 : timer2}
-        className={styles.badge}
-        key="cooldown"
-        title={`Ready after ${cooldown} more fight${cooldown > 1 ? "s" : ""}.`}
-      />
-    );
+    // Cooldown Badge
+    if (cooldown > 0) {
+      badges.push(
+        <img
+          src={cooldown === 1 ? timer1 : timer2}
+          className={styles.badge}
+          key="cooldown"
+          title={`Ready after ${cooldown} more fight${cooldown > 1 ? "s" : ""}.`}
+        />
+      );
+    }
+
+    // Portal
+    if (crossover) {
+      badges.push(
+        <img
+          src={portalBadge}
+          className={styles.badge}
+          key="portal"
+          title="Hero may be used in any fight."
+        />
+      );
+    }
   }
 
   // Fantastic Four Badge
@@ -67,18 +79,6 @@ const Badges: FC<BadgesProps> = ({ hero }) => {
         className={styles.badge}
         key="chained"
         title={`${translations[hero]} is required for this fight.`}
-      />
-    );
-  }
-
-  // Portal
-  if (crossover) {
-    badges.push(
-      <img
-        src={portalBadge}
-        className={styles.badge}
-        key="portal"
-        title="Hero may be used in any fight."
       />
     );
   }

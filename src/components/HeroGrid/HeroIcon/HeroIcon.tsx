@@ -13,22 +13,24 @@ interface HeroIconProps {
 }
 
 const HeroIcon: FC<HeroIconProps> = ({ hero, onClick, className = "" }) => {
-  const { heroes } = useContext(statusContext);
+  const { heroes, chained } = useContext(statusContext);
 
-  return hero in heroes ? (
+  return (
     <div className={styles.container}>
       <img
         src={heroIconSrcs[hero]}
         alt={hero}
         title={translations[hero]}
         className={`${styles.icon} ${
-          heroes[hero]?.cooldown! > 0 ? styles.coolingDown : ""
+          heroes[hero]?.cooldown! === 0 || chained.includes(hero)
+            ? ""
+            : styles.coolingDown
         } ${className}`}
         onClick={onClick && (() => onClick(hero))}
       />
       <Badges hero={hero} />
     </div>
-  ) : null;
+  );
 };
 
 export default HeroIcon;

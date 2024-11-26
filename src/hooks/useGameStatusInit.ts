@@ -3,17 +3,17 @@ import { Achievements, Counts, HeroState } from "../types/game-status";
 import { ActionType, SpecialReward, Tag } from "../types/general";
 import { HeroKey } from "../types/heroes";
 
-export const getNewHeroProps = (): HeroState => ({
+export const getNewHeroProps = (isChained: boolean): HeroState => ({
   dead: false,
   crossover: false,
-  cooldown: 0,
+  cooldown: isChained ? 2 : 0,
 });
 
 export const getStartingHeroes = () => ({
-  BLACK_PANTHER_SHURI: getNewHeroProps(),
-  CAPTAIN_CARTER: getNewHeroProps(),
-  IRONHEART: getNewHeroProps(),
-  MIGHTY_THOR: getNewHeroProps(),
+  BLACK_PANTHER_SHURI: getNewHeroProps(false),
+  CAPTAIN_CARTER: getNewHeroProps(false),
+  IRONHEART: getNewHeroProps(false),
+  MIGHTY_THOR: getNewHeroProps(false),
 });
 
 export const getStartingTags = (): { [key in Tag]: number } => ({

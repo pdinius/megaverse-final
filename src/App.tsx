@@ -7,13 +7,16 @@ import Toast from "./components/General/Toast/Toast";
 import Modal from "./components/General/Modal/Modal";
 import GameSetup from "./components/GameSetup/GameSetup";
 import Drawer from "./components/Drawer/Drawer";
+import styles from "./App.module.scss";
 
 function App() {
   const status = useGameStatus();
 
   const debugInfo = {
     currentAction: status.currentAction,
-    stackLen: status.stackLen
+    stackLen: status.stackLen,
+    chained: status.chained,
+    legalHeroes: status.getLegalHeroesForFight()
   };
 
   return (
@@ -25,16 +28,7 @@ function App() {
       </Modal>
       <Toast />
       <pre
-        style={{
-          position: "fixed",
-          padding: "1rem",
-          borderRadius: "0.25rem",
-          background: "white",
-          color: "#333",
-          top: "1rem",
-          left: "1rem",
-          fontFamily: "monospace",
-        }}
+        className={styles.debug}
       >
         {JSON.stringify(debugInfo, null, 2)}
       </pre>

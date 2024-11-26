@@ -8,6 +8,7 @@ import {
   HeroState,
 } from "../types/game-status";
 import {
+  ACTION_TYPES,
   ActionType,
   Area,
   InfinityStone,
@@ -39,6 +40,10 @@ import {
   COLLECTOR_BTNS,
   COLLECTOR_COSTS,
   DARK_PHOENIX_BTN,
+  DEADPOOL_BTN_10_POINTS,
+  DEADPOOL_BTN_20_POINTS,
+  DEADPOOL_BTN_30_POINTS,
+  DEADPOOL_BTN_5_POINTS,
   DEADPOOL_FIGHT_BTN,
   DEADPOOL_PATH_10_POINTS,
   DEADPOOL_PATH_20_POINTS,
@@ -172,9 +177,14 @@ export const useGameStatus = (): IGameStatus => {
       case "choosingDeadpoolVictim":
         openToast("Choose a hero to lose from the Deadpool fight.");
         break;
+      case "pushToStack":
+        pushToStack();
+        setCurrentAction("");
+        break;
     }
   }, [currentAction]);
   //#endregion
+  useEffect(() => {}, [currentAction]);
 
   //#region drawer
   const toggleDrawerOpen = (b?: boolean) => {
@@ -201,7 +211,7 @@ export const useGameStatus = (): IGameStatus => {
   const unlockHero = (h: HeroKey) => {
     setHeroes((curr) => {
       const res = { ...curr };
-      res[h] = getNewHeroProps();
+      res[h] = getNewHeroProps(chained.includes(h));
       return res;
     });
   };
@@ -271,18 +281,15 @@ export const useGameStatus = (): IGameStatus => {
     if (currentAction === "choosingDeadpoolVictim") {
       return deadpoolVictims;
     }
-    return [...chained].concat(
-      TypedEntries(heroes).reduce(
-        (a: Array<HeroKey>, [h, { dead, cooldown, crossover }]) => {
-          return !dead &&
-            cooldown === 0 &&
-            (crossover || getBtnArea(currentBtnClicked) === heroAreaLookup[h])
-            ? [...a, h]
-            : a;
-        },
-        chained
-      )
-    );
+    return TypedEntries(heroes)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .reduce((a: Array<HeroKey>, [h, { dead, cooldown, crossover }]) => {
+        return !dead &&
+          cooldown === 0 &&
+          (crossover || getBtnArea(currentBtnClicked) === heroAreaLookup[h])
+          ? [...a, h]
+          : a;
+      }, chained);
   };
 
   const isHeroClickable = (h: HeroKey) => {
@@ -305,7 +312,7 @@ export const useGameStatus = (): IGameStatus => {
           (heroRoster.has(h) || heroRoster.size < MAX_ROSTER)
         );
       case "choosingDeadpoolVictim":
-        return heroRoster.has(h);
+        return deadpoolVictims.includes(h);
       default:
         return false;
     }
@@ -597,7 +604,7 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   useEffect(() => {
-    // TODO: Add logic for this elsewhere - checkAchievementGate("thanos_defeated", "MIST_PATH_7", "MIST_GROUP_1");
+    // TODO: Add logic for this elsewhere => checkAchievementGate("thanos_defeated", "MIST_PATH_7", "MIST_GROUP_1");
     for (const a of TypedKeys(achievements)) {
       if (achievements[a] === "pending") {
         const reward = achievementRewards[a];
@@ -680,7 +687,8 @@ export const useGameStatus = (): IGameStatus => {
 
   const undo = () => {
     const newStack = stack.slice();
-    const prevState = newStack.pop();
+    newStack.pop();
+    const prevState = newStack.slice(-1)[0];
     if (!prevState) return;
     loadState(prevState);
     setStack(newStack);
@@ -698,7 +706,6 @@ export const useGameStatus = (): IGameStatus => {
   }, []);
 
   const pushToStack = () => {
-    console.log("push");
     const stringifiedState = JSON.stringify(
       undoProps.reduce(
         (a: { [key: string]: unknown }, [k, v]) => ({
@@ -717,19 +724,11 @@ export const useGameStatus = (): IGameStatus => {
 
     // UPDATE STACK AND SAVE DATA
     setStack([...stack, stringifiedState]);
-    localStorage?.setItem("save-data", stringifiedState);
+    // localStorage?.setItem("save-data", stringifiedState);
   };
-  useEffect(() => {
-    console.log("current action: ", currentAction);
-    if (currentAction === "pushToStack") {
-      pushToStack();
-      setCurrentAction("");
-    }
-  }, [currentAction]);
 
   // ! DANGER !
   const hardResetThatDestroysAllData = () => {
-    console.log("hard reset");
     localStorage?.removeItem("save-data");
     setScore(0);
     setCurrentBtnClicked("");
@@ -769,24 +768,20 @@ export const useGameStatus = (): IGameStatus => {
   //#region modifiers
   const modifier =
     <T extends string>(
-      v: { [key in T]: number },
-      setter: Dispatch<SetStateAction<{ [key in T]: number }>>,
-      curr?: { [key in T]: number }
+      setter: Dispatch<SetStateAction<{ [key in T]: number }>>
     ) =>
     (key: T, qtx: number) => {
-      const newV = curr || { ...v };
-      newV[key] += qtx;
-      setter(newV);
-      return modifier(v, setter, newV);
+      setter((curr) => {
+        const res = { ...curr };
+        res[key] += qtx;
+        return res;
+      });
     };
 
-  const modifyTag = modifier(tags, setTags);
-  const modifySpecialRewards = modifier(specialRewards, setSpecialRewards);
-  const modifyActionTokens = modifier(actionTokens, setActionTokens);
-  const modifySpendingActionTokens = modifier(
-    spendingActionTokens,
-    setSpendingActionTokens
-  );
+  const modifyTag = modifier(setTags);
+  const modifySpecialRewards = modifier(setSpecialRewards);
+  const modifyActionTokens = modifier(setActionTokens);
+  const modifySpendingActionTokens = modifier(setSpendingActionTokens);
   //#endregion
 
   //#region or rewards queue
@@ -853,59 +848,54 @@ export const useGameStatus = (): IGameStatus => {
 
   //#region fight resolution
   const won = () => {
-    setModalOpen(false);
-    setTimeout(() => {
-      handleMagnetoX1();
-      updateCooldown(heroRoster);
-      complete(currentBtnClicked);
+    handleMagnetoX1();
+    updateCooldown(heroRoster);
+    complete(currentBtnClicked);
 
-      // HERO ACHIEVEMENTS
-      for (const hero of heroRoster) {
-        const achievement = heroWinToAchievementLookup[hero];
-        if (achievement && achievements[achievement] === false) {
-          pendAchievement(achievement);
-        }
+    // HERO ACHIEVEMENTS
+    for (const hero of heroRoster) {
+      const achievement = heroWinToAchievementLookup[hero];
+      console.log(achievement);
+      if (achievement && achievements[achievement] === false) {
+        pendAchievement(achievement);
       }
+    }
 
-      // TEAM ACHIEVEMENTS
-      for (const team of teamRoster) {
-        const achievement = teamWinToAchievementLookup[team];
-        if (achievement && achievements[achievement] === false) {
-          pendAchievement(achievement);
-        }
+    // TEAM ACHIEVEMENTS
+    for (const team of teamRoster) {
+      const achievement = teamWinToAchievementLookup[team];
+      if (achievement && achievements[achievement] === false) {
+        pendAchievement(achievement);
       }
+    }
 
-      // EQUIPMENT
-      if (
-        !achievements.win_with_mjolnir &&
-        equipRoster.has("EQUIP_THOR_MJOLNIR")
-      ) {
-        pendAchievement("win_with_mjolnir");
-      }
-      if (
-        !achievements.win_with_ebony_blade &&
-        equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
-      ) {
-        pendAchievement("win_with_ebony_blade");
-      }
+    // EQUIPMENT
+    if (
+      !achievements.win_with_mjolnir &&
+      equipRoster.has("EQUIP_THOR_MJOLNIR")
+    ) {
+      pendAchievement("win_with_mjolnir");
+    }
+    if (
+      !achievements.win_with_ebony_blade &&
+      equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
+    ) {
+      pendAchievement("win_with_ebony_blade");
+    }
 
-      // PETS
-      if (!achievements.win_with_pet && petRoster.size > 0) {
-        pendAchievement("win_with_pet");
-      }
+    // PETS
+    if (!achievements.win_with_pet && petRoster.size > 0) {
+      pendAchievement("win_with_pet");
+    }
 
-      endFight();
-    }, ANIM_TIME);
+    endFight();
   };
 
   const lost = () => {
-    setModalOpen(false);
-    setTimeout(() => {
-      handleMagnetoX1();
-      heroRoster.forEach(killHero);
-      updateCooldown(new Set());
-      endFight();
-    }, ANIM_TIME);
+    handleMagnetoX1();
+    heroRoster.forEach(killHero);
+    updateCooldown(new Set());
+    endFight();
   };
 
   const areGameResolutionButtonsClickable = () => {
@@ -932,18 +922,21 @@ export const useGameStatus = (): IGameStatus => {
       setHeroRoster(new Set());
     } else {
       // SUCCESS
-      updateCooldown(heroRoster);
-      if (score >= 30) {
-        complete(DEADPOOL_FIGHT_BTN);
-        connect("AVX_DEADPOOL_D");
-      } else if (score >= 20) {
-        connect("AVX_DEADPOOL_C");
-      } else if (score >= 10) {
-        connect("AVX_DEADPOOL_B");
-      } else {
-        connect("AVX_DEADPOOL_A");
-      }
-      endFight();
+      toggleModalOpen(false);
+      setTimeout(() => {
+        updateCooldown(heroRoster);
+        if (score >= 30) {
+          complete(DEADPOOL_FIGHT_BTN);
+          complete(DEADPOOL_BTN_30_POINTS);
+        } else if (score >= 20) {
+          complete(DEADPOOL_BTN_20_POINTS);
+        } else if (score >= 10) {
+          complete(DEADPOOL_BTN_10_POINTS);
+        } else {
+          complete(DEADPOOL_BTN_5_POINTS);
+        }
+        endFight();
+      }, ANIM_TIME);
     }
   };
 
@@ -955,7 +948,7 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const startFight = (btn: string) => {
-    setModalOpen(true);
+    toggleModalOpen(true);
 
     if (btn in chainedHeroes) {
       setChained(chainedHeroes[btn]);
@@ -971,10 +964,9 @@ export const useGameStatus = (): IGameStatus => {
     setPetRoster(new Set());
     setEquipRoster(new Set());
     setChained([]);
-    modifyActionTokens("MOVE", spendingActionTokens.MOVE)(
-      "FIGHT",
-      spendingActionTokens.FIGHT
-    )("HEROIC", spendingActionTokens.HEROIC)("WILD", spendingActionTokens.WILD);
+    ACTION_TYPES.forEach((at) =>
+      modifyActionTokens(at, spendingActionTokens[at])
+    );
     setSpendingActionTokens({
       MOVE: 0,
       FIGHT: 0,
@@ -1189,7 +1181,10 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const getPathSVGPathInfo = () => {
-    return Array.from(connectedPaths).map((p) => combinedPaths[p]);
+    return Array.from(connectedPaths).map((p) => {
+      console.log(p, combinedPaths[p]);
+      return combinedPaths[p]
+    });
   };
 
   const showActionTokensAccordion = () =>
