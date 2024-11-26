@@ -1,10 +1,5 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { avxSvgs } from "../assets/svg/avx";
 import {
   Achievement,
@@ -190,6 +185,7 @@ export const useGameStatus = (): IGameStatus => {
   //#region modal
   const toggleModalOpen = (b?: boolean) => {
     setModalOpen(b === undefined ? !modalOpen : b);
+    if (modalOpen || b === false) setCurrentAction("");
   };
   //#endregion
 
@@ -320,13 +316,18 @@ export const useGameStatus = (): IGameStatus => {
       case "resolvingRecover":
       case "resolvingRecoverF4":
         recoverHero(h);
+        setCurrentAction("pushToStack");
         break;
       case "spendingPortal":
         crossoverHero(h);
+        setCurrentAction("pushToStack");
         break;
       case "tradingHero":
+        killHero(h);
+        break;
       case "removingHero":
         killHero(h);
+        setCurrentAction("pushToStack");
         break;
       case "choosingDeadpoolVictim":
       case "resolvingFight":
@@ -476,6 +477,7 @@ export const useGameStatus = (): IGameStatus => {
     // STARTING KEYS
     if (key === "XMEN_START" || key === "AVENGERS_START") {
       complete(key);
+      setCurrentAction("pushToStack");
       return;
     }
 
@@ -487,11 +489,13 @@ export const useGameStatus = (): IGameStatus => {
         modifyTag(key, -qtx);
       }
       complete(key);
+      setCurrentAction("pushToStack");
     } else if (COLLECTOR_BTNS.includes(key)) {
       // COLLECTOR ITEMS
       modifyTag("KEY", -COLLECTOR_COSTS[counts.collector_items]);
       incrementCounts("collector_items");
       complete(key);
+      setCurrentAction("pushToStack");
     } else if (REMOVE_BTNS.includes(key)) {
       // REMOVE A HERO GATE
       complete(key);
@@ -542,7 +546,6 @@ export const useGameStatus = (): IGameStatus => {
       (btn) => !isCompleted(btn) && canPayCost(btn)
     );
     setAvailableButtons(legalBtns);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
   useEffect(updateAvailableButtons, [connectedPaths, completedBtns, blocked]);
 
@@ -646,6 +649,7 @@ export const useGameStatus = (): IGameStatus => {
   //#endregion
 
   //#region stack and reset
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const undoProps: Array<[string, any, Dispatch<SetStateAction<any>>]> = [
     ["score", score, setScore],
     ["tags", tags, setTags],
@@ -663,69 +667,69 @@ export const useGameStatus = (): IGameStatus => {
     ["counts", counts, setCounts],
   ];
 
-  useEffect(
-    () => {
-      console.log("updating stack");
-      if (currentAction === "undoing" || currentAction === "reset2") {
-        setCurrentAction("");
-        return;
+  const loadState = (s: string) => {
+    const state = JSON.parse(s);
+    for (const [key, val, setter] of undoProps) {
+      if (val instanceof Set) {
+        setter(new Set(state[key]));
+      } else {
+        setter(state[key]);
       }
-      if (currentAction !== "") return;
-      const newState = undoProps.reduce(
-        (a: { [key: string]: any }, [k, v]) => ({
+    }
+  };
+
+  const undo = () => {
+    const newStack = stack.slice();
+    const prevState = newStack.pop();
+    if (!prevState) return;
+    loadState(prevState);
+    setStack(newStack);
+  };
+
+  useEffect(() => {
+    // initial load data
+    const saveData = localStorage?.getItem("save-data");
+    if (saveData) {
+      loadState(saveData);
+      setStack([saveData]);
+    } else {
+      pushToStack();
+    }
+  }, []);
+
+  const pushToStack = () => {
+    console.log("push");
+    const stringifiedState = JSON.stringify(
+      undoProps.reduce(
+        (a: { [key: string]: unknown }, [k, v]) => ({
           ...a,
           [k]: v instanceof Set ? Array.from(v) : v,
         }),
         {}
-      );
-      const stringifiedState = JSON.stringify(newState);
-      console.log(stack[stack.length - 1]);
-      if (stack[stack.length - 1] === stringifiedState) {
-        console.log("DUPE");
-        return;
-      }
-      setStack([...stack, stringifiedState]);
-      if (connectedPaths.size > 1) {
-        localStorage?.setItem("save-data", stringifiedState);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    undoProps.map((v) => v[1])
-  );
+      )
+    );
 
-  const undo = useCallback(
-    (loadedState?: string) => {
-      setCurrentAction("undoing");
-      if (!loadedState) {
-        const newStack = stack.slice(0, -1);
-        loadedState = newStack[newStack.length - 1];
-        if (!loadedState) return;
-        localStorage?.setItem("save-data", loadedState);
-        setStack(newStack);
-      } else {
-        setStack([loadedState]);
-      }
-      const prevState = JSON.parse(loadedState);
-      for (const [key, val, setter] of undoProps) {
-        if (val instanceof Set) {
-          setter(new Set(prevState[key]));
-        } else {
-          setter(prevState[key]);
-        }
-      }
-    },
-    [stack]
-  );
-  // TODO: Uncomment when ready
-  useEffect(() => {
-    const saveData = localStorage?.getItem("save-data");
-    if (saveData) {
-      undo(saveData);
+    // CHECK FOR DUPE STATE
+    if (stack[stack.length - 1] === stringifiedState) {
+      console.error("attempted to push duplicate state");
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    // UPDATE STACK AND SAVE DATA
+    setStack([...stack, stringifiedState]);
+    localStorage?.setItem("save-data", stringifiedState);
+  };
+  useEffect(() => {
+    console.log("current action: ", currentAction);
+    if (currentAction === "pushToStack") {
+      pushToStack();
+      setCurrentAction("");
+    }
+  }, [currentAction]);
+
   // ! DANGER !
   const hardResetThatDestroysAllData = () => {
+    console.log("hard reset");
     localStorage?.removeItem("save-data");
     setScore(0);
     setCurrentBtnClicked("");
@@ -757,7 +761,8 @@ export const useGameStatus = (): IGameStatus => {
     setPetRoster(new Set());
     setUsingDangerRoom(false);
     setUsingCampHammond(false);
-    setStack(stack.slice(0, 1));
+    setStack([]);
+    setCurrentAction("pushToStack");
   };
   //#endregion
 
@@ -889,7 +894,6 @@ export const useGameStatus = (): IGameStatus => {
         pendAchievement("win_with_pet");
       }
 
-      setCurrentAction("");
       endFight();
     }, ANIM_TIME);
   };
@@ -900,7 +904,6 @@ export const useGameStatus = (): IGameStatus => {
       handleMagnetoX1();
       heroRoster.forEach(killHero);
       updateCooldown(new Set());
-      setCurrentAction("");
       endFight();
     }, ANIM_TIME);
   };
@@ -940,7 +943,6 @@ export const useGameStatus = (): IGameStatus => {
       } else {
         connect("AVX_DEADPOOL_A");
       }
-      setCurrentAction("");
       endFight();
     }
   };
@@ -987,6 +989,7 @@ export const useGameStatus = (): IGameStatus => {
       setUsingDangerRoom(false);
       modifySpecialRewards("DANGER_ROOM", -1);
     }
+    setCurrentAction("pushToStack");
   };
 
   const updateEquipmentTeamsAndPets = () => {
@@ -1103,7 +1106,6 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const resetClickHandler = (cancel = false) => {
-    console.log("RESET");
     if (cancel) {
       setCurrentAction("");
       return;
@@ -1251,6 +1253,8 @@ export const useGameStatus = (): IGameStatus => {
     lost,
     resolveDeadpool,
     resolveDeadpoolVictim,
+    // ! DELETE LATER:
+    stackLen: stack.length,
   };
 };
 
@@ -1309,4 +1313,6 @@ interface IGameStatus {
   lost: () => void;
   resolveDeadpool: (score: number) => void;
   resolveDeadpoolVictim: () => void;
+  // ! DELETE LATER:
+  stackLen: number;
 }

@@ -11,6 +11,11 @@ import Drawer from "./components/Drawer/Drawer";
 function App() {
   const status = useGameStatus();
 
+  const debugInfo = {
+    currentAction: status.currentAction,
+    stackLen: status.stackLen
+  };
+
   return (
     <statusContext.Provider value={status}>
       <Map />
@@ -19,7 +24,7 @@ function App() {
         <GameSetup />
       </Modal>
       <Toast />
-      <div
+      <pre
         style={{
           position: "fixed",
           padding: "1rem",
@@ -28,11 +33,11 @@ function App() {
           color: "#333",
           top: "1rem",
           left: "1rem",
-          fontFamily: "Figtree",
+          fontFamily: "monospace",
         }}
       >
-        "{status.currentAction}"
-      </div>
+        {JSON.stringify(debugInfo, null, 2)}
+      </pre>
     </statusContext.Provider>
   );
 }

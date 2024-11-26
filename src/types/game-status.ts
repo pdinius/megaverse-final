@@ -79,7 +79,7 @@ export type CurrentAction =
   | "choosingDeadpoolVictim"
   | "reset1"
   | "reset2"
-  | "undoing";
+  | "pushToStack";
 
 export const DRAWER_ACTIONS: Array<CurrentAction> = [
   "choosingOrTag",
