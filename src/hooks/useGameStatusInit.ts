@@ -31,7 +31,7 @@ export const getStartingTags = (): { [key in Tag]: number } => ({
   MAPLE: 0,
   PLANET: 0,
   PUZZLE: 0,
-  STAR: 0,
+  STAR: 5,
   SPARKLE: 0,
 });
 
@@ -110,6 +110,7 @@ export const getStartingCounts = (): Counts => ({
   portals: 0,
   stars: 0,
   collector_items: 0,
+  maple: 0,
 });
 
 export const getStartingAvailableButtons = () => [

@@ -10,9 +10,15 @@ interface HeroIconProps {
   hero: HeroKey;
   onClick?: (h: HeroKey) => void;
   className?: string;
+  title?: string;
 }
 
-const HeroIcon: FC<HeroIconProps> = ({ hero, onClick, className = "" }) => {
+const HeroIcon: FC<HeroIconProps> = ({
+  hero,
+  onClick,
+  className = "",
+  title = translations[hero],
+}) => {
   const { heroes, chained } = useContext(statusContext);
 
   return (
@@ -20,9 +26,9 @@ const HeroIcon: FC<HeroIconProps> = ({ hero, onClick, className = "" }) => {
       <img
         src={heroIconSrcs[hero]}
         alt={hero}
-        title={translations[hero]}
+        title={title}
         className={`${styles.icon} ${
-          heroes[hero]?.cooldown! === 0 || chained.includes(hero)
+          chained.includes(hero) || heroes[hero]!.cooldown === 0
             ? ""
             : styles.coolingDown
         } ${className}`}

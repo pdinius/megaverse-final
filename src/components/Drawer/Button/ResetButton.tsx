@@ -8,11 +8,11 @@ const ResetButton: FC = () => {
   const disabled = currentAction !== "" && !currentAction.startsWith("reset");
 
   const resetText =
-    currentAction === ""
-      ? "RESET DATA"
-      : currentAction === "reset1"
+    currentAction === "reset1"
       ? "REALLY RESET?"
-      : "REALLY REALLY??";
+      : currentAction === "reset2"
+      ? "REALLY REALLY??"
+      : "RESET DATA";
 
   return (
     <div className={styles.container}>

@@ -19,6 +19,7 @@ const Buttons: FC<ButtonsProps> = ({ moved }) => {
       onClick={(e) => {
         e.stopPropagation();
         if (moved) return;
+        if (navigator) navigator.clipboard.writeText(key);
         btnClickHandler(key);
       }}
     />

@@ -1,4 +1,5 @@
 import { Achievement } from "../types/game-status";
+import { HeroKey } from "../types/heroes";
 
 export const achievementPaths = {
   AVX_WIN_CYCLOPS:
@@ -137,5 +138,13 @@ export const achievementToKeyLookup: {
   STARS_RECRUIT_STARJAMMERS: "unlock_chod_corsair_hepzibah_raza",
   AVX_REMOVE_WAR_MACHINE: "war_machine_removed",
   AVX_REMOVE_VISION: "vision_removed",
-  MIST_BEAT_THANOS: "thanos_defeated",
+};
+
+export const unlockAllAchievementRequirements: {
+  [key in Achievement]?: Array<HeroKey>;
+} = {
+  unlock_colossus_and_kitty: ["COLOSSUS", "KITTY_PRYDE"],
+  unlock_jessica_and_luke: ["JESSICA_JONES", "LUKE_CAGE"],
+  unlock_rogue_and_gambit: ["ROGUE", "GAMBIT"],
+  unlock_chod_corsair_hepzibah_raza: ["CHOD", "CORSAIR", "HEPZIBAH", "RAZA"],
 };

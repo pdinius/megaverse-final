@@ -271,6 +271,7 @@ export const teamToHeroLookup: { [key in TeamKey]: Array<HeroKey> } = {
     "ELEKTRA",
     "PUNISHER",
     "DEADPOOL",
+    "DEADPOOL_2",
   ],
   TEAM_RESISTANCE_AGAINST_APOCALYPSE: [
     "MAGNETO",
@@ -367,7 +368,7 @@ export const teamToHeroLookup: { [key in TeamKey]: Array<HeroKey> } = {
     "SPIRAL",
     "DEATHLOK",
   ],
-  TEAM_UNITED_HEROES: [],
+  TEAM_UNITED_HEROES: [], // all heroes
   TEAM_WAKANDANS: [
     "BLACK_PANTHER",
     "SHURI",

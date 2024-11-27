@@ -13,10 +13,11 @@ function App() {
   const status = useGameStatus();
 
   const debugInfo = {
-    currentAction: status.currentAction,
     stackLen: status.stackLen,
-    chained: status.chained,
-    legalHeroes: status.getLegalHeroesForFight()
+    queue: status.queue,
+    currentAction: status.currentAction,
+    counts: status.counts,
+    currentBtn: status.currentBtnClicked
   };
 
   return (

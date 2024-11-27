@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./ChoiceSelector.module.scss";
 import { partition } from "../../../lib/utils";
 import Accordion from "../../General/Accordion/Accordion";
 import { Icon } from "../../General/Icon";
 import Dots from "../../General/Dots/Dots";
+import { statusContext } from "../../../StatusContext";
 
 export interface ChoiceSelectorProps<T extends string> {
   title: string;
@@ -28,11 +29,16 @@ const ChoiceSelector = <T extends string>({
   itemClickable,
   titleGenerator,
 }: ChoiceSelectorProps<T>) => {
+  const { currentAction } = useContext(statusContext);
   const [page, setPage] = useState(0);
 
   const actualPageSize = Math.min(PAGE_SIZE, data.length);
   const pages = partition(data, actualPageSize);
   const pageCount = Math.ceil(data.length / actualPageSize);
+
+  useEffect(() => {
+    if (currentAction === "") setPage(0);
+  }, [currentAction]);
 
   return (
     <Accordion title={title} subtitle={subtitle}>

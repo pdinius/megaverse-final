@@ -10,7 +10,7 @@ const styleProps: CSSProperties = {
 const Paths: FC = () => {
   const { getPathSVGPathInfo } = useContext(statusContext);
 
-  return getPathSVGPathInfo().map((props, i) => {
+  return getPathSVGPathInfo().map((props, i) => {    
     return Array.isArray(props) ? (
       <g key={i} style={{ ...styleProps }}>
         {props.map((sub, j) => (

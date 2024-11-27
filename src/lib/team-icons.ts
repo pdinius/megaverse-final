@@ -3,6 +3,7 @@ import TEAM_ALPHA_FLIGHT from "../assets/rewards/teams/ALPHA_FLIGHT.jpg";
 import TEAM_ASGARDIANS_ALLIES from "../assets/rewards/teams/ASGARDIANS.jpg";
 import TEAM_AVENGERS from "../assets/rewards/teams/AVENGERS.jpg";
 import TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS from "../assets/rewards/teams/TEAM_CAPTAIN_AMERICA.jpg";
+import TEAM_CHAMPIONS from "../assets/rewards/teams/TEAM_CHAMPIONS.jpg";
 import TEAM_DARK_AVENGERS from "../assets/rewards/teams/DARK_AVENGERS.jpg";
 import TEAM_DEADPOOL_TEAMUP from "../assets/rewards/teams/DEADPOOL.jpg";
 import TEAM_DEFENDERS_MANHATTAN from "../assets/rewards/teams/DEFENDERS_MANHATTAN.jpg";
@@ -42,7 +43,7 @@ export const teamIconSrcs: { [key in TeamKey]?: string } = {
   TEAM_ASGARDIANS_ALLIES: TEAM_ASGARDIANS_ALLIES,
   TEAM_AVENGERS: TEAM_AVENGERS,
   TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS: TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS,
-  // TEAM_CHAMPIONS: TEAM_CHAMPIONS,
+  TEAM_CHAMPIONS: TEAM_CHAMPIONS,
   TEAM_DARK_AVENGERS: TEAM_DARK_AVENGERS,
   TEAM_DEADPOOL_TEAMUP: TEAM_DEADPOOL_TEAMUP,
   TEAM_DEFENDERS_MANHATTAN: TEAM_DEFENDERS_MANHATTAN,

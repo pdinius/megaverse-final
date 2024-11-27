@@ -1,3 +1,5 @@
+import { Achievement } from "../types/game-status";
+
 export const PATH_COLOR = "#ff2a52";
 export const STAR_BTNS = [
   "FLAME_START",
@@ -40,17 +42,6 @@ export const REMOVE_BTNS = [
   "MIDNIGHT_SPECIAL_20",
   "MIDNIGHT_SPECIAL_21",
 ];
-export const BOLT_GATES = [
-  "MIST_GATE_7",
-  "MIST_GATE_8",
-  "MIST_GATE_23",
-  "MIST_GATE_24",
-  "MIST_GATE_25",
-  "MIST_GATE_26",
-  "MIST_GATE_27",
-  "MIST_GATE_28",
-  "MIST_GATE_29",
-];
 export const ANIM_TIME = 200;
 export const MAX_ROSTER = 4;
 export const INFINITY_COORDINATES = [
@@ -61,12 +52,27 @@ export const INFINITY_COORDINATES = [
   { x: 4395, y: 5648 },
   { x: 4492, y: 5772 },
 ];
+export const ALPHA_FLIGHT_ACHIEVEMENTS: Array<Achievement> = [
+  "win_with_guardian",
+  "win_with_puck",
+  "win_with_sasquatch",
+  "win_with_snowbird",
+  "win_with_northstar",
+];
+export const UNLOCK_ALL_ACHIEVEMENTS: Array<Achievement> = [
+  "unlock_colossus_and_kitty",
+  "unlock_jessica_and_luke",
+  "unlock_rogue_and_gambit",
+  "unlock_chod_corsair_hepzibah_raza",
+]
 
-// Special Paths
+// SPECIAL PATHS
 export const MKRAAN_GATE_PATH = "AVX_PATH_216";
 export const PHOENIX_FIVE_PATH = "AVX_PATH_217";
 export const INFINITY_GAUNTLET_ROAD_PATH = "AVX_PATH_235";
 export const FIRST_BROOD_QUEEN = "AVX_BROOD_QUEEN_144";
+export const INFINITY_WATCH_CONNECTION = "MIST_GROUP_1";
+export const INFINITY_WATCH_PATH = "MIST_PATH_7";
 // SPECIAL BUTTONS
 export const DARK_PHOENIX_BTN = "AVX_DARK_PHOENIX_229";
 export const PHOENIX_FIVE_BTNS = [
@@ -85,3 +91,4 @@ export const DEADPOOL_BTN_10_POINTS = "AVX_DEADPOOL_B";
 export const DEADPOOL_BTN_20_POINTS = "AVX_DEADPOOL_C";
 export const DEADPOOL_BTN_30_POINTS = "AVX_DEADPOOL_D";
 export const DEADPOOL_FIGHT_BTN = "AVX_DEADPOOL_6969";
+export const THANOS_BTN = "AVX_THANOS_192";

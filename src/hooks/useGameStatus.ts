@@ -5,6 +5,7 @@ import {
   Achievement,
   Counts,
   CurrentAction,
+  DRAWER_ACTIONS,
   HeroState,
 } from "../types/game-status";
 import {
@@ -25,7 +26,10 @@ import { isPetKey, PetKey } from "../types/pets";
 import { isMiscKey, MiscKey } from "../types/misc";
 import { VillainInfo, villainInfo } from "../lib/villain-info";
 import { chainedHeroes, OR_PATHS, pathRewards } from "../lib/rewards";
-import { equipmentLookup, heroEquipmentLookup } from "../lib/equipment-lookup";
+import {
+  equipmentToHeroLookup,
+  heroEquipmentLookup,
+} from "../lib/equipment-lookup";
 import {
   combinedButtons,
   combinedOverlays,
@@ -34,9 +38,9 @@ import {
 import { heroAreaLookup } from "../lib/hero-area-lookup";
 import { teamToHeroLookup } from "../lib/team-lookup";
 import {
+  ALPHA_FLIGHT_ACHIEVEMENTS,
   ANIM_TIME,
   AVX_TRADE_BTN,
-  BOLT_GATES,
   COLLECTOR_BTNS,
   COLLECTOR_COSTS,
   DARK_PHOENIX_BTN,
@@ -51,12 +55,16 @@ import {
   FIRST_BROOD_QUEEN,
   INFINITY_GAUNTLET_ROAD_PATH,
   INFINITY_PATHS,
+  INFINITY_WATCH_CONNECTION,
+  INFINITY_WATCH_PATH,
   MAX_ROSTER,
   MKRAAN_GATE_PATH,
   PHOENIX_FIVE_BTNS,
   PHOENIX_FIVE_PATH,
   REMOVE_BTNS,
   STAR_BTNS,
+  THANOS_BTN,
+  UNLOCK_ALL_ACHIEVEMENTS,
 } from "../lib/constants";
 import {
   buttonToConnectedPaths,
@@ -81,7 +89,11 @@ import {
   TypedEntries,
   TypedKeys,
 } from "../lib/utils";
-import { achievementPaths, achievementToKeyLookup } from "../lib/achievements";
+import {
+  achievementPaths,
+  achievementToKeyLookup,
+  unlockAllAchievementRequirements,
+} from "../lib/achievements";
 import { Path } from "../types/svg";
 import { ChoiceSelectorProps } from "../components/GameSetup/ChoiceSelector/ChoiceSelector";
 import { petIconSrcs } from "../lib/pet-icons";
@@ -167,11 +179,22 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   useEffect(() => {
+    if (DRAWER_ACTIONS.includes(currentAction)) {
+      toggleDrawerOpen(true);
+    }
+    if (orTagChoosingQueue.length > 0) {
+      const [A, B] = orTagChoosingQueue[0];
+      toggleDrawerOpen(true);
+      openToast(
+        `Choose to gain a${/^[AEIOU]/.test(A) ? "n" : ""} ${A} or a${
+          /^[AEIOU]/.test(A) ? "n" : ""
+        } ${B}.`
+      );
+      return;
+    }
     switch (currentAction) {
-      case "removingHero":
-        openToast("Choose a hero to remove.");
-        break;
       case "tradingHero":
+      case "removingHero":
         openToast("Choose a hero to remove.");
         break;
       case "choosingDeadpoolVictim":
@@ -181,10 +204,14 @@ export const useGameStatus = (): IGameStatus => {
         pushToStack();
         setCurrentAction("");
         break;
+      case "resolvingFight":
+        toggleDrawerOpen(false);
+        break;
+      default:
+        closeToast();
     }
-  }, [currentAction]);
+  }, [currentAction, orTagChoosingQueue]);
   //#endregion
-  useEffect(() => {}, [currentAction]);
 
   //#region drawer
   const toggleDrawerOpen = (b?: boolean) => {
@@ -201,9 +228,11 @@ export const useGameStatus = (): IGameStatus => {
 
   //#region counts
   const incrementCounts = (k: keyof Counts) => {
-    const newCounts = { ...counts };
-    ++counts[k];
-    setCounts(newCounts);
+    setCounts(curr => {
+      const res = { ...curr };
+      ++res[k];
+      return res;
+    });
   };
   //#endregion
 
@@ -212,12 +241,18 @@ export const useGameStatus = (): IGameStatus => {
     setHeroes((curr) => {
       const res = { ...curr };
       res[h] = getNewHeroProps(chained.includes(h));
+
+      UNLOCK_ALL_ACHIEVEMENTS.forEach((a) => {
+        if (
+          !achievements[a] &&
+          unlockAllAchievementRequirements[a]?.every((h) => h in res)
+        ) {
+          completeAchievement(a);
+        }
+      });
+
       return res;
     });
-  };
-
-  const unlocked = (...heroes: Array<HeroKey>) => {
-    return heroes.every((h) => h in heroes);
   };
 
   const updateCooldown = (cooldownHeroes: Set<HeroKey>) => {
@@ -242,6 +277,14 @@ export const useGameStatus = (): IGameStatus => {
 
   const killHero = (h: HeroKey) => {
     if (chained.includes(h)) return;
+
+    if (!achievements["war_machine_removed"] && "WAR_MACHINE") {
+      completeAchievement("war_machine_removed");
+    }
+
+    if (!achievements["vision_removed"] && h === "VISION") {
+      completeAchievement("vision_removed");
+    }
 
     setHeroes((curr) => ({
       ...curr,
@@ -331,9 +374,11 @@ export const useGameStatus = (): IGameStatus => {
         break;
       case "tradingHero":
         killHero(h);
+        setCurrentAction("resolvingRecover");
         break;
       case "removingHero":
         killHero(h);
+        complete(currentBtnClicked);
         setCurrentAction("pushToStack");
         break;
       case "choosingDeadpoolVictim":
@@ -345,33 +390,68 @@ export const useGameStatus = (): IGameStatus => {
 
   const areHeroesDead = Object.values(heroes).filter((h) => h.dead).length > 0;
 
-  const avxHeroes = TypedEntries(heroes).reduce(
-    (a: Array<HeroKey>, [h, { dead, crossover }]) =>
-      !dead && !crossover && heroAreaLookup[h] === "AVX" ? [...a, h] : a,
-    []
-  );
+  const avxHeroes = TypedEntries(heroes)
+    .reduce(
+      (a: Array<HeroKey>, [h, { dead, crossover }]) =>
+        !dead && !crossover && heroAreaLookup[h] === "AVX" ? [...a, h] : a,
+      []
+    )
+    .sort();
 
-  const multiverseHeroes = TypedEntries(heroes).reduce(
-    (a: Array<HeroKey>, [h, { dead, crossover }]) =>
-      !dead && !crossover && heroAreaLookup[h] === "MULTIVERSE" ? [...a, h] : a,
-    []
-  );
+  const multiverseHeroes = TypedEntries(heroes)
+    .reduce(
+      (a: Array<HeroKey>, [h, { dead, crossover }]) =>
+        !dead && !crossover && heroAreaLookup[h] === "MULTIVERSE"
+          ? [...a, h]
+          : a,
+      []
+    )
+    .sort();
 
-  const crossoverHeroes = TypedEntries(heroes).reduce(
-    (a: Array<HeroKey>, [h, { crossover }]) => (crossover ? [...a, h] : a),
-    []
-  );
+  const crossoverHeroes = TypedEntries(heroes)
+    .reduce(
+      (a: Array<HeroKey>, [h, { crossover }]) => (crossover ? [...a, h] : a),
+      []
+    )
+    .sort();
 
-  const deadHeroes = TypedEntries(heroes).reduce(
-    (a: Array<HeroKey>, [h, { dead }]) => (dead ? [...a, h] : a),
-    []
-  );
+  const deadHeroes = TypedEntries(heroes)
+    .reduce((a: Array<HeroKey>, [h, { dead }]) => (dead ? [...a, h] : a), [])
+    .sort();
   //#endregion
 
   //#region paths
+  useEffect(() => {
+    if (isConnected(INFINITY_WATCH_CONNECTION) && isCompleted(THANOS_BTN)) {
+      connect(INFINITY_WATCH_PATH);
+    }
+    if (counts.stars >= 6 && isConnected("WAR_PATH_22")) {
+      connect("WAR_PATH_21");
+    }
+    if (counts.stars >= 6 && isConnected("WAR_PATH_18")) {
+      connect("WAR_PATH_17");
+    }
+    if (counts.stars >= 12 && isConnected("EXILE_PATH_13")) {
+      connect("EXILE_PATH_12");
+    }
+    if (counts.portals >= 8 && isConnected("MIDNIGHT_PATH_31")) {
+      connect("MIDNIGHT_PATH_33");
+    }
+    if (counts.bolts >= 9 && isConnected("MIST_PATH_11")) {
+      connect("MIST_PATH_2");
+    }
+    if ("HULKLING" in heroes && isConnected("GALAXY_PATH_10")) {
+      connect("GALAXY_PATH_11");
+    }
+    if ("NOVA" in heroes && isConnected("GALAXY_PATH_20")) {
+      connect("GALAXY_PATH_18");
+    }
+  }, [connectedPaths, completedBtns, heroes, counts]);
+
   const isConnected = (p: string) => {
     return connectedPaths.has(p);
   };
+
   const connect = (p: string) => {
     if (isConnected(p)) return;
     setConnectedPaths((curr) => {
@@ -384,14 +464,14 @@ export const useGameStatus = (): IGameStatus => {
     const rewards = pathRewards[p];
     if (rewards === undefined) return;
     if (OR_PATHS.includes(p)) {
-      setOrTagChoosingQueue([...orTagChoosingQueue, rewards as Array<Tag>]);
+      setOrTagChoosingQueue((curr) => [...curr, rewards as Array<Tag>]);
       return;
     }
 
     for (const reward of rewards) {
       if (isEquipKey(reward)) {
         // EQUIPMENT REWARD
-        const hero = equipmentLookup[reward];
+        const hero = equipmentToHeroLookup[reward];
         setEquipment((curr) => {
           const res = { ...curr };
           if (res[hero] === undefined) res[hero] = [];
@@ -464,11 +544,8 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const canPayCost = (btn: string) => {
-    if (
-      COLLECTOR_BTNS.includes(btn) &&
-      tags.KEY >= COLLECTOR_COSTS[counts.collector_items]
-    ) {
-      return true;
+    if (COLLECTOR_BTNS.includes(btn)) {
+      return tags.KEY >= COLLECTOR_COSTS[counts.collector_items];
     }
 
     const { cost } = combinedButtons[btn];
@@ -482,15 +559,13 @@ export const useGameStatus = (): IGameStatus => {
     setCurrentBtnClicked(key);
 
     // STARTING KEYS
-    if (key === "XMEN_START" || key === "AVENGERS_START") {
-      complete(key);
-      setCurrentAction("pushToStack");
-      return;
-    }
 
     const { cost } = combinedButtons[key];
 
-    if (cost) {
+    if (key === "XMEN_START" || key === "AVENGERS_START") {
+      complete(key);
+      setCurrentAction("pushToStack");
+    } else if (cost) {
       // REGULAR GATE
       for (const [key, qtx] of TypedEntries(cost)) {
         modifyTag(key, -qtx);
@@ -505,7 +580,6 @@ export const useGameStatus = (): IGameStatus => {
       setCurrentAction("pushToStack");
     } else if (REMOVE_BTNS.includes(key)) {
       // REMOVE A HERO GATE
-      complete(key);
       setCurrentAction("removingHero");
     } else if (key === AVX_TRADE_BTN) {
       // TRADE
@@ -532,7 +606,7 @@ export const useGameStatus = (): IGameStatus => {
     const potentialButtons = Array.from(connectedPaths)
       .map(pathToConnectedButtons)
       .flat()
-      .filter((btn) => btn !== "XMEN_START" && btn !== "AVENGERS_START");
+      .filter((btn) => !btn.includes("START"));
     if (tags.STAR > 0) {
       const filteredStarButtons =
         completedBtns.has("FLAME_START") || completedBtns.has("FLAME_START_2")
@@ -582,77 +656,35 @@ export const useGameStatus = (): IGameStatus => {
   //#endregion
 
   //#region achievements
-  const pendAchievement = (a: Achievement) => {
-    if (!achievements[a]) {
-      setAchievements((curr) => ({ ...curr, [a]: "pending" }));
-    }
-  };
-
-  const checkAchievementGate = (
-    achievementKey: Achievement,
+  const completeAchievementGate = (
     rewardPath: Array<string>,
     connectedPath: string
   ) => {
     if (
       rewardPath.some((rp) => !isConnected(rp)) &&
-      isConnected(connectedPath) &&
-      achievements[achievementKey] === "pending"
+      isConnected(connectedPath)
     ) {
-      pendAchievement(achievementKey);
       rewardPath.forEach(connect);
     }
   };
 
-  useEffect(() => {
-    // TODO: Add logic for this elsewhere => checkAchievementGate("thanos_defeated", "MIST_PATH_7", "MIST_GROUP_1");
-    for (const a of TypedKeys(achievements)) {
-      if (achievements[a] === "pending") {
-        const reward = achievementRewards[a];
-        if (Array.isArray(reward)) {
-          checkAchievementGate(a, ...reward);
-        } else if (isTag(reward)) {
-          modifyTag(reward, 1);
-        } else {
-          modifyActionTokens(reward, 1);
-        }
-      }
+  const completeAchievement = (achievement: Achievement) => {
+    const reward = achievementRewards[achievement];
+    if (Array.isArray(reward)) {
+      completeAchievementGate(...reward);
+    } else if (isTag(reward)) {
+      modifyTag(reward, 1);
+    } else if (isActionType(reward)) {
+      modifyActionTokens(reward, 1);
     }
-  }, [connectedPaths, achievements]);
-
-  useEffect(() => {
-    if (
-      !achievements.unlock_colossus_and_kitty &&
-      unlocked("COLOSSUS", "KITTY_PRYDE")
-    ) {
-      pendAchievement("unlock_colossus_and_kitty");
+    if (ALPHA_FLIGHT_ACHIEVEMENTS.includes(achievement)) {
+      incrementCounts("maple");
     }
-
-    if (
-      !achievements.unlock_jessica_and_luke &&
-      unlocked("JESSICA_JONES", "LUKE_CAGE")
-    ) {
-      pendAchievement("unlock_jessica_and_luke");
-    }
-
-    if (!achievements.unlock_rogue_and_gambit && unlocked("ROGUE", "GAMBIT")) {
-      pendAchievement("unlock_rogue_and_gambit");
-    }
-
-    if (
-      !achievements.unlock_chod_corsair_hepzibah_raza &&
-      unlocked("CHOD", "CORSAIR", "HEPZIBAH", "RAZA")
-    ) {
-      pendAchievement("unlock_chod_corsair_hepzibah_raza");
-    }
-
-    if (!achievements.war_machine_removed && heroes.WAR_MACHINE?.dead) {
-      pendAchievement("war_machine_removed");
-    }
-
-    if (!achievements.vision_removed && heroes.VISION?.dead) {
-      pendAchievement("vision_removed");
-    }
-  }, [heroes]);
+    setAchievements((curr) => ({
+      ...curr,
+      [achievement]: true,
+    }));
+  };
   //#endregion
 
   //#region stack and reset
@@ -672,6 +704,7 @@ export const useGameStatus = (): IGameStatus => {
     ["connectedPaths", connectedPaths, setConnectedPaths],
     ["achievements", achievements, setAchievements],
     ["counts", counts, setCounts],
+    ["orTagChoosingQueue", orTagChoosingQueue, setOrTagChoosingQueue],
   ];
 
   const loadState = (s: string) => {
@@ -784,19 +817,15 @@ export const useGameStatus = (): IGameStatus => {
   const modifySpendingActionTokens = modifier(setSpendingActionTokens);
   //#endregion
 
-  //#region or rewards queue
-  useEffect(() => {
-    if (orTagChoosingQueue.length) {
-      setCurrentAction("choosingOrTag");
-    }
-  }, [orTagChoosingQueue]);
-  //#endregion
-
   //#region tags and special rewards (e.g., recover)
   const isTagOrSpecialRewardClickable = (t: Tag | SpecialReward): boolean => {
+    if (orTagChoosingQueue.length) {
+      return (
+        orTagChoosingQueue.length > 0 &&
+        orTagChoosingQueue[0].includes(t as Tag)
+      );
+    }
     switch (currentAction) {
-      case "choosingOrTag":
-        return orTagChoosingQueue[0].includes(t as Tag);
       case "resolvingRecover":
         return (
           specialRewards.RECOVER > 0 &&
@@ -815,13 +844,13 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const tagClickHandler = (t: Tag) => {
-    if (currentAction === "choosingOrTag") {
+    if (orTagChoosingQueue.length) {
       const newQueue = orTagChoosingQueue.slice(1);
       modifyTag(t, 1);
       setOrTagChoosingQueue(newQueue);
 
-      if (newQueue.length === 1) {
-        setCurrentAction("");
+      if (newQueue.length === 0) {
+        setCurrentAction("pushToStack");
       }
     }
   };
@@ -855,9 +884,8 @@ export const useGameStatus = (): IGameStatus => {
     // HERO ACHIEVEMENTS
     for (const hero of heroRoster) {
       const achievement = heroWinToAchievementLookup[hero];
-      console.log(achievement);
       if (achievement && achievements[achievement] === false) {
-        pendAchievement(achievement);
+        completeAchievement(achievement);
       }
     }
 
@@ -865,7 +893,7 @@ export const useGameStatus = (): IGameStatus => {
     for (const team of teamRoster) {
       const achievement = teamWinToAchievementLookup[team];
       if (achievement && achievements[achievement] === false) {
-        pendAchievement(achievement);
+        completeAchievement(achievement);
       }
     }
 
@@ -874,18 +902,18 @@ export const useGameStatus = (): IGameStatus => {
       !achievements.win_with_mjolnir &&
       equipRoster.has("EQUIP_THOR_MJOLNIR")
     ) {
-      pendAchievement("win_with_mjolnir");
+      completeAchievement("win_with_mjolnir");
     }
     if (
       !achievements.win_with_ebony_blade &&
       equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
     ) {
-      pendAchievement("win_with_ebony_blade");
+      completeAchievement("win_with_ebony_blade");
     }
 
     // PETS
     if (!achievements.win_with_pet && petRoster.size > 0) {
-      pendAchievement("win_with_pet");
+      completeAchievement("win_with_pet");
     }
 
     endFight();
@@ -985,18 +1013,20 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const updateEquipmentTeamsAndPets = () => {
+    if (currentAction !== "resolvingFight") return;
     if (teamRoster.size) {
       const team = teamRoster.keys().next().value as TeamKey;
-      heroRoster.forEach((h) => {
-        if (!teamToHeroLookup[team].includes(h)) {
-          setTeamRoster(new Set());
-        }
-      });
+      if (team !== "TEAM_UNITED_HEROES") {
+        heroRoster.forEach((h) => {
+          if (!teamToHeroLookup[team].includes(h)) {
+            setTeamRoster(new Set());
+          }
+        });
+      }
     }
     if (equipRoster.size) {
-      // TODO: Logic to remove equipment without a legal hero
       equipRoster.forEach((e) => {
-        const hero = equipmentLookup[e];
+        const hero = equipmentToHeroLookup[e];
         if (hero !== "GENERIC" && !heroRoster.has(hero)) {
           setEquipRoster(setRemover(e));
         }
@@ -1023,7 +1053,11 @@ export const useGameStatus = (): IGameStatus => {
       subtitle: teamRoster.size
         ? translations[teamRoster.keys().next().value as TeamKey]
         : "",
-      data: Array.from(teams),
+      data: Array.from(teams).filter((team) => {
+        return teamToHeroLookup[team].some((hero) =>
+          getLegalHeroesForFight().includes(hero)
+        );
+      }),
       srcs: teamIconSrcs,
       selection: teamRoster,
       itemClickHandler: (t) => {
@@ -1031,11 +1065,15 @@ export const useGameStatus = (): IGameStatus => {
       },
       itemClickable: (t) => {
         return (
+          t === "TEAM_UNITED_HEROES" ||
           t === teamRoster.keys().next().value ||
           [...heroRoster].every((h) => teamToHeroLookup[t].includes(h))
         );
       },
       titleGenerator: (t) => {
+        if (t === "TEAM_UNITED_HEROES") {
+          return `All heroes may be used.`;
+        }
         const heroes: Array<string> = getLegalHeroesForFight()
           .filter((h) => teamToHeroLookup[t].includes(h))
           .map((h) => translations[h])
@@ -1054,15 +1092,40 @@ export const useGameStatus = (): IGameStatus => {
     return {
       title: "Equipment",
       subtitle: equipRoster.size ? `${equipRoster.size} selected` : "",
-      data: Object.values(equipment).flat(),
+      data: TypedEntries(equipment).reduce(
+        (a: Array<EquipKey>, [hero, equipment]) => {
+          if (hero === "GENERIC" || getLegalHeroesForFight().includes(hero)) {
+            return a.concat(equipment);
+          } else {
+            return a;
+          }
+        },
+        []
+      ),
       srcs: equipmentIconSrcs,
       selection: equipRoster,
       itemClickHandler: (e) => {
         setEquipRoster(setToggler(e));
       },
       itemClickable: (e) => {
+        // check for too many total equips
+        if (equipRoster.size >= heroRoster.size * 3) {
+          return equipRoster.has(e);
+        }
+
+        // check for three equips on one hero
+        let currentEquipmentsForHero = 0;
+        const hero = equipmentToHeroLookup[e];
+        for (const equip of equipRoster) {
+          if (equipmentToHeroLookup[equip] === hero) {
+            ++currentEquipmentsForHero;
+          }
+        }
+        if (currentEquipmentsForHero >= 3) return false;
+
+        // regular checks
         return (
-          equipmentLookup[e] === "GENERIC" ||
+          equipmentToHeroLookup[e] === "GENERIC" ||
           [...heroRoster]
             .map((h) => heroEquipmentLookup[h] || [])
             .flat()
@@ -1070,7 +1133,7 @@ export const useGameStatus = (): IGameStatus => {
         );
       },
       titleGenerator: (e) => {
-        const hero = equipmentLookup[e];
+        const hero = equipmentToHeroLookup[e];
         if (isHeroKey(hero)) {
           return `${translations[e]} - ${translations[hero]}`;
         } else {
@@ -1135,28 +1198,27 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const getAchievementSVGPathStrings = () => {
-    const mapleCount = [
-      achievements.win_with_guardian,
-      achievements.win_with_puck,
-      achievements.win_with_sasquatch,
-      achievements.win_with_snowbird,
-      achievements.win_with_northstar,
-    ].filter((v) => v).length;
-
     return TypedKeys(achievementPaths)
       .filter((key) => {
+        const achievementName = achievementToKeyLookup[key];
+        if (key === "MIST_BOLTS") console.log(key, achievementName);
+
         switch (key) {
           case "AVX_MAPLE_1":
           case "AVX_MAPLE_2":
           case "AVX_MAPLE_3":
           case "AVX_MAPLE_4":
-            if (mapleCount < +key.slice(-1)) return null;
+            if (counts.maple < +key.slice(-1)) return null;
             break;
           case "STARS_BROOD_QUEEN":
             if (!isCompleted(FIRST_BROOD_QUEEN)) return null;
             break;
+          case "MIST_BEAT_THANOS":
+            if (!isCompleted(THANOS_BTN)) return null;
+            break;
           default:
-            if (!achievements[achievementToKeyLookup[key]!]) return null;
+            if (achievementName && achievements[achievementName] === false)
+              return null;
         }
 
         switch (key) {
@@ -1165,7 +1227,7 @@ export const useGameStatus = (): IGameStatus => {
           case "GALAXY_ROSTER_NOVA":
             return TypedKeys(heroes).includes("NOVA");
           case "MIST_BOLTS":
-            return BOLT_GATES.every(isCompleted);
+            return counts.bolts >= 9;
           case "MIDNIGHT_8_GATES":
             return counts.portals >= 8;
           case "WAR_6_STARS_LEFT":
@@ -1181,10 +1243,7 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const getPathSVGPathInfo = () => {
-    return Array.from(connectedPaths).map((p) => {
-      console.log(p, combinedPaths[p]);
-      return combinedPaths[p]
-    });
+    return Array.from(connectedPaths).map((p) => combinedPaths[p]);
   };
 
   const showActionTokensAccordion = () =>
@@ -1248,8 +1307,12 @@ export const useGameStatus = (): IGameStatus => {
     lost,
     resolveDeadpool,
     resolveDeadpoolVictim,
+    team: teamRoster.keys().next().value,
     // ! DELETE LATER:
     stackLen: stack.length,
+    counts,
+    teams: Array.from(teams),
+    queue: orTagChoosingQueue,
   };
 };
 
@@ -1308,6 +1371,10 @@ interface IGameStatus {
   lost: () => void;
   resolveDeadpool: (score: number) => void;
   resolveDeadpoolVictim: () => void;
+  team?: TeamKey;
   // ! DELETE LATER:
   stackLen: number;
+  counts: ReturnType<typeof getStartingCounts>;
+  teams?: Array<TeamKey>;
+  queue: Array<Array<Tag>>;
 }

@@ -56,3 +56,18 @@ export const setRemover =
     res.delete(el);
     return res;
   };
+
+export const InvertObject = <T extends string, U extends string>(o: {
+  [key in T]?: Array<U>;
+}) => {
+  const res: { [key in U]?: Array<T> } = {};
+
+  for (const [key, vals] of TypedEntries(o)) {
+    for (const p of vals) {
+      if (res[p] === undefined) res[p] = [];
+      res[p].push(key);
+    }
+  }
+
+  return res;
+};

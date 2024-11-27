@@ -1,4 +1,2 @@
 add recover functionality
-Toggle equipment off when hero is unselected
-figure out how to make toast disappear without text disappearing first
-fix styling on heros when choosing one to remove
+show challenges and starting tokens or other special rules

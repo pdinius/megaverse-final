@@ -72,10 +72,10 @@ export const achievementRewards: {
   win_with_ebony_blade: [["MIDNIGHT_PATH_14"], "MIDNIGHT_PATH_13"],
   win_with_mjolnir: [["CASTLE_PATH_28", "CASTLE_PATH_29"], "CASTLE_GROUP_3"],
   win_with_pet: [["GALAXY_PATH_12"], "GALAXY_PATH_10"],
+  unlock_chod_corsair_hepzibah_raza: [["STARS_PATH_15"], "STARS_PATH_8"],
   unlock_rogue_and_gambit: "HEROIC",
   unlock_colossus_and_kitty: "HEROIC",
   unlock_jessica_and_luke: "HEROIC",
-  unlock_chod_corsair_hepzibah_raza: "BOLT", // TODO: WHAT IS THE CORRECT REWARD
   war_machine_removed: "GEAR",
   vision_removed: "GEAR",
   win_with_guardian: "MAPLE",

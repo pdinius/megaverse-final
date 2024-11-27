@@ -20,6 +20,7 @@ const HeroGrid: FC<HeroGridProps> = ({
   maxRowSize = "auto-fill",
 }) => {
   const { isHeroClickable, heroClickHandler } = useContext(statusContext);
+  const extraDeadpoolCheck = heroes.includes("DEADPOOL");
 
   return (
     <div
@@ -32,6 +33,11 @@ const HeroGrid: FC<HeroGridProps> = ({
           hero={h}
           onClick={isHeroClickable(h) ? () => heroClickHandler(h) : undefined}
           className={`${heroClass} ${conditionalHeroClass(h)}`}
+          title={
+            extraDeadpoolCheck && h === "DEADPOOL_2"
+              ? "Also Deadpool 😜"
+              : undefined
+          }
         />
       ))}
     </div>

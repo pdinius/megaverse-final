@@ -8,12 +8,11 @@ import Graveyard from "./Graveyard/Graveyard";
 import UndoButton from "./Button/UndoButton";
 import ResetButton from "./Button/ResetButton";
 import { statusContext } from "../../StatusContext";
-import { DRAWER_ACTIONS } from "../../types/game-status";
 import Resources from "./Resources/Resources";
 import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
 
 const Drawer: FC = () => {
-  const { currentAction, areHeroesDead, drawerOpen, toggleDrawerOpen } =
+  const { areHeroesDead, drawerOpen } =
     useContext(statusContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const [translateYamt, setTranslateYamt] = useState(999);
@@ -29,13 +28,8 @@ const Drawer: FC = () => {
     return () => {
       window.removeEventListener("resize", updateDrawerHeight);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [containerRef.current?.getBoundingClientRect().height]);
-
-  useEffect(() => {
-    if (DRAWER_ACTIONS.includes(currentAction)) {
-      toggleDrawerOpen(true);
-    }
-  }, [currentAction]);
 
   return (
     <>

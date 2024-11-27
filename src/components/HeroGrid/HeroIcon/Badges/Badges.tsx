@@ -6,17 +6,19 @@ import equipmentBadge from "../../../../assets/badges/equipment.png";
 import fantasticFourBadge from "../../../../assets/badges/fantastic-four.png";
 import chainedBadge from "../../../../assets/badges/chained.png";
 import portalBadge from "../../../../assets/badges/portal.png";
+import teamBadge from "../../../../assets/badges/team.jpg";
 import { statusContext } from "../../../../StatusContext";
 import { HeroKey, isFantasticHero } from "../../../../types/heroes";
 import { translations } from "../../../../lib/translations";
+import { teamToHeroLookup } from "../../../../lib/team-lookup";
 
 interface BadgesProps {
   hero: HeroKey;
 }
 
 const Badges: FC<BadgesProps> = ({ hero }) => {
-  const { chained, equipment, heroes } = useContext(statusContext);
-  
+  const { chained, equipment, heroes, team } = useContext(statusContext);
+
   const badges: Array<JSX.Element> = [];
   const data = heroes[hero];
   if (data !== undefined) {
@@ -29,7 +31,9 @@ const Badges: FC<BadgesProps> = ({ hero }) => {
           src={cooldown === 1 ? timer1 : timer2}
           className={styles.badge}
           key="cooldown"
-          title={`Ready after ${cooldown} more fight${cooldown > 1 ? "s" : ""}.`}
+          title={`Ready after ${cooldown} more fight${
+            cooldown > 1 ? "s" : ""
+          }.`}
         />
       );
     }
@@ -79,6 +83,17 @@ const Badges: FC<BadgesProps> = ({ hero }) => {
         className={styles.badge}
         key="chained"
         title={`${translations[hero]} is required for this fight.`}
+      />
+    );
+  }
+
+  if (team && teamToHeroLookup[team].includes(hero)) {
+    badges.push(
+      <img
+        src={teamBadge}
+        className={styles.badge}
+        key="team"
+        title={`${translations[hero]} is a member of ${translations[team]}.`}
       />
     );
   }

@@ -34,6 +34,11 @@ export type Achievement =
   | "win_with_antman"
   | "win_with_wasp"
   | "win_with_moon_knight"
+  | "win_with_guardian"
+  | "win_with_puck"
+  | "win_with_sasquatch"
+  | "win_with_snowbird"
+  | "win_with_northstar"
   | "win_with_inhumans"
   | "win_with_new_avengers"
   | "win_with_midnight_sons"
@@ -51,20 +56,16 @@ export type Achievement =
   | "unlock_jessica_and_luke"
   | "unlock_chod_corsair_hepzibah_raza"
   | "war_machine_removed"
-  | "vision_removed"
-  | "win_with_guardian"
-  | "win_with_puck"
-  | "win_with_sasquatch"
-  | "win_with_snowbird"
-  | "win_with_northstar";
+  | "vision_removed";
 
-export type Achievements = { [key in Achievement]: boolean | "pending" };
+export type Achievements = { [key in Achievement]: boolean };
 
 export interface Counts {
   bolts: number;
   portals: number;
   stars: number;
   collector_items: number;
+  maple: number;
 }
 
 export type CurrentAction =
@@ -73,7 +74,6 @@ export type CurrentAction =
   | "spendingPortal"
   | "resolvingRecover"
   | "resolvingRecoverF4"
-  | "choosingOrTag"
   | "removingHero"
   | "tradingHero"
   | "choosingDeadpoolVictim"
@@ -82,7 +82,6 @@ export type CurrentAction =
   | "pushToStack";
 
 export const DRAWER_ACTIONS: Array<CurrentAction> = [
-  "choosingOrTag",
   "removingHero",
   "resolvingRecover",
   "resolvingRecoverF4",
