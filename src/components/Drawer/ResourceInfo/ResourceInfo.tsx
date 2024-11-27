@@ -10,11 +10,11 @@ interface ResourceInfoProps {
 
 const ResourceInfo: FC<ResourceInfoProps> = ({ item }) => {
   const {
-    isTagOrSpecialRewardClickable,
     tags,
     specialRewards,
     tagClickHandler,
     specialRewardClickHandler,
+    isTagOrSpecialRewardClickable,
   } = useContext(statusContext);
 
   const qtx = isTag(item) ? tags[item] : specialRewards[item];

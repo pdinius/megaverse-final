@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  line-height: 0;
+}
+
+.icon {
+  height: 2.5rem;
+  cursor: help;
+}
+
+.card {
+  position: absolute;
+  width: 250px;
+  top: 3rem;
+  left: calc(50% - 125px);
+  z-index: 999;
+  filter: drop-shadow(5px 0 5px rgb(0 0 0 / 0.75));
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+}

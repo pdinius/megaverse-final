@@ -92,6 +92,7 @@ export interface HeroState {
   crossover: boolean;
   dead: boolean;
   cooldown: number;
+  area: Area;
 }
 
 export interface IGameStatus {

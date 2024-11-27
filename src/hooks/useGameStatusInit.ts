@@ -1,19 +1,20 @@
 import { EquipKey } from "../types/equipment";
 import { Achievements, Counts, HeroState } from "../types/game-status";
-import { ActionType, SpecialReward, Tag } from "../types/general";
+import { ActionType, Area, SpecialReward, Tag } from "../types/general";
 import { HeroKey } from "../types/heroes";
 
-export const getNewHeroProps = (isChained: boolean): HeroState => ({
+export const getNewHeroProps = (isChained: boolean, area: Area): HeroState => ({
   dead: false,
   crossover: false,
   cooldown: isChained ? 2 : 0,
+  area
 });
 
 export const getStartingHeroes = () => ({
-  BLACK_PANTHER_SHURI: getNewHeroProps(false),
-  CAPTAIN_CARTER: getNewHeroProps(false),
-  IRONHEART: getNewHeroProps(false),
-  MIGHTY_THOR: getNewHeroProps(false),
+  BLACK_PANTHER_SHURI: getNewHeroProps(false, "MULTIVERSE"),
+  CAPTAIN_CARTER: getNewHeroProps(false, "MULTIVERSE"),
+  IRONHEART: getNewHeroProps(false, "MULTIVERSE"),
+  MIGHTY_THOR: getNewHeroProps(false, "MULTIVERSE"),
 });
 
 export const getStartingTags = (): { [key in Tag]: number } => ({
@@ -31,7 +32,7 @@ export const getStartingTags = (): { [key in Tag]: number } => ({
   MAPLE: 0,
   PLANET: 0,
   PUZZLE: 0,
-  STAR: 5,
+  STAR: 0,
   SPARKLE: 0,
 });
 

@@ -1,2 +1,14 @@
-add recover functionality
-show challenges and starting tokens or other special rules
+add recover functionality - sort of works, styling is odd
+finish making pictures for other challenges
+  shapeshifter
+  startWithMove
+  startWithTwoMove
+  random
+  secondBroodQueen
+  modularHeralds
+  noEquipment
+  infinityGauntlet
+Make header drawer move map down
+replace handle with full size bar
+clean up paths file
+remove debugging window

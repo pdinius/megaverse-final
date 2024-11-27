@@ -4,27 +4,27 @@ import { VillainKey } from "../types/villain";
 export type Challenge =
   | "carnage"
   | "complications"
-  | "endangered-locations"
-  | "fin-fang-foom"
+  | "endangeredLocations"
+  | "finFangFoom"
   | "hard"
-  | "hazardous-locations"
-  | "infinity-gauntlet"
+  | "hazardousLocations"
+  | "infinityGauntlet"
   | "moderate"
-  | "modular-heralds"
-  | "no-equipment"
-  | "plan-b"
+  | "modularHeralds"
+  | "noEquipment"
+  | "planB"
   | "random"
-  | "second-brood-queen"
-  | "secret-identity"
-  | "sentinel-1"
-  | "sentinel-2"
-  | "sentinel-3"
+  | "secondBroodQueen"
+  | "secretIdentity"
+  | "sentinelI"
+  | "sentinelII"
+  | "sentinelIII"
   | "shapeshifter"
-  | "start-with-move"
-  | "start-with-two-move"
+  | "startWithMove"
+  | "startWithTwoMove"
   | "takeover"
   | "titania"
-  | "winter-guard";
+  | "winterGuard";
 
 export interface VillainInfo {
   key: VillainKey;
@@ -135,7 +135,7 @@ export const villainInfo: {
   FINALITY_MODULAR_HERALDS_6: {
     key: "MODULAR_HERALDS",
     points: 7,
-    challenge: ["modular-heralds"],
+    challenge: ["modularHeralds"],
     checkmark:
       "M4869.33,200.281a2.422,2.422,0,1,1,3.43,3.421c-0.95.945-18.39,18.386-19.33,19.331a2.431,2.431,0,0,1-3.43,0c-0.94-.945-8.71-8.721-9.66-9.666a2.419,2.419,0,0,1,3.42-3.422c0.69,0.689,5.44,5.433,7.96,7.955C4851.72,217.9,4868.39,201.226,4869.33,200.281Z",
     overlay:
@@ -189,7 +189,7 @@ export const villainInfo: {
   EXILE_MAESTRO_3: {
     key: "MAESTRO",
     points: 3,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M5281,587.78a2.419,2.419,0,0,1,3.42,3.423c-0.94.944-18.38,18.384-19.33,19.33a2.419,2.419,0,0,1-3.42,0c-0.94-.946-8.72-8.721-9.66-9.666a2.419,2.419,0,1,1,3.42-3.422c0.69,0.688,5.43,5.433,7.95,7.955C5263.38,605.4,5280.06,588.726,5281,587.78Z",
     overlay:
@@ -271,7 +271,7 @@ export const villainInfo: {
   STARS_BROOD_QUEEN_1: {
     key: "BROOD_QUEEN",
     points: 5,
-    challenge: ["second-brood-queen"],
+    challenge: ["secondBroodQueen"],
     checkmark:
       "M7031.75,1566.28a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,1,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C7014.13,1583.9,7030.81,1567.23,7031.75,1566.28Z",
     overlay:
@@ -292,7 +292,7 @@ export const villainInfo: {
   FLAME_WINTER_GUARD_15: {
     key: "WINTER_GUARD",
     points: 8,
-    challenge: ["winter-guard"],
+    challenge: ["winterGuard"],
     checkmark:
       "M6932,3030.28a2.418,2.418,0,1,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C6914.38,3047.9,6931.06,3031.23,6932,3030.28Z",
     overlay:
@@ -313,7 +313,7 @@ export const villainInfo: {
   FLAME_MOLE_MAN_13: {
     key: "MOLE_MAN",
     points: 5,
-    challenge: ["fin-fang-foom"],
+    challenge: ["finFangFoom"],
     location: ["Monster Isle"],
     checkmark:
       "M7478,3419.28a2.418,2.418,0,1,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C7460.38,3436.9,7477.06,3420.23,7478,3419.28Z",
@@ -325,7 +325,7 @@ export const villainInfo: {
   FLAME_AVALANCHE_17: {
     key: "AVALANCHE",
     points: 3,
-    challenge: ["sentinel-1"],
+    challenge: ["sentinelI"],
     location: ["Adirondack Mountains"],
     checkmark:
       "M7994.04,3431.03a2.114,2.114,0,0,1,2.99,2.99c-0.82.82-16.07,16.07-16.89,16.9a2.125,2.125,0,0,1-2.99,0l-8.45-8.45a2.114,2.114,0,0,1,2.99-2.99c0.6,0.6,4.75,4.74,6.95,6.95Z",
@@ -359,7 +359,7 @@ export const villainInfo: {
   CASTLE_ABSORBING_MAN_4: {
     key: "ABSORBING_MAN",
     points: 5,
-    challenge: ["titania", "no-equipment"],
+    challenge: ["titania", "noEquipment"],
     checkmark:
       "M7193.4,4461.88a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C7175.78,4479.5,7192.46,4462.83,7193.4,4461.88Z",
     overlay:
@@ -390,7 +390,7 @@ export const villainInfo: {
   CASTLE_LOKI_6: {
     key: "LOKI",
     points: 5,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     location: ["Odin's Vault"],
     checkmark:
       "M7691.67,4282.95a2.418,2.418,0,0,1,3.42,3.42c-0.95.94-18.39,18.38-19.33,19.33a2.426,2.426,0,0,1-3.42,0l-9.67-9.67a2.422,2.422,0,0,1,3.43-3.42c0.68,0.69,5.43,5.43,7.95,7.96C7674.05,4300.57,7690.72,4283.89,7691.67,4282.95Z",
@@ -425,7 +425,7 @@ export const villainInfo: {
   DARKNESS_GREEN_GOBLIN_1: {
     key: "GREEN_GOBLIN",
     points: 6,
-    challenge: ["secret-identity"],
+    challenge: ["secretIdentity"],
     checkmark:
       "M6706.5,5931.78a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C6688.88,5949.4,6705.56,5932.73,6706.5,5931.78Z",
     overlay:
@@ -436,7 +436,7 @@ export const villainInfo: {
   DARKNESS_TASKMASTER_2: {
     key: "TASKMASTER",
     points: 3,
-    challenge: ["hazardous-locations"],
+    challenge: ["hazardousLocations"],
     location: ["Avengers Tower"],
     checkmark:
       "M7078.6,5742.48a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C7060.98,5760.1,7077.66,5743.43,7078.6,5742.48Z",
@@ -490,7 +490,7 @@ export const villainInfo: {
   DARKNESS_BULLSEYE_8: {
     key: "BULLSEYE",
     points: 5,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M7380.75,5907.78a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.422,2.422,0,0,1,3.42-3.43c0.69,0.69,5.43,5.44,7.95,7.96C7363.13,5925.4,7379.81,5908.73,7380.75,5907.78Z",
     overlay:
@@ -575,7 +575,7 @@ export const villainInfo: {
   SHIELD_BARON_ZEMO_16: {
     key: "BARON_ZEMO",
     points: 4,
-    challenge: ["secret-identity"],
+    challenge: ["secretIdentity"],
     location: ["Mount Rushmore"],
     checkmark:
       "M7102.83,7301.95a2.422,2.422,0,0,1,3.43,3.42c-0.95.94-18.39,18.38-19.33,19.33a2.438,2.438,0,0,1-3.43,0c-0.94-.95-8.71-8.72-9.66-9.67a2.418,2.418,0,0,1,3.42-3.42c0.69,0.69,5.44,5.43,7.96,7.96Z",
@@ -609,7 +609,7 @@ export const villainInfo: {
   SHIELD_RED_HULK_18: {
     key: "RED_HULK",
     points: 4,
-    challenge: ["endangered-locations"],
+    challenge: ["endangeredLocations"],
     checkmark:
       "M8060.25,6787.03a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C8042.63,6804.65,8059.31,6787.98,8060.25,6787.03Z",
     overlay:
@@ -754,7 +754,7 @@ export const villainInfo: {
   FOOL_SILVER_SAMURAI_1: {
     key: "SILVER_SAMURAI",
     points: 5,
-    challenge: ["sentinel-3"],
+    challenge: ["sentinelIII"],
     location: ["Deadpool's Apartment"],
     checkmark:
       "M1238.2,7208.68a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,0,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C1220.58,7226.3,1237.26,7209.63,1238.2,7208.68Z",
@@ -1038,7 +1038,7 @@ export const villainInfo: {
   MIST_VULCAN_5: {
     key: "VULCAN",
     points: 4,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M1108,1791.28a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,1,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C1090.38,1808.9,1107.06,1792.23,1108,1791.28Z",
     overlay:
@@ -1071,7 +1071,7 @@ export const villainInfo: {
   AVX_RHINO_194: {
     key: "RHINO",
     points: 5,
-    challenge: ["secret-identity"],
+    challenge: ["secretIdentity"],
     checkmark:
       "M1776.89,6035.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.65a3.164,3.164,0,0,1,4.48-4.47l10.41,10.41S1775.66,6036.57,1776.89,6035.33Z",
     overlay:
@@ -1082,7 +1082,7 @@ export const villainInfo: {
   AVX_KRAVEN_193: {
     key: "KRAVEN",
     points: 4,
-    challenge: ["endangered-locations"],
+    challenge: ["endangeredLocations"],
     checkmark:
       "M2201.89,5611.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.65a3.164,3.164,0,0,1,4.48-4.47l10.41,10.41S2200.66,5612.57,2201.89,5611.33Z",
     overlay:
@@ -1403,7 +1403,7 @@ export const villainInfo: {
   AVX_MASTERMIND_153: {
     key: "MASTERMIND",
     points: 3,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M4871.89,2245.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.65a3.164,3.164,0,0,1,4.48-4.47l10.41,10.41S4870.66,2246.57,4871.89,2245.33Z",
     overlay:
@@ -1444,7 +1444,7 @@ export const villainInfo: {
   AVX_STRYFE_148: {
     key: "STRYFE",
     points: 4,
-    challenge: ["sentinel-2"],
+    challenge: ["sentinelII"],
     checkmark:
       "M5721.89,1468.33a3.168,3.168,0,0,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S5720.66,1469.57,5721.89,1468.33Z",
     overlay:
@@ -1626,7 +1626,7 @@ export const villainInfo: {
   AVX_SABRETOOTH_157: {
     key: "SABRETOOTH",
     points: 3,
-    challenge: ["start-with-move"],
+    challenge: ["startWithMove"],
     checkmark:
       "M3391.89,3191.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S3390.66,3192.57,3391.89,3191.33Z",
     overlay:
@@ -1710,7 +1710,7 @@ export const villainInfo: {
     key: "RED_SKULL",
     points: 5,
     infinity: "INFINITY_BLUE",
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M2007.89,5261.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,1,1,4.48-4.48l10.41,10.41S2006.66,5262.57,2007.89,5261.33Z",
     overlay:
@@ -1751,7 +1751,7 @@ export const villainInfo: {
   AVX_SAURON_204: {
     key: "SAURON",
     points: 4,
-    challenge: ["endangered-locations", "start-with-two-move"],
+    challenge: ["endangeredLocations", "startWithTwoMove"],
     checkmark:
       "M2567.89,3094.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S2566.66,3095.57,2567.89,3094.33Z",
     overlay:
@@ -1772,7 +1772,7 @@ export const villainInfo: {
   AVX_MOJO_141: {
     key: "MOJO",
     points: 5,
-    challenge: ["plan-b"],
+    challenge: ["planB"],
     checkmark:
       "M1978.89,1974.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.65a3.164,3.164,0,0,1,4.48-4.47l10.41,10.41S1977.66,1975.57,1978.89,1974.33Z",
     overlay:
@@ -1814,7 +1814,7 @@ export const villainInfo: {
   AVX_MAGNETO_146: {
     key: "MAGNETO",
     points: 5,
-    challenge: ["sentinel-3"],
+    challenge: ["sentinelIII"],
     checkmark:
       "M4562.89,1450.33a3.168,3.168,0,0,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S4561.66,1451.57,4562.89,1450.33Z",
     overlay:
@@ -1835,7 +1835,7 @@ export const villainInfo: {
   AVX_THANOS_192: {
     key: "THANOS",
     points: 10,
-    challenge: ["infinity-gauntlet"],
+    challenge: ["infinityGauntlet"],
     checkmark:
       "M4130.5,5827.64a3.461,3.461,0,0,1,4.89,4.9l-27.64,27.64a3.458,3.458,0,0,1-4.89,0l-13.82-13.82a3.461,3.461,0,1,1,4.89-4.9l11.38,11.38Z",
     overlay:
@@ -1888,7 +1888,7 @@ export const villainInfo: {
   AVX_EMMA_FROST_215: {
     key: "EMMA_FROST",
     points: 5,
-    challenge: ["sentinel-1"],
+    challenge: ["sentinelI"],
     checkmark:
       "M6538.89,3043.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S6537.66,3044.57,6538.89,3043.33Z",
     overlay:

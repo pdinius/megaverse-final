@@ -376,7 +376,7 @@ export const pathRewards: {
   AVX_PATH_60: ["KEY", "BRAIN"],
   AVX_PATH_85: ["POLARIS"],
   AVX_PATH_86: ["MOVE"],
-  AVX_PATH_57: ["QUICKSILVER", "SCARLET_WITCH", "MAGIC", "KEY"],
+  AVX_PATH_57: ["QUICKSILVER_2", "SCARLET_WITCH_2", "MAGIC", "KEY"],
   AVX_PATH_55: ["MOVE", "KEY"],
   AVX_PATH_54: ["KEY"],
   AVX_PATH_56: ["KEY", "HEROIC"],

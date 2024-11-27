@@ -228,7 +228,7 @@ export const useGameStatus = (): IGameStatus => {
 
   //#region counts
   const incrementCounts = (k: keyof Counts) => {
-    setCounts(curr => {
+    setCounts((curr) => {
       const res = { ...curr };
       ++res[k];
       return res;
@@ -237,10 +237,21 @@ export const useGameStatus = (): IGameStatus => {
   //#endregion
 
   //#region heroes
-  const unlockHero = (h: HeroKey) => {
+  const unlockHero = (h: HeroKey, from: Area) => {
+    if (h === "SCARLET_WITCH_2" && "SCARLET_WITCH" in heroes) return;
+    if (h === "SCARLET_WITCH" && "SCARLET_WITCH_2" in heroes) return;
+    if (h === "QUICKSILVER_2" && "QUICKSILVER" in heroes) return;
+    if (h === "QUICKSILVER" && "QUICKSILVER_2" in heroes) return;
+    
     setHeroes((curr) => {
       const res = { ...curr };
-      res[h] = getNewHeroProps(chained.includes(h));
+      if (h === "SILVER_SURFER_2" && "SILVER_SURFER" in res) {
+        res.SILVER_SURFER!.crossover = true;
+      } else if (h === "SILVER_SURFER" && "SILVER_SURFER_2" in res) {
+        res.SILVER_SURFER_2!.crossover = true;
+      } else {
+        res[h] = getNewHeroProps(chained.includes(h), from);
+      }
 
       UNLOCK_ALL_ACHIEVEMENTS.forEach((a) => {
         if (
@@ -256,15 +267,19 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const updateCooldown = (cooldownHeroes: Set<HeroKey>) => {
-    const newHeroes = { ...heroes };
-    for (const hero of TypedKeys(newHeroes)) {
-      if (newHeroes[hero]!.cooldown > 0) {
-        --newHeroes[hero]!.cooldown;
-      } else if (cooldownHeroes.has(hero)) {
-        newHeroes[hero]!.cooldown = 2;
+    setHeroes((curr) => {
+      const res = { ...curr };
+
+      for (const hero of TypedKeys(res)) {
+        if (res[hero]!.cooldown > 0) {
+          --res[hero]!.cooldown;
+        } else if (cooldownHeroes.has(hero)) {
+          res[hero]!.cooldown = 2;
+        }
       }
-    }
-    setHeroes(newHeroes);
+
+      return res;
+    });
   };
 
   const handleMagnetoX1 = () => {
@@ -326,10 +341,10 @@ export const useGameStatus = (): IGameStatus => {
     }
     return TypedEntries(heroes)
       .sort((a, b) => a[0].localeCompare(b[0]))
-      .reduce((a: Array<HeroKey>, [h, { dead, cooldown, crossover }]) => {
+      .reduce((a: Array<HeroKey>, [h, { dead, cooldown, crossover, area }]) => {
         return !dead &&
           cooldown === 0 &&
-          (crossover || getBtnArea(currentBtnClicked) === heroAreaLookup[h])
+          (crossover || getBtnArea(currentBtnClicked) === area)
           ? [...a, h]
           : a;
       }, chained);
@@ -392,18 +407,16 @@ export const useGameStatus = (): IGameStatus => {
 
   const avxHeroes = TypedEntries(heroes)
     .reduce(
-      (a: Array<HeroKey>, [h, { dead, crossover }]) =>
-        !dead && !crossover && heroAreaLookup[h] === "AVX" ? [...a, h] : a,
+      (a: Array<HeroKey>, [h, { dead, crossover, area }]) =>
+        !dead && !crossover && area === "AVX" ? [...a, h] : a,
       []
     )
     .sort();
 
   const multiverseHeroes = TypedEntries(heroes)
     .reduce(
-      (a: Array<HeroKey>, [h, { dead, crossover }]) =>
-        !dead && !crossover && heroAreaLookup[h] === "MULTIVERSE"
-          ? [...a, h]
-          : a,
+      (a: Array<HeroKey>, [h, { dead, crossover, area }]) =>
+        !dead && !crossover && area === "MULTIVERSE" ? [...a, h] : a,
       []
     )
     .sort();
@@ -506,7 +519,7 @@ export const useGameStatus = (): IGameStatus => {
           }
         }
       } else if (isHeroKey(reward)) {
-        unlockHero(reward);
+        unlockHero(reward, p.startsWith("AVX") ? "AVX" : "MULTIVERSE");
       } else if (isMiscKey(reward)) {
         setMisc(setAdder(reward));
       } else {
@@ -534,7 +547,7 @@ export const useGameStatus = (): IGameStatus => {
       setScore(score + points);
 
       // chained heroes
-      chained.forEach(unlockHero);
+      chained.forEach((h) => unlockHero(h, getBtnArea(btnKey)));
 
       // infinity stones
       if (infinity) {
@@ -757,7 +770,7 @@ export const useGameStatus = (): IGameStatus => {
 
     // UPDATE STACK AND SAVE DATA
     setStack([...stack, stringifiedState]);
-    // localStorage?.setItem("save-data", stringifiedState);
+    localStorage?.setItem("save-data", stringifiedState);
   };
 
   // ! DANGER !
@@ -1201,7 +1214,6 @@ export const useGameStatus = (): IGameStatus => {
     return TypedKeys(achievementPaths)
       .filter((key) => {
         const achievementName = achievementToKeyLookup[key];
-        if (key === "MIST_BOLTS") console.log(key, achievementName);
 
         switch (key) {
           case "AVX_MAPLE_1":

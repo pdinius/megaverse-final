@@ -8,4 +8,10 @@
   left: 1rem;
   font-family: monospace;
   transition: opacity 0.2s ease;
+  max-height: calc(100vh - 2rem);
+  overflow-y: scroll;
+
+  &:hover {
+    opacity: 0.2;
+  }
 }
