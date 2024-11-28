@@ -319,6 +319,12 @@ export const useGameStatus = (): IGameStatus => {
         dead: false,
       },
     }));
+    if (currentAction === "resolvingRecover") {
+      modifySpecialRewards("RECOVER", -1);
+    }
+    if (currentAction === "resolvingRecoverF4") {
+      modifySpecialRewards("RECOVER_F4", -1);
+    }
     setCurrentAction("");
     closeToast();
   };
@@ -331,6 +337,7 @@ export const useGameStatus = (): IGameStatus => {
         crossover: true,
       },
     }));
+    modifySpecialRewards("PORTAL", -1);
     setCurrentAction("");
     closeToast();
   };
@@ -1136,7 +1143,7 @@ export const useGameStatus = (): IGameStatus => {
     setEquipRoster(new Set());
     setChained([]);
     ACTION_TYPES.forEach((at) =>
-      modifyActionTokens(at, spendingActionTokens[at])
+      modifyActionTokens(at, -spendingActionTokens[at])
     );
     setSpendingActionTokens({
       MOVE: 0,

@@ -9,12 +9,10 @@ import ResetButton from "./Button/ResetButton";
 import { statusContext } from "../../StatusContext";
 import Resources from "./Resources/Resources";
 import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
-import { Icon } from "../General/Icon";
-import { TypedEntries } from "../../lib/utils";
+import Handle from "./Handle";
 
 const Drawer: FC = () => {
-  const { areHeroesDead, drawerOpen, toggleDrawerOpen, score, tags } =
-    useContext(statusContext);
+  const { areHeroesDead, drawerOpen } = useContext(statusContext);
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -56,37 +54,7 @@ const Drawer: FC = () => {
           ) : null}
         </div>
       </div>
-      <div className={styles.handle}>
-        <div
-          className={styles.handleInfo}
-          style={{
-            opacity: drawerOpen ? 0 : 1,
-            padding: drawerOpen ? "0rem" : "0.5rem 1rem",
-            width: drawerOpen ? "0px" : "calc(100vw - 3rem)",
-          }}
-        >
-          <div>
-            <Icon which="trophy" className={styles.trophyIcon} /> {score}
-          </div>
-          <div className={styles.tags}>
-            {TypedEntries(tags).map(([t, v]) =>
-              v > 0 ? (
-                <Icon key={t} which={t} className={styles.infoIcon} />
-              ) : null
-            )}
-          </div>
-        </div>
-        <button
-          className={styles.openButton}
-          style={{
-            width: drawerOpen ? "100vw" : "3rem",
-            borderLeft: drawerOpen ? "1px dashed #fff" : "1px dashed #aaa",
-          }}
-          onClick={() => toggleDrawerOpen()}
-        >
-          <Icon which="bars" className={styles.bars} />
-        </button>
-      </div>
+      <Handle />
     </div>
   );
 };
