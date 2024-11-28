@@ -1,4 +1,4 @@
-const HERO_LIST = [
+export const HERO_LIST = [
   "ADAM_WARLOCK",
   "AGATHA_HARKNESS",
   "AGENT_VENOM",

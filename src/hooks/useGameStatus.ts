@@ -22,9 +22,14 @@ import {
   isTag,
   Tag,
 } from "../types/general";
-import { HeroKey, isFantasticHero, isHeroKey } from "../types/heroes";
+import {
+  HERO_LIST,
+  HeroKey,
+  isFantasticHero,
+  isHeroKey,
+} from "../types/heroes";
 import { isTeamKey, TeamKey } from "../types/teams";
-import { EquipKey, isEquipKey } from "../types/equipment";
+import { EQUIP_LIST, EquipKey, isEquipKey } from "../types/equipment";
 import { isPetKey, PetKey } from "../types/pets";
 import { isMiscKey, MiscKey } from "../types/misc";
 import { VillainInfo, villainInfo } from "../lib/villain-info";
@@ -725,6 +730,42 @@ export const useGameStatus = (): IGameStatus => {
     ["achievements", achievements, setAchievements],
     ["counts", counts, setCounts],
   ];
+
+  const serializeState = () => {
+    const state = stack[stack.length - 1];
+    try {
+      const parsed = JSON.parse(state);
+      if (!isLegalStateData(parsed)) {
+        throw Error("stack contained an illegal state.");
+      }
+      const s = parsed.score;
+      const tagStr = Object.values(parsed.tags).join(",");
+      const actStr = Object.values(parsed.actionTokens).join(",");
+      const heroes = Object.entries(parsed.heroes)
+        .map(([k, v]) => {
+          const idx = HERO_LIST.indexOf(k as HeroKey);
+          if (!isHeroState(v))
+            throw Error("Not a hero state while serializing state.");
+          const c = +v.crossover;
+          const d = +v.dead;
+          const cd = v.cooldown;
+          const a = v.area === "AVX" ? 0 : v.area === "MULTIVERSE" ? 1 : 2;
+          return `${idx}${c}${d}${cd}${a}`;
+        })
+        .join(",");
+      const equips = Object.entries(parsed.equipment)
+        .map(([k, v]) => {
+          const heroI = HERO_LIST.indexOf(k as HeroKey);
+          if (!Array.isArray(v))
+            throw Error(
+              `Equip array wasn't instance of array while serializing state.`
+            );
+          const eq = v.map((e) => EQUIP_LIST.indexOf(e)).join("-");
+          return `${heroI}-${eq}`;
+        })
+        .join(",");
+    } catch (e) {}
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isLegalStateData = (o: any): boolean => {
