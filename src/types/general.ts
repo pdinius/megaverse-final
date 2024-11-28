@@ -1,5 +1,9 @@
 export type Area = "AVX" | "DC" | "MULTIVERSE";
 
+export const isArea = (s: string): s is Area => {
+  return s === "AVX" || s === "MULTIVERSE" || s === "DC";
+}
+
 export type Section =
   | "AVX"
   | "CHARIOT"

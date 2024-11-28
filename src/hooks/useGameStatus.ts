@@ -8,12 +8,16 @@ import {
   DRAWER_ACTIONS,
   HeroState,
   IGameStatus,
+  isAchievement,
+  isCounts,
+  isHeroState,
 } from "../types/game-status";
 import {
   ACTION_TYPES,
   Area,
   InfinityStone,
   isActionType,
+  isInfinityKey,
   isSpecialReward,
   isTag,
   Tag,
@@ -713,8 +717,135 @@ export const useGameStatus = (): IGameStatus => {
     ["connectedPaths", connectedPaths, setConnectedPaths],
     ["achievements", achievements, setAchievements],
     ["counts", counts, setCounts],
-    ["orTagChoosingQueue", orTagChoosingQueue, setOrTagChoosingQueue],
   ];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isLegalStateData = (o: any): boolean => {
+    console.log(`isLegalStateData`);
+    try {
+      o = JSON.parse(o);
+
+      if (Object.keys(o).length !== undoProps.length) {
+        console.log("props length");
+        return false;
+      }
+      if (typeof o.score !== "number") {
+        console.log("score");
+        return false;
+      }
+      if (
+        typeof o.tags !== "object" ||
+        Object.entries(o.tags).some(
+          ([k, v]) => !isTag(k) || typeof v !== "number"
+        )
+      ) {
+        console.log("tags");
+        return false;
+      }
+      if (
+        typeof o.actionTokens !== "object" ||
+        Object.entries(o.actionTokens).some(
+          ([k, v]) => !isActionType(k) || typeof v !== "number"
+        )
+      ) {
+        console.log("action tokens");
+        return false;
+      }
+      if (
+        typeof o.heroes !== "object" ||
+        Object.entries(o.heroes).some(
+          ([k, v]) => !isHeroKey(k) || !isHeroState(v)
+        )
+      ) {
+        console.log("heroes");
+        return false;
+      }
+      if (
+        typeof o.equipment !== "object" ||
+        Object.entries(o.equipment).some(
+          ([k, v]) =>
+            !(isHeroKey(k) || k === "GENERIC") ||
+            !Array.isArray(v) ||
+            !v.every((e) => isEquipKey(e))
+        )
+      ) {
+        console.log("equipment");
+        return false;
+      }
+      if (
+        !Array.isArray(o.teams) ||
+        !o.teams.every((t: string) => typeof t === "string" && isTeamKey(t))
+      ) {
+        console.log("teams");
+        return false;
+      }
+      if (
+        !Array.isArray(o.pets) ||
+        !o.pets.every((p: string) => typeof p === "string" && isPetKey(p))
+      ) {
+        console.log("pets");
+        return false;
+      }
+      if (
+        !Array.isArray(o.misc) ||
+        !o.misc.every((m: string) => typeof m === "string" && isMiscKey(m))
+      ) {
+        console.log("misc");
+        return false;
+      }
+      if (
+        typeof o.specialRewards !== "object" ||
+        Object.entries(o.specialRewards).some(
+          ([k, v]) => !isSpecialReward(k) || typeof v !== "number"
+        )
+      ) {
+        console.log("special rewards");
+        return false;
+      }
+      if (
+        !Array.isArray(o.infinityStones) ||
+        !o.infinityStones.every(
+          (inf: string) => typeof inf === "string" && isInfinityKey(inf)
+        )
+      ) {
+        console.log("infinity stones");
+        return false;
+      }
+      if (
+        !Array.isArray(o.completedBtns) ||
+        !o.completedBtns.every((s: string) => typeof s === "string")
+      ) {
+        console.log("completed buttons");
+        return false;
+      }
+      if (
+        !Array.isArray(o.connectedPaths) ||
+        !o.connectedPaths.every((s: string) => typeof s === "string")
+      ) {
+        console.log("connected paths");
+        return false;
+      }
+      if (
+        typeof o.achievements !== "object" ||
+        Object.entries(o.achievements).some(
+          ([k, v]) => !isAchievement(k) || typeof v !== "boolean"
+        )
+      ) {
+        console.log("achievements");
+        return false;
+      }
+      if (typeof o.counts !== "object" || !isCounts(o.counts)) {
+        console.log("counts");
+        return false;
+      }
+
+      console.log("true");
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  };
 
   const loadState = (s: string) => {
     const state = JSON.parse(s);
@@ -739,12 +870,12 @@ export const useGameStatus = (): IGameStatus => {
   useEffect(() => {
     // initial load data
     const saveData = localStorage?.getItem("save-data");
-    if (saveData) {
+    if (saveData && isLegalStateData(saveData)) {
       loadState(saveData);
       setStack([saveData]);
-    } else {
-      pushToStack();
+      return;
     }
+    pushToStack();
   }, []);
 
   const pushToStack = () => {
