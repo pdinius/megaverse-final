@@ -12,23 +12,16 @@ import styles from "./App.module.scss";
 function App() {
   const status = useGameStatus();
 
-  const debugInfo = {
-    heroes: status.heroes
-  };
-
   return (
     <statusContext.Provider value={status}>
-      <Map />
-      <Drawer />
+      <div className={styles.mapContainer}>
+        <Drawer />
+        <Map />
+      </div>
       <Modal>
         <GameSetup />
       </Modal>
       <Toast />
-      <pre
-        className={styles.debug}
-      >
-        {JSON.stringify(debugInfo, null, 2)}
-      </pre>
     </statusContext.Provider>
   );
 }

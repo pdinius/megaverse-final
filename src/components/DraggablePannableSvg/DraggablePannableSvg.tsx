@@ -34,7 +34,6 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
   ...props
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<SVGSVGElement>(null);
 
   const [top, setTop] = useState<number>(0);
   const [left, setLeft] = useState<number>(0);
@@ -46,21 +45,16 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
   let handleY = -1;
 
   useEffect(() => {
-    if (dragRef.current === null || typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-    setScale(
-      Math.max(
-        window.innerWidth / dragRef.current.clientWidth,
-        window.innerHeight / dragRef.current.clientHeight
-      )
-    );
+    setScale(Math.max(window.innerWidth / width, window.innerHeight / height));
 
     const resizeIfNecessary = () => {
-      if (dragRef.current === null || window === undefined) return;
+      if (window === undefined) return;
 
       const minScale = Math.max(
-        window.innerWidth / dragRef.current.clientWidth,
-        window.innerHeight / dragRef.current.clientHeight
+        window.innerWidth / width,
+        window.innerHeight / height
       );
       const boundedScale = bounded(scale, 1, minScale);
 
@@ -76,14 +70,14 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
     return () => {
       window?.removeEventListener("resize", resizeIfNecessary);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dragHandler = (e: MouseEvent) => {
     e.preventDefault();
     setCursor("grabbing");
 
-    if (wrapperRef.current === null || dragRef.current === null) {
+    if (wrapperRef.current === null) {
       throw Error(
         "Attempted to get bounds and mouse position while a ref was null"
       );
@@ -94,8 +88,8 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
     // GET BOUNDS:
     const wrapperWidth = wrapperRef.current.clientWidth;
     const wrapperHeight = wrapperRef.current.clientHeight;
-    const dragWidth = dragRef.current.clientWidth * scale;
-    const dragHeight = dragRef.current.clientHeight * scale;
+    const dragWidth = width * scale;
+    const dragHeight = height * scale;
 
     // GET LEFT AND TOP OFFSETS:
     const mousePositionX = e.pageX - handleX * scale;
@@ -108,7 +102,7 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
   const touchDragHandler = (e: TouchEvent) => {
     e.preventDefault();
 
-    if (wrapperRef.current === null || dragRef.current === null) {
+    if (wrapperRef.current === null) {
       throw Error(
         "Attempted to get bounds and mouse position while a ref was null"
       );
@@ -126,8 +120,8 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
       // GET BOUNDS:
       const wrapperWidth = wrapperRef.current.clientWidth;
       const wrapperHeight = wrapperRef.current.clientHeight;
-      const dragWidth = dragRef.current.clientWidth * scale;
-      const dragHeight = dragRef.current.clientHeight * scale;
+      const dragWidth = width * scale;
+      const dragHeight = height * scale;
 
       // GET LEFT AND TOP OFFSETS:
       const { screenX, screenY } = e.changedTouches[0];
@@ -165,7 +159,6 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
   const handleWheelEvent: WheelEventHandler<SVGSVGElement> = (e) => {
     if (
       typeof window === "undefined" ||
-      dragRef.current === null ||
       wrapperRef.current === null ||
       left === undefined ||
       top === undefined
@@ -175,37 +168,50 @@ const DraggablePannableSvg: FC<DraggablePannableSvgProps> = ({
 
     const wrapperWidth = wrapperRef.current.clientWidth;
     const wrapperHeight = wrapperRef.current.clientHeight;
-    const dragWidth = dragRef.current.clientWidth;
-    const dragHeight = dragRef.current.clientHeight;
     const newScale = bounded(
       scale + (e.deltaY < 0 ? 0.1 : -0.1),
       1,
-      Math.max(window.innerWidth / dragWidth, window.innerHeight / dragHeight)
+      Math.max(window.innerWidth / width, window.innerHeight / height)
     );
     const widthChange =
-      (((e.nativeEvent.pageX - left) * (1 / scale)) / dragWidth) *
-      Math.round(dragWidth * newScale - dragWidth * scale);
+      (((e.nativeEvent.pageX - left) * (1 / scale)) / width) *
+      Math.round(width * newScale - width * scale);
     const heightChange =
-      (((e.nativeEvent.pageY - top) * (1 / scale)) / dragHeight) *
-      Math.round(dragHeight * newScale - dragHeight * scale);
+      (((e.nativeEvent.pageY - top) * (1 / scale)) / height) *
+      Math.round(height * newScale - height * scale);
     const newTop = bounded(
       top - heightChange,
       0,
-      -(dragHeight * newScale - wrapperHeight)
+      -(height * newScale - wrapperHeight)
     );
     const newLeft = bounded(
       left - widthChange,
       0,
-      -(dragWidth * newScale - wrapperWidth)
+      -(width * newScale - wrapperWidth)
     );
 
     animateZoom(newScale - scale, newTop - top, newLeft - left);
   };
 
+  useEffect(() => {
+    if (wrapperRef.current === null) return;
+    const resizeObserver = new ResizeObserver((entries) => {
+      const wrapperHeight = entries[0].target.clientHeight;
+      setScale((s) => {
+        setTop((curr) => {
+          const dragHeight = height * s;
+          return bounded(curr, 0, -(dragHeight - wrapperHeight));
+        });
+        return s;
+      });
+    });
+    resizeObserver.observe(wrapperRef.current);
+    return () => resizeObserver.disconnect();
+  }, [height]);
+
   return (
     <div ref={wrapperRef} className={styles.OverflowWrapper}>
       <svg
-        ref={dragRef}
         style={{
           ...style,
           top: top === undefined ? "auto" : `${top}px`,

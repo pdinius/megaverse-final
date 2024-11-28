@@ -15,3 +15,11 @@
     opacity: 0.2;
   }
 }
+
+.mapContainer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

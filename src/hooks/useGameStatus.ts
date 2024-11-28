@@ -7,16 +7,15 @@ import {
   CurrentAction,
   DRAWER_ACTIONS,
   HeroState,
+  IGameStatus,
 } from "../types/game-status";
 import {
   ACTION_TYPES,
-  ActionType,
   Area,
   InfinityStone,
   isActionType,
   isSpecialReward,
   isTag,
-  SpecialReward,
   Tag,
 } from "../types/general";
 import { HeroKey, isFantasticHero, isHeroKey } from "../types/heroes";
@@ -35,7 +34,6 @@ import {
   combinedOverlays,
   combinedPaths,
 } from "../lib/svg-info";
-import { heroAreaLookup } from "../lib/hero-area-lookup";
 import { teamToHeroLookup } from "../lib/team-lookup";
 import {
   ALPHA_FLIGHT_ACHIEVEMENTS,
@@ -94,13 +92,11 @@ import {
   achievementToKeyLookup,
   unlockAllAchievementRequirements,
 } from "../lib/achievements";
-import { Path } from "../types/svg";
 import { ChoiceSelectorProps } from "../components/GameSetup/ChoiceSelector/ChoiceSelector";
 import { petIconSrcs } from "../lib/pet-icons";
 import { translations } from "../lib/translations";
 import { equipmentIconSrcs } from "../lib/equip-icons";
 import { teamIconSrcs } from "../lib/team-icons";
-import { VillainKey } from "../types/villain";
 import {
   achievementRewards,
   heroWinToAchievementLookup,
@@ -242,7 +238,7 @@ export const useGameStatus = (): IGameStatus => {
     if (h === "SCARLET_WITCH" && "SCARLET_WITCH_2" in heroes) return;
     if (h === "QUICKSILVER_2" && "QUICKSILVER" in heroes) return;
     if (h === "QUICKSILVER" && "QUICKSILVER_2" in heroes) return;
-    
+
     setHeroes((curr) => {
       const res = { ...curr };
       if (h === "SILVER_SURFER_2" && "SILVER_SURFER" in res) {
@@ -831,29 +827,14 @@ export const useGameStatus = (): IGameStatus => {
   //#endregion
 
   //#region tags and special rewards (e.g., recover)
-  const isTagOrSpecialRewardClickable = (t: Tag | SpecialReward): boolean => {
+  const isTagClickable = (t: Tag): boolean => {
     if (orTagChoosingQueue.length) {
       return (
         orTagChoosingQueue.length > 0 &&
         orTagChoosingQueue[0].includes(t as Tag)
       );
     }
-    switch (currentAction) {
-      case "resolvingRecover":
-        return (
-          specialRewards.RECOVER > 0 &&
-          t === "RECOVER" &&
-          Object.values(heroes).some((h) => h.dead)
-        );
-      case "resolvingRecoverF4":
-        return (
-          specialRewards.RECOVER_F4 > 0 &&
-          t === "RECOVER_F4" &&
-          Object.values(heroes).some((h) => h.dead)
-        );
-      default:
-        return false;
-    }
+    return false;
   };
 
   const tagClickHandler = (t: Tag) => {
@@ -868,8 +849,26 @@ export const useGameStatus = (): IGameStatus => {
     }
   };
 
-  const specialRewardClickHandler = (sr: SpecialReward) => {
-    switch (sr) {
+  const isRecoverButtonClickable = (r: "RECOVER" | "RECOVER_F4"): boolean => {
+    if (blocked) return false;
+    switch (r) {
+      case "RECOVER":
+        return (
+          specialRewards.RECOVER > 0 &&
+          Object.values(heroes).some((h) => h.dead)
+        );
+      case "RECOVER_F4":
+        return (
+          specialRewards.RECOVER_F4 > 0 &&
+          Object.values(heroes).some((h) => h.dead)
+        );
+      default:
+        return false;
+    }
+  };
+
+  const recoverButtonClickHandler = (r: "RECOVER" | "RECOVER_F4") => {
+    switch (r) {
       case "RECOVER":
         setCurrentAction("resolvingRecover");
         break;
@@ -1291,7 +1290,7 @@ export const useGameStatus = (): IGameStatus => {
     heroRoster,
     isHeroClickable,
     isPortalButtonClickable,
-    isTagOrSpecialRewardClickable,
+    isTagClickable,
     infinityStones,
     modalOpen,
     modifySpendingActionTokens,
@@ -1300,7 +1299,8 @@ export const useGameStatus = (): IGameStatus => {
     resetClickHandler,
     score,
     showActionTokensAccordion,
-    specialRewardClickHandler,
+    isRecoverButtonClickable,
+    recoverButtonClickHandler,
     specialRewards,
     spendingActionTokens,
     tagClickHandler,
@@ -1320,73 +1320,5 @@ export const useGameStatus = (): IGameStatus => {
     resolveDeadpool,
     resolveDeadpoolVictim,
     team: teamRoster.keys().next().value,
-    // ! DELETE LATER:
-    stackLen: stack.length,
-    counts,
-    teams: Array.from(teams),
-    queue: orTagChoosingQueue,
   };
 };
-
-interface IGameStatus {
-  actionTokens: { [key in ActionType]: number };
-  areHeroesDead: boolean;
-  availableButtons: Array<string>;
-  avxHeroes: Array<HeroKey>;
-  btnClickHandler: (key: string) => void;
-  chained: Array<HeroKey>;
-  crossoverHeroes: Array<HeroKey>;
-  currentAction: CurrentAction;
-  currentBtnClicked: string;
-  deadHeroes: Array<HeroKey>;
-  drawerOpen: boolean;
-  equipment: { [key in HeroKey | "GENERIC"]?: Array<EquipKey> };
-  heroes: { [key in HeroKey]?: HeroState };
-  generateTeamChoiceListProps: () => ChoiceSelectorProps<TeamKey>;
-  generatePetChoiceListProps: () => ChoiceSelectorProps<PetKey>;
-  generateEquipChoiceListProps: () => ChoiceSelectorProps<EquipKey>;
-  getAchievementSVGPathStrings: () => Array<string>;
-  getCurrentVillain: () => VillainKey | null;
-  getLegalHeroesForFight: () => Array<HeroKey>;
-  getPathSVGPathInfo: () => Array<Path | Array<Path>>;
-  getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
-  getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
-  heroClickHandler: (h: HeroKey) => void;
-  heroRoster: Set<HeroKey>;
-  isHeroClickable: (h: HeroKey) => boolean;
-  isPortalButtonClickable: () => boolean;
-  isTagOrSpecialRewardClickable: (t: Tag | SpecialReward) => boolean;
-  infinityStones: Array<InfinityStone>;
-  modalOpen: boolean;
-  modifySpendingActionTokens: (a: ActionType, q: number) => void;
-  multiverseHeroes: Array<HeroKey>;
-  portalButtonClickHandler: () => void;
-  resetClickHandler: (cancel?: boolean) => void;
-  score: number;
-  showActionTokensAccordion: () => boolean;
-  specialRewardClickHandler: (sr: SpecialReward) => void;
-  specialRewards: { [key in SpecialReward]: number };
-  spendingActionTokens: { [key in ActionType]: number };
-  tagClickHandler: (t: Tag) => void;
-  tags: { [key in Tag]: number };
-  toast: { open: boolean; message: string };
-  toggleCampHammond: () => void;
-  toggleDangerRoom: () => void;
-  toggleDrawerOpen: (b?: boolean) => void;
-  toggleModalOpen: (b?: boolean) => void;
-  undo: () => void;
-  undoDisabled: boolean;
-  usingCampHammond: boolean;
-  usingDangerRoom: boolean;
-  areGameResolutionButtonsClickable: () => boolean;
-  won: () => void;
-  lost: () => void;
-  resolveDeadpool: (score: number) => void;
-  resolveDeadpoolVictim: () => void;
-  team?: TeamKey;
-  // ! DELETE LATER:
-  stackLen: number;
-  counts: ReturnType<typeof getStartingCounts>;
-  teams?: Array<TeamKey>;
-  queue: Array<Array<Tag>>;
-}

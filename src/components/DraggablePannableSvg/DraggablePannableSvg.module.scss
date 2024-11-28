@@ -1,9 +1,10 @@
 .OverflowWrapper {
-  position: absolute;
+  position: relative;
   inset: 0;
   background: black;
   overflow: hidden;
   display: flex;
+  flex-grow: 1;
 }
 
 .drag {

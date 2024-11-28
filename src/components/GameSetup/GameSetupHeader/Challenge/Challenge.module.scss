@@ -8,12 +8,20 @@
   cursor: help;
 }
 
-.card {
+.cardContainer {
   position: absolute;
-  width: 250px;
   top: 3rem;
-  left: calc(50% - 125px);
+  width: 2.75rem;
   z-index: 999;
+  display: flex; 
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.card {
+  max-width: 400px;
+  max-height: 400px;
   filter: drop-shadow(5px 0 5px rgb(0 0 0 / 0.75));
   transition: opacity 0.1s ease;
   pointer-events: none;

@@ -14,6 +14,9 @@ import sentinelIII from "../assets/challenge-cards/sentinel-iii.png";
 import takeover from "../assets/challenge-cards/takeover.png";
 import titania from "../assets/challenge-cards/titania.png";
 import winterGuard from "../assets/challenge-cards/winter-guard.png";
+import random from "../assets/challenge-cards/random.png";
+import shapeshifter from "../assets/challenge-cards/shapeshifter.png";
+import noEquipment from "../assets/challenge-cards/no-equipment.png";
 
 export const challengeSrcs: { [key in Challenge]: string } = {
   carnage,
@@ -22,20 +25,15 @@ export const challengeSrcs: { [key in Challenge]: string } = {
   finFangFoom,
   hard,
   hazardousLocations,
-  infinityGauntlet: "",
   moderate,
-  modularHeralds: "",
-  noEquipment: "",
+  noEquipment,
   planB,
-  random: "",
-  secondBroodQueen: "",
+  random,
   secretIdentity,
   sentinelI,
   sentinelII,
   sentinelIII,
-  shapeshifter: "",
-  startWithMove: "",
-  startWithTwoMove: "",
+  shapeshifter,
   takeover,
   titania,
   winterGuard,

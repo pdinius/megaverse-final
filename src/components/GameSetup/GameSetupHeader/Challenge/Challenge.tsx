@@ -19,9 +19,16 @@ export const Challenge: FC<ChallengeProps> = ({ challenges }) => {
         onMouseOver={() => setShowCard(true)}
         onMouseOut={() => setShowCard(false)}
       />
-      {challenges.map((c, i) => (
-        <img key={i} src={challengeSrcs[c]} className={styles.card} style={{ opacity: showCard ? 1 : 0}} />
-      ))}
+      <div className={styles.cardContainer}>
+        {challenges.map((c, i) => (
+          <img
+            key={i}
+            src={challengeSrcs[c]}
+            className={styles.card}
+            style={{ opacity: showCard ? 1 : 0 }}
+          />
+        ))}
+      </div>
     </div>
   ) : null;
 };

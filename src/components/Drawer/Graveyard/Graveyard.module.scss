@@ -77,3 +77,10 @@
   font-family: Amboy;
   color: #999;
 }
+
+.recoverContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}

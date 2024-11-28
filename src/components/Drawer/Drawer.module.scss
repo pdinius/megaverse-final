@@ -2,18 +2,28 @@
 
 .container {
   --fill-color: #ffffff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  width: 100vw;
   background: var(--fill-color);
   border-bottom: 2px solid $dark-blue;
-  transition: transform 0.3s ease;
-  max-height: calc(100vh - 2rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 5px 3px rgb(0 0 0 / 0.3);
+  z-index: 1;
+}
+
+.contentContainer {
+  width: 100%;
+  transition: height 0.2s ease;
+  overflow: hidden;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
 }
 
 .scoreAndSpecialContainer {
@@ -49,4 +59,65 @@
   display: flex;
   gap: 0.5rem;
   justify-content: flex-end;
+}
+
+.handle {
+  position: relative;
+  line-height: 0;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+
+  & * {
+    font-family: "Amboy";
+    color: $dark-blue;
+  }
+}
+
+.handleInfo {
+  display: flex;
+  transition: all 0.4s ease;
+  gap: 2rem;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.tags {
+  padding: 0.25rem 1rem;
+  background: #ddd;
+  border-radius: 0.25rem;
+}
+
+.openButton {
+  border: none;
+  line-height: 0;
+  background: none;
+  outline: transparent;
+  border-left: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  transition: width 0.4s ease, background-color 0.2s ease;
+
+  &:hover {
+    background: #eee;
+    cursor: pointer;
+  }
+}
+
+.trophyIcon,
+.infoIcon,
+.bars {
+  fill: $dark-blue;
+}
+
+.trophyIcon,
+.bars {
+  height: 1rem;
+}
+
+.infoIcon {
+  height: 1.25rem;
 }

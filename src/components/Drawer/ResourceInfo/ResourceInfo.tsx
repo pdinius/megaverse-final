@@ -9,32 +9,32 @@ interface ResourceInfoProps {
 }
 
 const ResourceInfo: FC<ResourceInfoProps> = ({ item }) => {
-  const {
-    tags,
-    specialRewards,
-    tagClickHandler,
-    specialRewardClickHandler,
-    isTagOrSpecialRewardClickable,
-  } = useContext(statusContext);
+  const { tags, specialRewards, tagClickHandler, isTagClickable } =
+    useContext(statusContext);
 
-  const qtx = isTag(item) ? tags[item] : specialRewards[item];
-
-  return (
+  return isTag(item) ? (
     <div
       className={`${styles.resourceContainer} ${
-        qtx > 0 || isTagOrSpecialRewardClickable(item) ? "" : styles.transparent
+        tags[item] > 0 || isTagClickable(item) ? "" : styles.transparent
       }`}
     >
       <img
         src={resourceSrcs[item]}
         className={`${styles.resourceIcon} ${
-          isTagOrSpecialRewardClickable(item) ? "clickable-resource" : ""
+          isTagClickable(item) ? "clickable-resource" : ""
         }`}
-        onClick={() =>
-          isTag(item) ? tagClickHandler(item) : specialRewardClickHandler(item)
-        }
+        onClick={() => tagClickHandler(item)}
       />
-      <span className={styles.qtx}>{qtx}</span>
+      <span className={styles.qtx}>{tags[item]}</span>
+    </div>
+  ) : (
+    <div
+      className={`${styles.resourceContainer} ${
+        specialRewards[item] > 0 ? "" : styles.transparent
+      }`}
+    >
+      <img src={resourceSrcs[item]} className={styles.resourceIcon} />
+      <span className={styles.qtx}>{specialRewards[item]}</span>
     </div>
   );
 };

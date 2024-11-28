@@ -1,20 +1,12 @@
-import { MouseEventHandler } from "react";
 import { ActionType, Area, InfinityStone, SpecialReward, Tag } from "./general";
 import { TeamKey } from "./teams";
 import { PetKey } from "./pets";
 import { HeroKey } from "./heroes";
 import { EquipKey } from "./equipment";
-
-interface ChoiceListProps<T extends string> {
-  title: string;
-  subtitle?: string;
-  data: Array<T>;
-  srcs: { [key in T]?: string };
-  selection: Set<T>;
-  itemClickHandler: (v: T) => void;
-  itemClickable: (v: T) => boolean;
-  titleGenerator: (v: T) => string;
-}
+import { ChoiceSelectorProps } from "../components/GameSetup/ChoiceSelector/ChoiceSelector";
+import { VillainKey } from "./villain";
+import { Path } from "./svg";
+import { VillainInfo } from "../lib/villain-info";
 
 export type Achievement =
   | "win_with_beast"
@@ -96,63 +88,60 @@ export interface HeroState {
 }
 
 export interface IGameStatus {
-  achievements: Achievements;
   actionTokens: { [key in ActionType]: number };
+  areGameResolutionButtonsClickable: () => boolean;
+  areHeroesDead: boolean;
   availableButtons: Array<string>;
-  blocked: boolean;
-  btnClickHandler: (key: string, moved: boolean) => MouseEventHandler;
-  canRecover: (h: HeroKey) => boolean;
+  avxHeroes: Array<HeroKey>;
+  btnClickHandler: (key: string) => void;
   chained: Array<HeroKey>;
-  clearCurrentAction: () => void;
-  completed: Array<string>;
-  connected: Array<string>;
-  cooldown: [Array<HeroKey>, Array<HeroKey>];
+  crossoverHeroes: Array<HeroKey>;
   currentAction: CurrentAction;
   currentBtnClicked: string;
-  endFight: () => void;
-  equipment: { [key in HeroKey]?: Array<EquipKey> };
-  equipRoster: Set<EquipKey>;
-  generateEquipChoiceListProps: () => ChoiceListProps<EquipKey>;
-  generatePetChoiceListProps: () => ChoiceListProps<PetKey>;
-  generateTeamChoiceListProps: () => ChoiceListProps<TeamKey>;
-  getArea: (btnKey: string) => Area;
-  getHeroesAvX: () => HeroKey[];
-  getHeroesCrossover: () => HeroKey[];
-  getHeroesMultiverse: () => HeroKey[];
-  heroChoices: Array<HeroKey>;
-  heroesDead: Array<HeroKey>;
+  deadHeroes: Array<HeroKey>;
+  drawerOpen: boolean;
+  equipment: { [key in HeroKey | "GENERIC"]?: Array<EquipKey> };
+  generateEquipChoiceListProps: () => ChoiceSelectorProps<EquipKey>;
+  generatePetChoiceListProps: () => ChoiceSelectorProps<PetKey>;
+  generateTeamChoiceListProps: () => ChoiceSelectorProps<TeamKey>;
+  getAchievementSVGPathStrings: () => Array<string>;
+  getCurrentVillain: () => VillainKey | null;
+  getLegalHeroesForFight: () => Array<HeroKey>;
+  getPathSVGPathInfo: () => Array<Path | Array<Path>>;
+  getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
+  getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
+  heroClickHandler: (h: HeroKey) => void;
+  heroes: { [key in HeroKey]?: HeroState };
+  heroRoster: Set<HeroKey>;
   infinityStones: Array<InfinityStone>;
-  isDrawerHeroClickable: (h: HeroKey) => boolean;
-  isRosterHeroClickable: (h: HeroKey) => boolean;
-  isTagClickable: (t: Tag | SpecialReward) => boolean;
-  isTooManyPets: () => boolean;
+  isHeroClickable: (h: HeroKey) => boolean;
+  isPortalButtonClickable: () => boolean;
+  isRecoverButtonClickable: (r: "RECOVER" | "RECOVER_F4") => boolean;
+  isTagClickable: (t: Tag) => boolean;
   lost: () => void;
   modalOpen: boolean;
-  modifyActionTokens: (a: ActionType, qtx: number) => void;
-  petRoster: Set<PetKey>;
-  recoverHero: (h: HeroKey) => void;
-  recruitedHeroes: Array<HeroKey>;
-  resetClickHandler: () => void;
+  modifySpendingActionTokens: (a: ActionType, q: number) => void;
+  multiverseHeroes: Array<HeroKey>;
+  portalButtonClickHandler: () => void;
+  recoverButtonClickHandler: (r: "RECOVER" | "RECOVER_F4") => void;
+  resetClickHandler: (cancel?: boolean) => void;
   resolveDeadpool: (score: number) => void;
   resolveDeadpoolVictim: () => void;
-  roster: Set<HeroKey>;
   score: number;
+  showActionTokensAccordion: () => boolean;
   specialRewards: { [key in SpecialReward]: number };
-  spendButtonClickHandler: (action: CurrentAction) => void;
-  spentActionTokens: { [key in ActionType]: number };
-  tagClickHandler: (t: Tag | SpecialReward) => void;
+  spendingActionTokens: { [key in ActionType]: number };
+  tagClickHandler: (t: Tag) => void;
   tags: { [key in Tag]: number };
-  teamRoster: Set<TeamKey>;
-  toast: string;
+  team?: TeamKey;
+  toast: { open: boolean; message: string };
   toggleCampHammond: () => void;
   toggleDangerRoom: () => void;
+  toggleDrawerOpen: (b?: boolean) => void;
   toggleModalOpen: (b?: boolean) => void;
-  toggleRosterHero: (h: HeroKey) => void;
-  undo: (prev?: string) => void;
+  undo: () => void;
   undoDisabled: boolean;
-  unearnedPaths: () => Array<string>;
-  unlockedHeroesClickHandler: (h: HeroKey) => void;
-  useCampHammond: boolean;
-  useDangerRoom: boolean;
+  usingCampHammond: boolean;
+  usingDangerRoom: boolean;
   won: () => void;
 }

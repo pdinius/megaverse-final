@@ -8,20 +8,15 @@ export type Challenge =
   | "finFangFoom"
   | "hard"
   | "hazardousLocations"
-  | "infinityGauntlet"
   | "moderate"
-  | "modularHeralds"
   | "noEquipment"
   | "planB"
   | "random"
-  | "secondBroodQueen"
   | "secretIdentity"
   | "sentinelI"
   | "sentinelII"
   | "sentinelIII"
   | "shapeshifter"
-  | "startWithMove"
-  | "startWithTwoMove"
   | "takeover"
   | "titania"
   | "winterGuard";
@@ -32,6 +27,7 @@ export interface VillainInfo {
   challenge?: Array<Challenge>;
   location?: Array<string>;
   infinity?: InfinityStone;
+  specialRules?: string;
   checkmark: string;
   overlay: string;
   slash: string;
@@ -135,7 +131,7 @@ export const villainInfo: {
   FINALITY_MODULAR_HERALDS_6: {
     key: "MODULAR_HERALDS",
     points: 7,
-    challenge: ["modularHeralds"],
+    specialRules: "modularHeralds",
     checkmark:
       "M4869.33,200.281a2.422,2.422,0,1,1,3.43,3.421c-0.95.945-18.39,18.386-19.33,19.331a2.431,2.431,0,0,1-3.43,0c-0.94-.945-8.71-8.721-9.66-9.666a2.419,2.419,0,0,1,3.42-3.422c0.69,0.689,5.44,5.433,7.96,7.955C4851.72,217.9,4868.39,201.226,4869.33,200.281Z",
     overlay:
@@ -271,7 +267,7 @@ export const villainInfo: {
   STARS_BROOD_QUEEN_1: {
     key: "BROOD_QUEEN",
     points: 5,
-    challenge: ["secondBroodQueen"],
+    specialRules: "secondBroodQueen",
     checkmark:
       "M7031.75,1566.28a2.418,2.418,0,0,1,3.42,3.42c-0.94.95-18.38,18.39-19.33,19.33a2.408,2.408,0,0,1-3.42,0l-9.66-9.66a2.418,2.418,0,1,1,3.42-3.42c0.69,0.68,5.43,5.43,7.95,7.95C7014.13,1583.9,7030.81,1567.23,7031.75,1566.28Z",
     overlay:
@@ -1626,7 +1622,7 @@ export const villainInfo: {
   AVX_SABRETOOTH_157: {
     key: "SABRETOOTH",
     points: 3,
-    challenge: ["startWithMove"],
+    specialRules: "startWithMove",
     checkmark:
       "M3391.89,3191.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S3390.66,3192.57,3391.89,3191.33Z",
     overlay:
@@ -1751,7 +1747,8 @@ export const villainInfo: {
   AVX_SAURON_204: {
     key: "SAURON",
     points: 4,
-    challenge: ["endangeredLocations", "startWithTwoMove"],
+    challenge: ["endangeredLocations"],
+    specialRules: "startWithTwoMove",
     checkmark:
       "M2567.89,3094.33a3.168,3.168,0,1,1,4.48,4.48l-25.29,25.29a3.163,3.163,0,0,1-4.48,0c-1.24-1.23-11.41-11.41-12.65-12.64a3.168,3.168,0,0,1,4.48-4.48l10.41,10.41S2566.66,3095.57,2567.89,3094.33Z",
     overlay:
@@ -1835,7 +1832,7 @@ export const villainInfo: {
   AVX_THANOS_192: {
     key: "THANOS",
     points: 10,
-    challenge: ["infinityGauntlet"],
+    specialRules: "infinityGauntlet",
     checkmark:
       "M4130.5,5827.64a3.461,3.461,0,0,1,4.89,4.9l-27.64,27.64a3.458,3.458,0,0,1-4.89,0l-13.82-13.82a3.461,3.461,0,1,1,4.89-4.9l11.38,11.38Z",
     overlay:

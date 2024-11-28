@@ -3,6 +3,7 @@ import styles from "./Graveyard.module.scss";
 import HeroGrid from "../../HeroGrid/HeroGrid";
 import { statusContext } from "../../../StatusContext";
 import ResourceInfo from "../ResourceInfo/ResourceInfo";
+import SpendButton from "../Button/SpendButton";
 
 const Graveyard: FC = () => {
   const { deadHeroes, isHeroClickable } = useContext(statusContext);
@@ -20,8 +21,14 @@ const Graveyard: FC = () => {
         />
       </div>
       <div className={styles.right}>
-        <ResourceInfo item="RECOVER" />
-        <ResourceInfo item="RECOVER_F4" />
+        <div className={styles.recoverContainer}>
+          <ResourceInfo item="RECOVER" />{" "}
+          <SpendButton action={"resolvingRecover"} />
+        </div>
+        <div className={styles.recoverContainer}>
+          <ResourceInfo item="RECOVER_F4" />{" "}
+          <SpendButton action={"resolvingRecoverF4"} />
+        </div>
       </div>
     </div>
   );

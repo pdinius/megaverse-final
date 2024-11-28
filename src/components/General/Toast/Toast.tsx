@@ -12,7 +12,7 @@ const Toast: FC<ToastProps> = () => {
 
   const star = (
     <div className={styles.starContainer}>
-      <Icon which={"star"} className={styles.star} />
+      <Icon which={"STAR"} className={styles.star} />
     </div>
   );
 

@@ -6,7 +6,7 @@ import equipmentBadge from "../../../../assets/badges/equipment.png";
 import fantasticFourBadge from "../../../../assets/badges/fantastic-four.png";
 import chainedBadge from "../../../../assets/badges/chained.png";
 import portalBadge from "../../../../assets/badges/portal.png";
-import teamBadge from "../../../../assets/badges/team.jpg";
+import teamBadge from "../../../../assets/badges/team.png";
 import { statusContext } from "../../../../StatusContext";
 import { HeroKey, isFantasticHero } from "../../../../types/heroes";
 import { translations } from "../../../../lib/translations";

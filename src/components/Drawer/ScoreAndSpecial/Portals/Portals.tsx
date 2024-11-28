@@ -3,7 +3,7 @@ import styles from "./Portals.module.scss";
 import portal from "../../../../assets/icons/portal.png";
 import upperStyles from "../ScoreAndSpecial.module.scss";
 import { statusContext } from "../../../../StatusContext";
-import PortalButton from "../../Button/PortalButton";
+import SpendButton from "../../Button/SpendButton";
 
 const Portals: FC = () => {
   const { specialRewards } = useContext(statusContext);
@@ -16,7 +16,7 @@ const Portals: FC = () => {
     >
       <img src={portal} className={styles.portal} />
       <span className={styles.portalText}>{specialRewards.PORTAL}</span>
-      <PortalButton />
+      <SpendButton action={"spendingPortal"} />
     </div>
   );
 };
