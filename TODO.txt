@@ -4,3 +4,6 @@ finish making pictures for other special rules:
   secondBroodQueen
   modularHeralds
   infinityGauntlet
+Dark Avengers should connect to void if coming from other side
+center carousel in the accordions
+add serialize state
