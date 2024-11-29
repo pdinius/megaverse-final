@@ -7,3 +7,5 @@ finish making pictures for other special rules:
 Dark Avengers should connect to void if coming from other side
 center carousel in the accordions
 add serialize state
+reset team when closing game setup
+let toggle team when clicking selected team

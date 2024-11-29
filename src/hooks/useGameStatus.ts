@@ -223,7 +223,10 @@ export const useGameStatus = (): IGameStatus => {
   //#region modal
   const toggleModalOpen = (b?: boolean) => {
     setModalOpen(b === undefined ? !modalOpen : b);
-    if (modalOpen || b === false) setCurrentAction("");
+    if ((modalOpen && b === undefined) || b === false) {
+      setCurrentAction("");
+      setTeamRoster(new Set());
+    }
   };
   //#endregion
 
@@ -871,7 +874,7 @@ export const useGameStatus = (): IGameStatus => {
 
   const getCode = () => {
     return serializeState(stack[stack.length - 1]);
-  }
+  };
 
   useEffect(() => {
     // initial load data
@@ -1210,7 +1213,11 @@ export const useGameStatus = (): IGameStatus => {
       srcs: teamIconSrcs,
       selection: teamRoster,
       itemClickHandler: (t) => {
-        setTeamRoster(new Set([t]));
+        if (teamRoster.keys().next().value === t) {
+          setTeamRoster(new Set());
+        } else {
+          setTeamRoster(new Set([t]));
+        }
       },
       itemClickable: (t) => {
         return (
