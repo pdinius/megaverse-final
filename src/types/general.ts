@@ -62,7 +62,7 @@ export type SpecialReward = (typeof SPECIAL_REWARD)[number];
 export const isSpecialReward = (s: string): s is SpecialReward =>
   SPECIAL_REWARD.includes(s as SpecialReward);
 
-const INFINITY_STONES = [
+export const INFINITY_STONES = [
   "INFINITY_RED",
   "INFINITY_ORANGE",
   "INFINITY_YELLOW",

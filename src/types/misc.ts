@@ -1,4 +1,4 @@
-const MISC_LIST = ["HYBRID_DECK", "PHAGE", "LASHER", "AGONY", "RIOT"] as const;
+export const MISC_LIST = ["HYBRID_DECK", "PHAGE", "LASHER", "AGONY", "RIOT"] as const;
 
 export type MiscKey = (typeof MISC_LIST)[number];
 

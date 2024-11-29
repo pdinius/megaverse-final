@@ -1,4 +1,4 @@
-const TEAM_LIST = [
+export const TEAM_LIST = [
   "TEAM_A_FORCE",
   "TEAM_ALPHA_FLIGHT",
   "TEAM_ASGARDIANS_ALLIES",

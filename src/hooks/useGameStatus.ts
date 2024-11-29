@@ -22,14 +22,9 @@ import {
   isTag,
   Tag,
 } from "../types/general";
-import {
-  HERO_LIST,
-  HeroKey,
-  isFantasticHero,
-  isHeroKey,
-} from "../types/heroes";
+import { HeroKey, isFantasticHero, isHeroKey } from "../types/heroes";
 import { isTeamKey, TeamKey } from "../types/teams";
-import { EQUIP_LIST, EquipKey, isEquipKey } from "../types/equipment";
+import { EquipKey, isEquipKey } from "../types/equipment";
 import { isPetKey, PetKey } from "../types/pets";
 import { isMiscKey, MiscKey } from "../types/misc";
 import { VillainInfo, villainInfo } from "../lib/villain-info";
@@ -111,6 +106,7 @@ import {
   heroWinToAchievementLookup,
   teamWinToAchievementLookup,
 } from "../lib/achievement-rewards";
+import { serializeGameStatus } from "../lib/serialize-gamestate";
 
 const getBtnArea = (btnKey: string): Area => {
   return Object.keys(avxSvgs.buttons).includes(btnKey) ? "AVX" : "MULTIVERSE";
@@ -731,54 +727,28 @@ export const useGameStatus = (): IGameStatus => {
     ["counts", counts, setCounts],
   ];
 
-  const serializeState = () => {
-    const state = stack[stack.length - 1];
+  const serializeState = (state: string) => {
     try {
-      const parsed = JSON.parse(state);
-      if (!isLegalStateData(parsed)) {
+      if (!isLegalStateData(state)) {
         throw Error("stack contained an illegal state.");
       }
-      const s = parsed.score;
-      const tagStr = Object.values(parsed.tags).join(",");
-      const actStr = Object.values(parsed.actionTokens).join(",");
-      const heroes = Object.entries(parsed.heroes)
-        .map(([k, v]) => {
-          const idx = HERO_LIST.indexOf(k as HeroKey);
-          if (!isHeroState(v))
-            throw Error("Not a hero state while serializing state.");
-          const c = +v.crossover;
-          const d = +v.dead;
-          const cd = v.cooldown;
-          const a = v.area === "AVX" ? 0 : v.area === "MULTIVERSE" ? 1 : 2;
-          return `${idx}${c}${d}${cd}${a}`;
-        })
-        .join(",");
-      const equips = Object.entries(parsed.equipment)
-        .map(([k, v]) => {
-          const heroI = HERO_LIST.indexOf(k as HeroKey);
-          if (!Array.isArray(v))
-            throw Error(
-              `Equip array wasn't instance of array while serializing state.`
-            );
-          const eq = v.map((e) => EQUIP_LIST.indexOf(e)).join("-");
-          return `${heroI}-${eq}`;
-        })
-        .join(",");
-    } catch (e) {}
+      const parsed = JSON.parse(state);
+      return serializeGameStatus(parsed);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isLegalStateData = (o: any): boolean => {
-    console.log(`isLegalStateData`);
     try {
       o = JSON.parse(o);
 
       if (Object.keys(o).length !== undoProps.length) {
-        console.log("props length");
         return false;
       }
       if (typeof o.score !== "number") {
-        console.log("score");
         return false;
       }
       if (
@@ -787,7 +757,6 @@ export const useGameStatus = (): IGameStatus => {
           ([k, v]) => !isTag(k) || typeof v !== "number"
         )
       ) {
-        console.log("tags");
         return false;
       }
       if (
@@ -796,7 +765,6 @@ export const useGameStatus = (): IGameStatus => {
           ([k, v]) => !isActionType(k) || typeof v !== "number"
         )
       ) {
-        console.log("action tokens");
         return false;
       }
       if (
@@ -805,7 +773,6 @@ export const useGameStatus = (): IGameStatus => {
           ([k, v]) => !isHeroKey(k) || !isHeroState(v)
         )
       ) {
-        console.log("heroes");
         return false;
       }
       if (
@@ -817,28 +784,24 @@ export const useGameStatus = (): IGameStatus => {
             !v.every((e) => isEquipKey(e))
         )
       ) {
-        console.log("equipment");
         return false;
       }
       if (
         !Array.isArray(o.teams) ||
         !o.teams.every((t: string) => typeof t === "string" && isTeamKey(t))
       ) {
-        console.log("teams");
         return false;
       }
       if (
         !Array.isArray(o.pets) ||
         !o.pets.every((p: string) => typeof p === "string" && isPetKey(p))
       ) {
-        console.log("pets");
         return false;
       }
       if (
         !Array.isArray(o.misc) ||
         !o.misc.every((m: string) => typeof m === "string" && isMiscKey(m))
       ) {
-        console.log("misc");
         return false;
       }
       if (
@@ -847,7 +810,6 @@ export const useGameStatus = (): IGameStatus => {
           ([k, v]) => !isSpecialReward(k) || typeof v !== "number"
         )
       ) {
-        console.log("special rewards");
         return false;
       }
       if (
@@ -856,21 +818,18 @@ export const useGameStatus = (): IGameStatus => {
           (inf: string) => typeof inf === "string" && isInfinityKey(inf)
         )
       ) {
-        console.log("infinity stones");
         return false;
       }
       if (
         !Array.isArray(o.completedBtns) ||
         !o.completedBtns.every((s: string) => typeof s === "string")
       ) {
-        console.log("completed buttons");
         return false;
       }
       if (
         !Array.isArray(o.connectedPaths) ||
         !o.connectedPaths.every((s: string) => typeof s === "string")
       ) {
-        console.log("connected paths");
         return false;
       }
       if (
@@ -879,18 +838,13 @@ export const useGameStatus = (): IGameStatus => {
           ([k, v]) => !isAchievement(k) || typeof v !== "boolean"
         )
       ) {
-        console.log("achievements");
         return false;
       }
       if (typeof o.counts !== "object" || !isCounts(o.counts)) {
-        console.log("counts");
         return false;
       }
-
-      console.log("true");
       return true;
     } catch (e) {
-      console.error(e);
       return false;
     }
   };
@@ -914,6 +868,10 @@ export const useGameStatus = (): IGameStatus => {
     loadState(prevState);
     setStack(newStack);
   };
+
+  const getCode = () => {
+    return serializeState(stack[stack.length - 1]);
+  }
 
   useEffect(() => {
     // initial load data
@@ -1460,6 +1418,7 @@ export const useGameStatus = (): IGameStatus => {
     generatePetChoiceListProps,
     generateEquipChoiceListProps,
     getAchievementSVGPathStrings,
+    getCode,
     getCurrentVillain,
     getLegalHeroesForFight,
     getPathSVGPathInfo,

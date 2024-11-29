@@ -1,4 +1,4 @@
-const PET_LIST = [
+export const PET_LIST = [
   "PET_JEFF",
   "PET_LOCKHEED",
   "PET_ACE_THE_BAT_HOUND",

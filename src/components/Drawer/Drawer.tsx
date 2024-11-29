@@ -10,6 +10,7 @@ import { statusContext } from "../../StatusContext";
 import Resources from "./Resources/Resources";
 import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
 import Handle from "./Handle";
+import SaveLoadButton from "./Button/SaveLoadButton";
 
 const Drawer: FC = () => {
   const { areHeroesDead, drawerOpen } = useContext(statusContext);
@@ -36,6 +37,7 @@ const Drawer: FC = () => {
           <DrawerContainer className={styles.scoreAndSpecialContainer}>
             <ScoreAndSpecial />
             <div className={styles.btnContainer}>
+              <SaveLoadButton />
               <UndoButton />
               <ResetButton />
             </div>

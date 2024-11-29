@@ -15,7 +15,7 @@ import { VillainKey } from "./villain";
 import { Path } from "./svg";
 import { VillainInfo } from "../lib/villain-info";
 
-const achievementList = [
+export const ACHIEVEMENT_LIST = [
   "win_with_beast",
   "win_with_iceman",
   "win_with_jean",
@@ -58,10 +58,10 @@ const achievementList = [
   "vision_removed",
 ] as const;
 
-export type Achievement = (typeof achievementList)[number];
+export type Achievement = (typeof ACHIEVEMENT_LIST)[number];
 
 export const isAchievement = (s: string): s is Achievement => {
-  return achievementList.includes(s as Achievement);
+  return ACHIEVEMENT_LIST.includes(s as Achievement);
 };
 
 export type Achievements = { [key in Achievement]: boolean };
@@ -150,6 +150,7 @@ export interface IGameStatus {
   generatePetChoiceListProps: () => ChoiceSelectorProps<PetKey>;
   generateTeamChoiceListProps: () => ChoiceSelectorProps<TeamKey>;
   getAchievementSVGPathStrings: () => Array<string>;
+  getCode: () => string | null;
   getCurrentVillain: () => VillainKey | null;
   getLegalHeroesForFight: () => Array<HeroKey>;
   getPathSVGPathInfo: () => Array<Path | Array<Path>>;

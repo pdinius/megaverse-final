@@ -122,6 +122,7 @@ const generateBlankStatus = (): IGameStatus => {
     toggleDrawerOpen: () => {},
     usingCampHammond: false,
     usingDangerRoom: false,
+    getCode: () => null,
   };
   return state;
 };
