@@ -180,15 +180,6 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   useEffect(() => {
-    setHeroes(curr => {
-      const res = { ...curr };
-      delete res["WOLVERINE"];
-      delete res["ELEKTRA"];
-      return res;
-    })
-  }, [heroes])
-
-  useEffect(() => {
     if (DRAWER_ACTIONS.includes(currentAction)) {
       toggleDrawerOpen(true);
     }
