@@ -19,7 +19,7 @@ function App() {
         <Map />
       </div>
       <Modal>
-        <GameSetup />
+        {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
       </Modal>
       <Toast />
     </statusContext.Provider>
