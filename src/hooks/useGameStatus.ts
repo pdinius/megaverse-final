@@ -161,6 +161,7 @@ export const useGameStatus = (): IGameStatus => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [debugging, setDebugging] = useState(false);
 
   const blocked = currentAction !== "";
 
@@ -861,11 +862,6 @@ export const useGameStatus = (): IGameStatus => {
       if (val instanceof Set) {
         setter(new Set(state[key]));
       } else {
-        if (key === "heroes") {
-          delete state.WOLVERINE;
-          delete state.ELEKTRA;
-          console.log("deleted");
-        }
         setter(state[key]);
       }
     }
@@ -1424,6 +1420,16 @@ export const useGameStatus = (): IGameStatus => {
   const toggleDangerRoom = () => setUsingDangerRoom(!usingDangerRoom);
   //#endregion
 
+  const toggleDebuggingMode = () => {
+    setDebugging(!debugging);
+  }
+
+  const loadFromDebugOnClick = (state: string) => {
+    loadState(state);
+    toggleDebuggingMode();
+    setCurrentAction("pushToStack");
+  }
+
   return {
     actionTokens,
     areHeroesDead,
@@ -1435,6 +1441,11 @@ export const useGameStatus = (): IGameStatus => {
     currentAction,
     currentBtnClicked,
     deadHeroes,
+    debugging,
+    toggleDebuggingMode,
+    currentState: stack[stack.length - 1],
+    isLegalStateData,
+    loadFromDebugOnClick,
     drawerOpen,
     equipment,
     heroes,

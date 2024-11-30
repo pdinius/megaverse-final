@@ -5,13 +5,16 @@ import { statusContext } from "../../../StatusContext";
 interface SaveLoadButtonProps {}
 
 const SaveLoadButton: FC<SaveLoadButtonProps> = () => {
-  const { undoDisabled } = useContext(statusContext);
+  const { currentAction, toggleDebuggingMode } = useContext(statusContext);
+
+  const disabled = currentAction !== "";
 
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.btn} ${undoDisabled ? styles.disabled : ""}`}
-        disabled={undoDisabled}
+        onClick={toggleDebuggingMode}
+        className={`${styles.btn} ${disabled ? styles.disabled : ""}`}
+        disabled={disabled}
       >
         SAVE / LOAD FROM CODE
       </button>

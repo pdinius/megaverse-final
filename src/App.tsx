@@ -8,20 +8,27 @@ import Modal from "./components/General/Modal/Modal";
 import GameSetup from "./components/GameSetup/GameSetup";
 import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
+import { Debugging } from "./components/Debugging/Debugging";
 
 function App() {
   const status = useGameStatus();
 
   return (
     <statusContext.Provider value={status}>
-      <div className={styles.mapContainer}>
-        <Drawer />
-        <Map />
-      </div>
-      <Modal>
-        {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
-      </Modal>
-      <Toast />
+      {status.debugging ? (
+        <Debugging />
+      ) : (
+        <>
+          <div className={styles.mapContainer}>
+            <Drawer />
+            <Map />
+          </div>
+          <Modal>
+            {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
+          </Modal>
+          <Toast />
+        </>
+      )}
     </statusContext.Provider>
   );
 }

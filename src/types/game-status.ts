@@ -144,6 +144,11 @@ export interface IGameStatus {
   currentAction: CurrentAction;
   currentBtnClicked: string;
   deadHeroes: Array<HeroKey>;
+  debugging: boolean;
+  toggleDebuggingMode: () => void;
+  currentState: string;
+  isLegalStateData: (a: any) => boolean;
+  loadFromDebugOnClick: (s: string) => void;
   drawerOpen: boolean;
   equipment: { [key in HeroKey | "GENERIC"]?: Array<EquipKey> };
   generateEquipChoiceListProps: () => ChoiceSelectorProps<EquipKey>;
