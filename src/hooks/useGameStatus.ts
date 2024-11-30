@@ -222,11 +222,13 @@ export const useGameStatus = (): IGameStatus => {
 
   //#region modal
   const toggleModalOpen = (b?: boolean) => {
-    setModalOpen(b === undefined ? !modalOpen : b);
-    if ((modalOpen && b === undefined) || b === false) {
+    const newModalOpen = b === undefined ? !modalOpen : b;
+    setModalOpen(newModalOpen);
+    if (newModalOpen === false) {
       setCurrentAction("");
       setTeamRoster(new Set());
       setChained([]);
+      resetFight();
     }
   };
   //#endregion
@@ -859,6 +861,11 @@ export const useGameStatus = (): IGameStatus => {
       if (val instanceof Set) {
         setter(new Set(state[key]));
       } else {
+        if (key === "heroes") {
+          delete state.WOLVERINE;
+          delete state.ELEKTRA;
+          console.log("deleted");
+        }
         setter(state[key]);
       }
     }
@@ -1069,14 +1076,19 @@ export const useGameStatus = (): IGameStatus => {
       completeAchievement("win_with_pet");
     }
 
-    endFight();
+    spendFightResources();
+    toggleModalOpen(false);
   };
 
   const lost = () => {
     handleMagnetoX1();
     heroRoster.forEach(killHero);
     updateCooldown(new Set());
-    endFight();
+    ACTION_TYPES.forEach((at) =>
+      modifyActionTokens(at, -spendingActionTokens[at])
+    );
+    spendFightResources();
+    toggleModalOpen(false);
   };
 
   const areGameResolutionButtonsClickable = () => {
@@ -1116,7 +1128,7 @@ export const useGameStatus = (): IGameStatus => {
         } else {
           complete(DEADPOOL_BTN_5_POINTS);
         }
-        endFight();
+        toggleModalOpen(false);
       }, ANIM_TIME);
     }
   };
@@ -1125,7 +1137,7 @@ export const useGameStatus = (): IGameStatus => {
     const victim = heroRoster.keys().next().value;
     if (victim === undefined) return;
     killHero(victim);
-    endFight();
+    toggleModalOpen(false);
   };
 
   const startFight = (btn: string) => {
@@ -1139,29 +1151,33 @@ export const useGameStatus = (): IGameStatus => {
     }
   };
 
-  const endFight = () => {
+  const spendFightResources = () => {
+    ACTION_TYPES.forEach((at) =>
+      modifyActionTokens(at, -spendingActionTokens[at])
+    );
+
+    if (usingCampHammond) {
+      modifySpecialRewards("CAMP_HAMMOND", -1);
+    }
+    if (usingDangerRoom) {
+      modifySpecialRewards("DANGER_ROOM", -1);
+    }
+  };
+
+  const resetFight = () => {
     setHeroRoster(new Set());
     setTeamRoster(new Set());
     setPetRoster(new Set());
     setEquipRoster(new Set());
     setChained([]);
-    ACTION_TYPES.forEach((at) =>
-      modifyActionTokens(at, -spendingActionTokens[at])
-    );
+    setUsingCampHammond(false);
+    setUsingDangerRoom(false);
     setSpendingActionTokens({
       MOVE: 0,
       FIGHT: 0,
       HEROIC: 0,
       WILD: 0,
     });
-    if (usingCampHammond) {
-      setUsingCampHammond(false);
-      modifySpecialRewards("CAMP_HAMMOND", -1);
-    }
-    if (usingDangerRoom) {
-      setUsingDangerRoom(false);
-      modifySpecialRewards("DANGER_ROOM", -1);
-    }
     setCurrentAction("pushToStack");
   };
 
