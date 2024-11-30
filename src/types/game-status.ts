@@ -159,6 +159,7 @@ export interface IGameStatus {
   getCurrentVillain: () => VillainKey | null;
   getLegalHeroesForFight: () => Array<HeroKey>;
   getPathSVGPathInfo: () => Array<Path | Array<Path>>;
+  getScore: () => number;
   getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
   getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
   heroClickHandler: (h: HeroKey) => void;
@@ -178,7 +179,6 @@ export interface IGameStatus {
   resetClickHandler: (cancel?: boolean) => void;
   resolveDeadpool: (score: number) => void;
   resolveDeadpoolVictim: () => void;
-  score: number;
   showActionTokensAccordion: () => boolean;
   specialRewards: { [key in SpecialReward]: number };
   spendingActionTokens: { [key in ActionType]: number };

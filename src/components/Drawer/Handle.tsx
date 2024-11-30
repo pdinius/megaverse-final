@@ -7,7 +7,7 @@ import { statusContext } from "../../StatusContext";
 interface HandleProps {}
 
 const Handle: FC<HandleProps> = () => {
-  const { drawerOpen, toggleDrawerOpen, score, tags } =
+  const { drawerOpen, toggleDrawerOpen, getScore, tags } =
     useContext(statusContext);
 
   return (
@@ -21,7 +21,7 @@ const Handle: FC<HandleProps> = () => {
         }}
       >
         <div>
-          <Icon which="trophy" className={styles.trophyIcon} /> {score}
+          <Icon which="trophy" className={styles.trophyIcon} /> {getScore()}
         </div>
         {Object.values(tags).some((n) => n > 0) ? (
           <div className={styles.tags}>

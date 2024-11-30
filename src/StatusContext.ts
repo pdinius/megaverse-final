@@ -26,7 +26,7 @@ const generateBlankStatus = (): IGameStatus => {
     resetClickHandler: () => {},
     resolveDeadpool: () => {},
     resolveDeadpoolVictim: () => {},
-    score: 0,
+    getScore: () => 0,
     specialRewards: {
       DANGER_ROOM: 0,
       CAMP_HAMMOND: 0,

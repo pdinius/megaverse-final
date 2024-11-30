@@ -19,7 +19,6 @@ import { PET_LIST, PetKey } from "../types/pets";
 import { TEAM_LIST, TeamKey } from "../types/teams";
 import { combinedButtons, combinedPaths } from "./svg-info";
 
-const deserializeScore = (s: string): number => parseInt(s, 36);
 const deserializeTags = (t: string): { [key in Tag]: number } => {
   const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = t
     .split("-")
@@ -174,9 +173,8 @@ const deserializeCounts = (co: string): Counts => {
   };
 };
 export const deserializeGameStatus = (serialized: string) => {
-  const [s, t, a, h, te, p, m, sr, i, b, pa, ac, c, ...e] =
+  const [t, a, h, te, p, m, sr, i, b, pa, ac, c, ...e] =
     serialized.split(",");
-  const score = deserializeScore(s);
   const tags = deserializeTags(t);
   const actionTokens = deserializeActionTokens(a);
   const heroes = deserializeHeroes(h);
@@ -191,7 +189,6 @@ export const deserializeGameStatus = (serialized: string) => {
   const achievements = deserializeAchievements(ac);
   const counts = deserializeCounts(c);
   return JSON.stringify({
-    score,
     tags,
     actionTokens,
     heroes,

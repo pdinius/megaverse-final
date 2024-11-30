@@ -6,13 +6,13 @@ import upperStyles from "../ScoreAndSpecial.module.scss";
 import { statusContext } from "../../../../StatusContext";
 
 const Score: FC = () => {
-  const { score } = useContext(statusContext);
+  const { getScore } = useContext(statusContext);
 
   return (
     <div className={upperStyles.item} title="Score">
       <img src={trophy} className={styles.trophy} />
       <img src={star} className={styles.trophyStar} />
-      <span className={styles.scoreText}>{score}</span>
+      <span className={styles.scoreText}>{getScore()}</span>
     </div>
   );
 };

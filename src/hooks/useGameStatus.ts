@@ -113,7 +113,6 @@ const getBtnArea = (btnKey: string): Area => {
 };
 
 export const useGameStatus = (): IGameStatus => {
-  const [score, setScore] = useState(0);
   const [currentAction, setCurrentAction] = useState<CurrentAction>("");
   const [currentBtnClicked, setCurrentBtnClicked] = useState("");
   const [orTagChoosingQueue, setOrTagChoosingQueue] = useState<
@@ -219,6 +218,10 @@ export const useGameStatus = (): IGameStatus => {
   const toggleDrawerOpen = (b?: boolean) => {
     setDrawerOpen(b === undefined ? !drawerOpen : b);
   };
+
+  const getScore = () => {
+    return Array.from(completedBtns).reduce((a,b) => a + (villainInfo[b]?.points || 0), 0);
+  }
   //#endregion
 
   //#region modal
@@ -556,10 +559,7 @@ export const useGameStatus = (): IGameStatus => {
 
     // Check for items connected to villain
     if (btnKey in villainInfo) {
-      const { points, infinity } = villainInfo[btnKey];
-
-      // points
-      setScore(score + points);
+      const { infinity } = villainInfo[btnKey];
 
       // chained heroes
       chained.forEach((h) => unlockHero(h, getBtnArea(btnKey)));
@@ -718,7 +718,6 @@ export const useGameStatus = (): IGameStatus => {
   //#region stack and reset
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const undoProps: Array<[string, any, Dispatch<SetStateAction<any>>]> = [
-    ["score", score, setScore],
     ["tags", tags, setTags],
     ["actionTokens", actionTokens, setActionTokens],
     ["heroes", heroes, setHeroes],
@@ -753,9 +752,6 @@ export const useGameStatus = (): IGameStatus => {
       o = JSON.parse(o);
 
       if (Object.keys(o).length !== undoProps.length) {
-        return false;
-      }
-      if (typeof o.score !== "number") {
         return false;
       }
       if (
@@ -916,7 +912,6 @@ export const useGameStatus = (): IGameStatus => {
   // ! DANGER !
   const hardResetThatDestroysAllData = () => {
     localStorage?.removeItem("save-data");
-    setScore(0);
     setCurrentBtnClicked("");
     setOrTagChoosingQueue([]);
     setTags(getStartingTags);
@@ -1420,6 +1415,7 @@ export const useGameStatus = (): IGameStatus => {
   const toggleDangerRoom = () => setUsingDangerRoom(!usingDangerRoom);
   //#endregion
 
+  //#region debugging screen 
   const toggleDebuggingMode = () => {
     setDebugging(!debugging);
   }
@@ -1429,6 +1425,7 @@ export const useGameStatus = (): IGameStatus => {
     toggleDebuggingMode();
     setCurrentAction("pushToStack");
   }
+  //#endregion
 
   return {
     actionTokens,
@@ -1457,6 +1454,7 @@ export const useGameStatus = (): IGameStatus => {
     getCurrentVillain,
     getLegalHeroesForFight,
     getPathSVGPathInfo,
+    getScore,
     getUnearnedRewardOverlaySVGPathStrings,
     getVillainOverlaySVGPathStrings,
     heroClickHandler,
@@ -1470,7 +1468,6 @@ export const useGameStatus = (): IGameStatus => {
     multiverseHeroes,
     portalButtonClickHandler,
     resetClickHandler,
-    score,
     showActionTokensAccordion,
     isRecoverButtonClickable,
     recoverButtonClickHandler,

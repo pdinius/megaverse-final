@@ -20,8 +20,6 @@ export const Debugging: FC<DebuggingProps> = ({}) => {
       <textarea
         value={editedState}
         onChange={(e) => setEditedState(e.target.value)}
-        cols={100}
-        rows={30}
       />
       <button
         disabled={!legal}

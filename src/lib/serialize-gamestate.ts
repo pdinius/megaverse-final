@@ -8,7 +8,6 @@ import { PET_LIST, PetKey } from "../types/pets";
 import { TEAM_LIST, TeamKey } from "../types/teams";
 import { combinedButtons, combinedPaths } from "./svg-info";
 
-const serializeScore = (s: any) => s.toString(36);
 const serializeTags = (t: any) => Object.values(t).join("-");
 const serializeActionTokens = (a: any) => Object.values(a).join("-");
 const serializeHeroes = (h: any) =>
@@ -67,7 +66,6 @@ const serializeAchievements = (a: any) =>
   ).toString(36);
 const serializeCounts = (c: any) => Object.values(c).join("-");
 export const serializeGameStatus = (parsed: any) => {
-  const s = serializeScore(parsed.score);
   const tagStr = serializeTags(parsed.tags);
   const actStr = serializeActionTokens(parsed.actionTokens);
   const heroes = serializeHeroes(parsed.heroes);
@@ -82,7 +80,6 @@ export const serializeGameStatus = (parsed: any) => {
   const ach = serializeAchievements(parsed.achievements);
   const cnts = serializeCounts(parsed.counts);
   return [
-    s,
     tagStr,
     actStr,
     heroes,
