@@ -861,10 +861,6 @@ export const useGameStatus = (): IGameStatus => {
       if (val instanceof Set) {
         setter(new Set(state[key]));
       } else {
-        if (key === "heroes") {
-          delete val.WOLVERINE;
-          delete val.ELEKTRA;
-        }
         setter(state[key]);
       }
     }
