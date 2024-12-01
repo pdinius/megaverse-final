@@ -220,8 +220,11 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const getScore = () => {
-    return Array.from(completedBtns).reduce((a,b) => a + (villainInfo[b]?.points || 0), 0);
-  }
+    return Array.from(completedBtns).reduce(
+      (a, b) => a + (villainInfo[b]?.points || 0),
+      0
+    );
+  };
   //#endregion
 
   //#region modal
@@ -858,6 +861,10 @@ export const useGameStatus = (): IGameStatus => {
       if (val instanceof Set) {
         setter(new Set(state[key]));
       } else {
+        if (key === "heroes") {
+          delete val.WOLVERINE;
+          delete val.ELEKTRA;
+        }
         setter(state[key]);
       }
     }
@@ -989,6 +996,9 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const isRecoverButtonClickable = (r: "RECOVER" | "RECOVER_F4"): boolean => {
+    if (r === "RECOVER" && currentAction === "resolvingRecover") return true;
+    if (r === "RECOVER_F4" && currentAction === "resolvingRecoverF4")
+      return true;
     if (blocked) return false;
     switch (r) {
       case "RECOVER":
@@ -999,7 +1009,7 @@ export const useGameStatus = (): IGameStatus => {
       case "RECOVER_F4":
         return (
           specialRewards.RECOVER_F4 > 0 &&
-          Object.values(heroes).some((h) => h.dead)
+          TypedEntries(heroes).some(([h, s]) => isFantasticHero(h) && s.dead)
         );
       default:
         return false;
@@ -1009,20 +1019,34 @@ export const useGameStatus = (): IGameStatus => {
   const recoverButtonClickHandler = (r: "RECOVER" | "RECOVER_F4") => {
     switch (r) {
       case "RECOVER":
-        setCurrentAction("resolvingRecover");
+        if (currentAction === "resolvingRecover") {
+          setCurrentAction("");
+        } else {
+          setCurrentAction("resolvingRecover");
+        }
         break;
       case "RECOVER_F4":
-        setCurrentAction("resolvingRecoverF4");
+        if (currentAction === "resolvingRecoverF4") {
+          setCurrentAction("");
+        } else {
+          setCurrentAction("resolvingRecoverF4");
+        }
         break;
     }
   };
 
   const isPortalButtonClickable = () => {
-    return !blocked;
+    return currentAction === "spendingPortal"
+      ? true
+      : !blocked && specialRewards.PORTAL > 0;
   };
 
   const portalButtonClickHandler = () => {
-    setCurrentAction("spendingPortal");
+    if (currentAction === "spendingPortal") {
+      setCurrentAction("");
+    } else {
+      setCurrentAction("spendingPortal");
+    }
   };
   //#endregion
 
@@ -1415,16 +1439,16 @@ export const useGameStatus = (): IGameStatus => {
   const toggleDangerRoom = () => setUsingDangerRoom(!usingDangerRoom);
   //#endregion
 
-  //#region debugging screen 
+  //#region debugging screen
   const toggleDebuggingMode = () => {
     setDebugging(!debugging);
-  }
+  };
 
   const loadFromDebugOnClick = (state: string) => {
     loadState(state);
     toggleDebuggingMode();
     setCurrentAction("pushToStack");
-  }
+  };
   //#endregion
 
   return {
