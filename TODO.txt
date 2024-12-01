@@ -9,3 +9,9 @@ center carousel in the accordions
 add serialize state
 reset team when closing game setup
 let toggle team when clicking selected team
+add progress info on counts
+scan sentinel activation protocol card for nimrod fight
+when equipment is selected, it should be clickable and in color
+ 
+// Nice to haves -
+search for items
