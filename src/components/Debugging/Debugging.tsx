@@ -2,9 +2,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import styles from "./Debugging.module.scss";
 import { statusContext } from "../../StatusContext";
 
-interface DebuggingProps {}
-
-export const Debugging: FC<DebuggingProps> = ({}) => {
+export const Debugging: FC = () => {
   const { currentState, loadFromDebugOnClick, isLegalStateData } =
     useContext(statusContext);
   const [editedState, setEditedState] = useState("");

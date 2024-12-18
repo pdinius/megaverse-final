@@ -1,0 +1,26 @@
+@use "../../../colors" as *;
+
+.container {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.handle {
+  position: fixed;
+  fill: white;
+  cursor: pointer;
+  stroke: $dark-blue;
+  stroke-width: 2px;
+  width: 100px;
+  filter: drop-shadow(0 5px 3px rgb(0 0 0 / 0.3));
+}
+
+.handleText {
+  font-family: Amboy;
+  stroke: none;
+  fill: $dark-blue;
+  font-size: 12pt;
+}
