@@ -17,23 +17,23 @@ export const getStartingHeroes = () => ({
   MIGHTY_THOR: getNewHeroProps(false, "MULTIVERSE"),
 });
 
-export const getStartingTags = (): { [key in Tag]: number } => ({
-  BOLT: 0,
-  BRAIN: 0,
-  CHIMI: 0,
-  CHOICE: 0,
-  DNA: 0,
-  EYE: 0,
-  FLAG: 0,
-  GEAR: 0,
-  HOURGLASS: 0,
-  KEY: 0,
-  MAGIC: 0,
-  MAPLE: 0,
-  PLANET: 0,
-  PUZZLE: 0,
-  STAR: 0,
-  SPARKLE: 0,
+export const getStartingTags = (testing: boolean): { [key in Tag]: number } => ({
+  BOLT: testing ? Infinity : 0,
+  BRAIN: testing ? Infinity : 0,
+  CHIMI: testing ? Infinity : 0,
+  CHOICE: testing ? Infinity : 0,
+  DNA: testing ? Infinity : 0,
+  EYE: testing ? Infinity : 0,
+  FLAG: testing ? Infinity : 0,
+  GEAR: testing ? Infinity : 0,
+  HOURGLASS: testing ? Infinity : 0,
+  KEY: testing ? Infinity : 0,
+  MAGIC: testing ? Infinity : 0,
+  MAPLE: testing ? Infinity : 0,
+  PLANET: testing ? Infinity : 0,
+  PUZZLE: testing ? Infinity : 0,
+  STAR: testing ? Infinity : 0,
+  SPARKLE: testing ? Infinity : 0,
 });
 
 export const getStartingActionTokens = (): { [key in ActionType]: number } => ({

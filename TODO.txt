@@ -17,6 +17,7 @@ add kofi link
 flesh out debugging page
 Add links to doms rules
 Make desktop version
+Add the 5 points in next deadpool logic
 
 // Nice to haves -
 search for items

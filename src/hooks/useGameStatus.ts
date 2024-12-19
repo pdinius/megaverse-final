@@ -118,7 +118,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [orTagChoosingQueue, setOrTagChoosingQueue] = useState<
     Array<Array<Tag>>
   >([]);
-  const [tags, setTags] = useState(getStartingTags());
+  const [tags, setTags] = useState(getStartingTags(testing));
   const [actionTokens, setActionTokens] = useState(getStartingActionTokens());
   const [heroes, setHeroes] = useState<{ [key in HeroKey]?: HeroState }>(
     getStartingHeroes()
@@ -917,7 +917,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     localStorage?.removeItem("save-data");
     setCurrentBtnClicked("");
     setOrTagChoosingQueue([]);
-    setTags(getStartingTags);
+    setTags(() => getStartingTags(testing));
     setActionTokens(getStartingActionTokens());
     setHeroes(getStartingHeroes());
     setTeams(new Set());
