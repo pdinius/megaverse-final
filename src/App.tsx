@@ -11,7 +11,7 @@ import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 
 function App() {
-  const status = useGameStatus();
+  const status = useGameStatus(true);
 
   return (
     <statusContext.Provider value={status}>

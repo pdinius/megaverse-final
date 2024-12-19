@@ -128,6 +128,7 @@ const generateBlankStatus = (): IGameStatus => {
     usingCampHammond: false,
     usingDangerRoom: false,
     getCode: () => null,
+    testing: false,
   };
   return state;
 };

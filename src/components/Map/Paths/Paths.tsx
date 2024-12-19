@@ -8,11 +8,15 @@ const styleProps: CSSProperties = {
 };
 
 const Paths: FC = () => {
-  const { getPathSVGPathInfo } = useContext(statusContext);
+  const { getPathSVGPathInfo, testing } = useContext(statusContext);
 
-  return getPathSVGPathInfo().map((props, i) => {
+  return getPathSVGPathInfo().map(({ key, props }, i) => {
+    const onClick = testing ? () => {
+      if (navigator) navigator.clipboard.writeText(key)
+    } : undefined;
+
     return Array.isArray(props) ? (
-      <g key={i} style={{ ...styleProps }}>
+      <g key={i} style={{ ...styleProps }} onClick={onClick}>
         {props.map((sub, j) => (
           <path key={j} d={sub.d} fill={sub.fill || PATH_COLOR} />
         ))}
@@ -23,6 +27,7 @@ const Paths: FC = () => {
         style={{ ...styleProps }}
         d={props.d}
         fill={props.fill || PATH_COLOR}
+        onClick={onClick}
       />
     );
   });

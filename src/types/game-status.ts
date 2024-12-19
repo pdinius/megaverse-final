@@ -147,7 +147,7 @@ export interface IGameStatus {
   debugging: boolean;
   toggleDebuggingMode: () => void;
   currentState: string;
-  isLegalStateData: (a: any) => boolean;
+  isLegalStateData: (s: string) => boolean;
   loadFromDebugOnClick: (s: string) => void;
   drawerOpen: boolean;
   equipment: { [key in HeroKey | "GENERIC"]?: Array<EquipKey> };
@@ -158,7 +158,7 @@ export interface IGameStatus {
   getCode: () => string | null;
   getCurrentVillain: () => VillainKey | null;
   getLegalHeroesForFight: () => Array<HeroKey>;
-  getPathSVGPathInfo: () => Array<Path | Array<Path>>;
+  getPathSVGPathInfo: () => Array<{ key: string, props: Path | Array<Path> }>;
   getScore: () => number;
   getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
   getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
@@ -185,6 +185,7 @@ export interface IGameStatus {
   tagClickHandler: (t: Tag) => void;
   tags: { [key in Tag]: number };
   team?: TeamKey;
+  testing: boolean;
   toast: { open: boolean; message: string };
   toggleCampHammond: () => void;
   toggleDangerRoom: () => void;

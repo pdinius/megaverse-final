@@ -112,7 +112,7 @@ const getBtnArea = (btnKey: string): Area => {
   return Object.keys(avxSvgs.buttons).includes(btnKey) ? "AVX" : "MULTIVERSE";
 };
 
-export const useGameStatus = (): IGameStatus => {
+export const useGameStatus = (testing: boolean): IGameStatus => {
   const [currentAction, setCurrentAction] = useState<CurrentAction>("");
   const [currentBtnClicked, setCurrentBtnClicked] = useState("");
   const [orTagChoosingQueue, setOrTagChoosingQueue] = useState<
@@ -750,9 +750,9 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isLegalStateData = (o: any): boolean => {
+  const isLegalStateData = (s: string): boolean => {
     try {
-      o = JSON.parse(o);
+      const o = JSON.parse(s);
 
       if (Object.keys(o).length !== undoProps.length) {
         return false;
@@ -1426,7 +1426,7 @@ export const useGameStatus = (): IGameStatus => {
   };
 
   const getPathSVGPathInfo = () => {
-    return Array.from(connectedPaths).map((p) => combinedPaths[p]);
+    return Array.from(connectedPaths).map((p) => ({ key: p, props: combinedPaths[p] }));
   };
 
   const showActionTokensAccordion = () =>
@@ -1510,5 +1510,6 @@ export const useGameStatus = (): IGameStatus => {
     resolveDeadpool,
     resolveDeadpoolVictim,
     team: teamRoster.keys().next().value,
+    testing,
   };
 };
