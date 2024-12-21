@@ -139,3 +139,8 @@ a {
     filter: hue-rotate(0deg);
   }
 }
+
+.noselect {
+  user-select: none;
+  -webkit-user-select: none;
+}

@@ -2,11 +2,7 @@ import { FC, useContext } from "react";
 import styles from "./Handle.module.scss";
 import { statusContext } from "../../../StatusContext";
 
-interface HandleProps {
-  top: number;
-}
-
-const Handle: FC<HandleProps> = ({ top }) => {
+const Handle: FC = () => {
   const { toggleDrawerOpen } = useContext(statusContext);
 
   return (

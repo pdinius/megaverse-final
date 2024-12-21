@@ -9,8 +9,9 @@ import GameSetup from "./components/GameSetup/GameSetup";
 import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
+import pjson from "../package.json";
 
-const TESTING = true;
+const TESTING = false;
 
 function App() {
   const status = useGameStatus(TESTING);
@@ -30,6 +31,7 @@ function App() {
           </Modal>
           <Toast />
           { TESTING ? <pre className={styles.debug}>{status.previousActions.join("\n")}</pre> : null }
+          { <div className={`${styles.version} noselect`}>v{pjson.version}</div>}
         </>
       )}
     </statusContext.Provider>
