@@ -4,11 +4,13 @@ import styles from "./DebuggingModal.module.scss";
 interface DebuggingModalProps {
   isOpen: boolean;
   toggleOpen: (b: boolean) => void;
+  danger?: boolean;
   children: React.ReactNode;
 }
 
 const DebuggingModal: FC<DebuggingModalProps> = ({
   children,
+  danger,
   isOpen,
   toggleOpen,
 }) => {
@@ -19,7 +21,7 @@ const DebuggingModal: FC<DebuggingModalProps> = ({
       onClick={() => toggleOpen(false)}
     >
       <div
-        className={styles.container}
+        className={`${styles.container} ${danger ? styles.red : ""}`}
         onClick={(e) => {
           e.stopPropagation();
         }}

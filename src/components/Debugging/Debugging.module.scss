@@ -18,13 +18,20 @@
   padding: 0.25rem 0.5rem;
   border: none;
   border-radius: 0.25rem;
-  flex-grow: 1;
   cursor: pointer;
   background: #333333;
 
   &:hover {
     filter: brightness(1.2);
   }
+}
+
+.grow1 {
+  flex-grow: 2;
+}
+
+.grow2 {
+  flex-grow: 3;
 }
 
 .btns {
@@ -36,7 +43,8 @@
   background: rgb(175, 48, 48);
 }
 
-.helpButton {
+.helpButton,
+.exclamationButton {
   background: none;
   outline: transparent;
   border: none;
@@ -53,6 +61,10 @@
   & > svg {
     fill: #ddd;
   }
+}
+
+.exclamationButton {
+  top: 5rem;
 }
 
 // MODAL
@@ -97,7 +109,7 @@
 }
 
 .header2 {
-  font-weight: 500;
+  font-weight: 600;
   font-size: large;
   letter-spacing: -1px;
 }
