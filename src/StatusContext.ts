@@ -129,6 +129,7 @@ const generateBlankStatus = (): IGameStatus => {
     usingDangerRoom: false,
     getCode: () => null,
     testing: false,
+    previousActions: [],
   };
   return state;
 };
