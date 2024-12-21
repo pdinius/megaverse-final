@@ -11,9 +11,11 @@ const Paths: FC = () => {
   const { getPathSVGPathInfo, testing } = useContext(statusContext);
 
   return getPathSVGPathInfo().map(({ key, props }, i) => {
-    const onClick = testing ? () => {
-      if (navigator) navigator.clipboard.writeText(key)
-    } : undefined;
+    const onClick = testing
+      ? () => {
+          if (navigator) navigator.clipboard.writeText(key);
+        }
+      : undefined;
 
     return Array.isArray(props) ? (
       <g key={i} style={{ ...styleProps }} onClick={onClick}>

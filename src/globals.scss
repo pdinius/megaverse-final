@@ -1,11 +1,4 @@
-@font-face {
-  font-family: "Figtree";
-  src: url("./assets/fonts/Figtree-Light.woff2") format("woff2"),
-    url("./assets/fonts/Figtree-Light.woff") format("woff");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap");
 
 @font-face {
   font-family: "Amboy";
@@ -127,7 +120,6 @@ a {
   0% {
     rotate: 0deg;
     filter: hue-rotate(0deg);
-    
   }
 
   25% {

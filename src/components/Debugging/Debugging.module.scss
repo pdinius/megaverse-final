@@ -18,4 +18,90 @@
   padding: 0.25rem 0.5rem;
   border: none;
   border-radius: 0.25rem;
+  flex-grow: 1;
+  cursor: pointer;
+  background: #333333;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
+
+.btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.cancel {
+  background: rgb(175, 48, 48);
+}
+
+.helpButton {
+  background: none;
+  outline: transparent;
+  border: none;
+  width: 2rem;
+  position: fixed;
+  right: 2.5rem;
+  top: 2rem;
+  cursor: pointer;
+
+  &:hover > svg {
+    fill: #fff;
+  }
+
+  & > svg {
+    fill: #ddd;
+  }
+}
+
+// MODAL
+.debuggingContent {
+  --indent: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  & * {
+    text-align: justify;
+  }
+}
+
+.header {
+  font-weight: 700;
+  font-size: x-large;
+  letter-spacing: -1px;
+  margin-right: 2rem;
+  text-align: right;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.code {
+  display: inline-block;
+  font-family: monospace !important;
+  background: #ddd;
+  padding: 2px 4px;
+  border-radius: 0.375rem;
+  font-weight: 700;
+}
+
+.header2 {
+  font-weight: 500;
+  font-size: large;
+  letter-spacing: -1px;
+}
+
+.indent {
+  margin-inline: var(--indent);
+}
+
+.indent2 {
+  margin-inline: calc(var(--indent) * 2);
+}
+
+.resourceGrid {
+  margin-right: 1rem;
 }

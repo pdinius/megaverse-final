@@ -1,0 +1,21 @@
+.backdrop {
+  position: fixed;
+  background: rgb(0 0 0 / 0.7);
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & * {
+    font-family: Figtree;
+    color: #333;
+  }
+}
+
+.container {
+  background: #f6f6f6;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  max-width: min(calc(100vw - 2rem), 800px);
+  max-height: min(calc(100vh - 2rem), 600px);
+}

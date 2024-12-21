@@ -18,22 +18,22 @@ export const getStartingHeroes = () => ({
 });
 
 export const getStartingTags = (testing: boolean): { [key in Tag]: number } => ({
-  BOLT: testing ? Infinity : 0,
-  BRAIN: testing ? Infinity : 0,
-  CHIMI: testing ? Infinity : 0,
-  CHOICE: testing ? Infinity : 0,
-  DNA: testing ? Infinity : 0,
-  EYE: testing ? Infinity : 0,
-  FLAG: testing ? Infinity : 0,
-  GEAR: testing ? Infinity : 0,
-  HOURGLASS: testing ? Infinity : 0,
-  KEY: testing ? Infinity : 0,
-  MAGIC: testing ? Infinity : 0,
-  MAPLE: testing ? Infinity : 0,
-  PLANET: testing ? Infinity : 0,
-  PUZZLE: testing ? Infinity : 0,
-  STAR: testing ? Infinity : 0,
-  SPARKLE: testing ? Infinity : 0,
+  BOLT: testing ? 1000 : 0,
+  BRAIN: testing ? 1000 : 0,
+  CHIMI: testing ? 1000 : 0,
+  CHOICE: testing ? 1000 : 0,
+  DNA: testing ? 1000 : 0,
+  EYE: testing ? 1000 : 0,
+  FLAG: testing ? 1000 : 0,
+  GEAR: testing ? 1000 : 0,
+  HOURGLASS: testing ? 1000 : 0,
+  KEY: testing ? 1000 : 0,
+  MAGIC: testing ? 1000 : 0,
+  MAPLE: testing ? 1000 : 0,
+  PLANET: testing ? 1000 : 0,
+  PUZZLE: testing ? 1000 : 0,
+  STAR: testing ? 1000 : 0,
+  SPARKLE: testing ? 1000 : 0,
 });
 
 export const getStartingActionTokens = (): { [key in ActionType]: number } => ({

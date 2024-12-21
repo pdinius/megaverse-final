@@ -161,6 +161,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debugging, setDebugging] = useState(false);
+  const [previousActions, setPreviousActions] = useState<Array<string>>([]);
 
   const blocked = currentAction !== "";
 
@@ -946,6 +947,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     setUsingCampHammond(false);
     setStack([]);
     setCurrentAction("pushToStack");
+    setPreviousActions([]);
   };
   //#endregion
 
@@ -955,6 +957,12 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       setter: Dispatch<SetStateAction<{ [key in T]: number }>>
     ) =>
     (key: T, qtx: number) => {
+      if (qtx < 1) {
+        setPreviousActions((curr) => [...curr, `spent ${-qtx} of ${key}.`]);
+      } else {
+        setPreviousActions((curr) => [...curr, `gained ${qtx} of ${key}.`]);
+      }
+
       setter((curr) => {
         const res = { ...curr };
         res[key] += qtx;
@@ -966,6 +974,13 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const modifySpecialRewards = modifier(setSpecialRewards);
   const modifyActionTokens = modifier(setActionTokens);
   const modifySpendingActionTokens = modifier(setSpendingActionTokens);
+
+  useEffect(() => {
+    const last = previousActions[previousActions.length - 1];
+    const DIVIDER = "----------";
+    if (!last || last === DIVIDER) return;
+    setPreviousActions((curr) => [...curr, DIVIDER]);
+  }, [previousActions]);
   //#endregion
 
   //#region tags and special rewards (e.g., recover)
@@ -1164,7 +1179,9 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
 
   const spendFightResources = () => {
     ACTION_TYPES.forEach((at) =>
-      modifyActionTokens(at, -spendingActionTokens[at])
+      spendingActionTokens[at]
+        ? modifyActionTokens(at, -spendingActionTokens[at])
+        : null
     );
 
     if (usingCampHammond) {
@@ -1426,7 +1443,10 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   };
 
   const getPathSVGPathInfo = () => {
-    return Array.from(connectedPaths).map((p) => ({ key: p, props: combinedPaths[p] }));
+    return Array.from(connectedPaths).map((p) => ({
+      key: p,
+      props: combinedPaths[p],
+    }));
   };
 
   const showActionTokensAccordion = () =>
@@ -1511,5 +1531,6 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     resolveDeadpoolVictim,
     team: teamRoster.keys().next().value,
     testing,
+    previousActions,
   };
 };

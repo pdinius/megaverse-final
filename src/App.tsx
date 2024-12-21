@@ -10,8 +10,10 @@ import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 
+const TESTING = true;
+
 function App() {
-  const status = useGameStatus(true);
+  const status = useGameStatus(TESTING);
 
   return (
     <statusContext.Provider value={status}>
@@ -27,6 +29,7 @@ function App() {
             {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
           </Modal>
           <Toast />
+          { TESTING ? <pre className={styles.debug}>{status.previousActions.join("\n")}</pre> : null }
         </>
       )}
     </statusContext.Provider>

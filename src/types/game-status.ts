@@ -196,4 +196,5 @@ export interface IGameStatus {
   usingCampHammond: boolean;
   usingDangerRoom: boolean;
   won: () => void;
+  previousActions: Array<string>;
 }
