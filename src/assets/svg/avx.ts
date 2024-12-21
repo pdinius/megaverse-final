@@ -997,7 +997,7 @@ export const avxSvgs: SvgProps = {
     },
     AVX_GATE_32: {
       d: "M5389.48,3850.18l27.26,27.25-27.26,27.26-27.25-27.26Z",
-      cost: { GEAR: 1, KEY: 1 },
+      cost: { GEAR: 1 },
     },
     AVX_GATE_33: {
       d: "M5389.48,3924.18l27.26,27.25-27.26,27.26-27.25-27.26Z",
@@ -1030,7 +1030,7 @@ export const avxSvgs: SvgProps = {
     AVX_GATE_39: {
       d: "M6527.48,3988.18l27.26,27.25-27.26,27.26-27.25-27.26Z",
       cost: {
-        BRAIN: 1,
+        MAGIC: 1,
       },
     },
     AVX_GATE_40: {
@@ -1441,13 +1441,13 @@ export const avxSvgs: SvgProps = {
     AVX_GATE_137: {
       d: "M2962.48,1517.18l27.26,27.25-27.26,27.26-27.25-27.26Z",
       cost: {
-        GEAR: 1,
+        KEY: 1,
       },
     },
     AVX_GATE_138: {
       d: "M2700.48,1457.18l27.26,27.25-27.26,27.26-27.25-27.26Z",
       cost: {
-        KEY: 1,
+        GEAR: 1,
       },
     },
     AVX_DEADPOOL_6969: {

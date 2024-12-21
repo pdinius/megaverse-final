@@ -60,7 +60,7 @@
   --indent: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 
   & * {
     text-align: justify;
@@ -73,6 +73,14 @@
   letter-spacing: -1px;
   margin-right: 2rem;
   text-align: right;
+}
+
+.block {
+  margin: 1rem;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 .italic {
@@ -104,4 +112,13 @@
 
 .resourceGrid {
   margin-right: 1rem;
+}
+
+.subItem {
+  text-indent: -1rem;
+  margin-left: 1rem;
+
+  & * {
+    text-indent: 0;
+  }
 }

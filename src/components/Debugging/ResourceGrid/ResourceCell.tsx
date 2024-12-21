@@ -9,7 +9,7 @@ interface ResourceCellProps {
 
 const ResourceCell: FC<ResourceCellProps> = ({ which }) => {
   return <div className={styles.cell}>
-    <Icon which={which} style={{ height: "100%" }} />
+    {which}: <Icon which={which} style={{ height: "100%" }} />
   </div>;
 }
 
