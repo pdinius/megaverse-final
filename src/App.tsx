@@ -10,7 +10,7 @@ import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 
-const TESTING = true;
+const TESTING = false;
 
 function App() {
   const status = useGameStatus(TESTING);
