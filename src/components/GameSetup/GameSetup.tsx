@@ -9,6 +9,7 @@ import GameSetupFooter from "./GameSetupFooter/GameSetupFooter";
 import SpecialLocations from "./SpecialLocations/SpecialLocations";
 import ActionTokenSelection from "./ActionTokenSelection/ActionTokenSelection";
 import HeroGrid from "../HeroGrid/HeroGrid";
+import { If } from "../General/If/If";
 
 const GameSetup: FC = () => {
   const {
@@ -46,14 +47,20 @@ const GameSetup: FC = () => {
           maxRowSize={Math.min(getLegalHeroesForFight().length, 7)}
         />
         <SpecialLocations />
-        {showActionTokensAccordion() ? (
+        <If condition={showActionTokensAccordion()}>
           <Accordion title="Action Tokens">
             <ActionTokenSelection />
           </Accordion>
-        ) : null}
-        {equipProps.data.length ? <ChoiceSelector {...equipProps} /> : null}
-        {teamProps.data.length ? <ChoiceSelector {...teamProps} /> : null}
-        {petProps.data.length ? <ChoiceSelector {...petProps} /> : null}
+        </If>
+        <If condition={equipProps.data.length > 0}>
+          <ChoiceSelector {...equipProps} />
+        </If>
+        <If condition={teamProps.data.length > 0}>
+          <ChoiceSelector {...teamProps} />
+        </If>
+        <If condition={petProps.data.length > 0}>
+          <ChoiceSelector {...petProps} />
+        </If>
         <GameSetupFooter />
       </div>
     </div>

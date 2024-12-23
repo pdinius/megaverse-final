@@ -1375,6 +1375,10 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     }
   };
 
+  const getRewardSVGPathString = (key: string) => {
+    return combinedOverlays[key];
+  }
+
   const getUnearnedRewardOverlaySVGPathStrings = () => {
     const combinedRewards: Array<string> = [
       ...TypedKeys(heroes),
@@ -1492,6 +1496,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     getAchievementSVGPathStrings,
     getCode,
     getCurrentVillain,
+    getRewardSVGPathString,
     getLegalHeroesForFight,
     getPathSVGPathInfo,
     getScore,

@@ -10,6 +10,8 @@ import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 import pjson from "../package.json";
+import { Search } from "./components/Search/Search";
+import { If } from "./components/General/If/If";
 
 const TESTING = false;
 
@@ -27,11 +29,18 @@ function App() {
             <Map />
           </div>
           <Modal>
-            {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
+            <If condition={status.currentAction === "resolvingFight"}>
+              <GameSetup />
+            </If>
           </Modal>
+          <Search />
           <Toast />
-          { TESTING ? <pre className={styles.debug}>{status.previousActions.join("\n")}</pre> : null }
-          { <div className={`${styles.version} noselect`}>v{pjson.version}</div>}
+          <If condition={TESTING}>
+            <pre className={styles.debug}>
+              {status.previousActions.join("\n")}
+            </pre>
+          </If>
+          {<div className={`${styles.version} noselect`}>v{pjson.version}</div>}
         </>
       )}
     </statusContext.Provider>

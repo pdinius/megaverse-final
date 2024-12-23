@@ -3,6 +3,7 @@ import styles from "./Handle.module.scss";
 import { TypedEntries } from "../../lib/utils";
 import { Icon } from "../General/Icon";
 import { statusContext } from "../../StatusContext";
+import { If } from "../General/If/If";
 
 interface HandleProps {}
 
@@ -23,15 +24,15 @@ const Handle: FC<HandleProps> = () => {
         <div>
           <Icon which="trophy" className={styles.trophyIcon} /> {getScore()}
         </div>
-        {Object.values(tags).some((n) => n > 0) ? (
+        <If condition={Object.values(tags).some((n) => n > 0)}>
           <div className={styles.tags}>
-            {TypedEntries(tags).map(([t, v]) =>
-              v > 0 ? (
-                <Icon key={t} which={t} className={styles.infoIcon} />
-              ) : null
-            )}
+            {TypedEntries(tags).map(([t, v]) => (
+              <If key={t} condition={v > 0}>
+                <Icon which={t} className={styles.infoIcon} />
+              </If>
+            ))}
           </div>
-        ) : null}
+        </If>
       </div>
       <button
         className={styles.openButton}

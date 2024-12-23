@@ -160,6 +160,7 @@ export interface IGameStatus {
   getLegalHeroesForFight: () => Array<HeroKey>;
   getPathSVGPathInfo: () => Array<{ key: string, props: Path | Array<Path> }>;
   getScore: () => number;
+  getRewardSVGPathString: (s: string) => string;
   getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
   getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
   heroClickHandler: (h: HeroKey) => void;
