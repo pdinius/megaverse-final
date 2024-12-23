@@ -130,6 +130,7 @@ const generateBlankStatus = (): IGameStatus => {
     getCode: () => null,
     testing: false,
     previousActions: [],
+    skip: () => {},
   };
   return state;
 };

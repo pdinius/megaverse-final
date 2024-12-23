@@ -4,7 +4,7 @@ import upperStyles from "../GameSetup.module.scss";
 import { statusContext } from "../../../StatusContext";
 import { translations } from "../../../lib/translations";
 import { HeroKey } from "../../../types/heroes";
-import { ANIM_TIME, DEADPOOL_FIGHT_BTN } from "../../../lib/constants";
+import { DEADPOOL_FIGHT_BTN } from "../../../lib/constants";
 
 interface FooterContentProps {}
 
@@ -14,11 +14,11 @@ const FooterContent: FC<FooterContentProps> = () => {
     currentBtnClicked,
     won,
     lost,
+    skip,
     heroRoster,
     resolveDeadpool,
     resolveDeadpoolVictim,
     areGameResolutionButtonsClickable,
-    toggleModalOpen,
   } = useContext(statusContext);
   const [deadpoolScore, setDeadpoolScore] = useState("0");
 
@@ -26,23 +26,17 @@ const FooterContent: FC<FooterContentProps> = () => {
 
   let content = (
     <div className={styles.btnContainer}>
-      <button
-        disabled={disabled}
-        onClick={() => {
-          toggleModalOpen(false);
-          setTimeout(won, ANIM_TIME);
-        }}
-      >
+      <button disabled={disabled} onClick={won}>
         WON <span className={styles.emoji}>&#128527;</span>
       </button>
-      <button
-        disabled={disabled}
-        onClick={() => {
-          toggleModalOpen(false);
-          setTimeout(lost, ANIM_TIME);
-        }}
-      >
+      <button disabled={disabled} onClick={lost}>
         LOST <span className={styles.emoji}>&#128552;</span>
+      </button>
+      <button
+        onClick={skip}
+        title="Will complete the fight but not affect hero cooldowns or points."
+      >
+        SKIP <span className={styles.emoji}>&#128529;</span>
       </button>
     </div>
   );
@@ -74,13 +68,7 @@ const FooterContent: FC<FooterContentProps> = () => {
   if (currentAction === "choosingDeadpoolVictim") {
     content = (
       <div className={styles.btnContainer}>
-        <button
-          disabled={disabled}
-          onClick={() => {
-            toggleModalOpen(false);
-            setTimeout(resolveDeadpoolVictim, ANIM_TIME);
-          }}
-        >
+        <button disabled={disabled} onClick={resolveDeadpoolVictim}>
           GOODBYE{" "}
           {translations[heroRoster.keys().next().value as HeroKey] || "..."}
           <span className={styles.emoji}>&#128128;</span>
