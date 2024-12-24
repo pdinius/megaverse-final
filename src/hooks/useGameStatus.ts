@@ -250,7 +250,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   //#endregion
 
   //#region heroes
-  const unlockHero = (h: HeroKey, from: Area) => {
+  const unlockHero = (h: HeroKey, from: Area, skipped = false) => {
     if (h === "SCARLET_WITCH_2" && "SCARLET_WITCH" in heroes) return;
     if (h === "SCARLET_WITCH" && "SCARLET_WITCH_2" in heroes) return;
     if (h === "QUICKSILVER_2" && "QUICKSILVER" in heroes) return;
@@ -263,7 +263,8 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       } else if (h === "SILVER_SURFER" && "SILVER_SURFER_2" in res) {
         res.SILVER_SURFER_2!.crossover = true;
       } else {
-        res[h] = getNewHeroProps(chained.includes(h), from);
+        res[h] = getNewHeroProps(from);
+        if (!skipped && chained.includes(h)) res[h].cooldown = 2;
       }
 
       UNLOCK_ALL_ACHIEVEMENTS.forEach((a) => {
@@ -554,7 +555,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     return completedBtns.has(b);
   };
 
-  const complete = (btnKey: string) => {
+  const complete = (btnKey: string, skipped = false) => {
     // add connections and rewards
     setCompletedBtns(setAdder(btnKey));
     buttonToConnectedPaths(btnKey).forEach(connect);
@@ -564,7 +565,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       const { infinity } = villainInfo[btnKey];
 
       // chained heroes
-      chained.forEach((h) => unlockHero(h, getBtnArea(btnKey)));
+      chained.forEach((h) => unlockHero(h, getBtnArea(btnKey), skipped));
 
       // infinity stones
       if (infinity) {
@@ -1131,7 +1132,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
         }
         return res;
       });
-      complete(currentBtnClicked);
+      complete(currentBtnClicked, true);
       resetFight();
     }, ANIM_TIME);
   };
