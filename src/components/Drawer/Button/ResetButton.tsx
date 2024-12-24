@@ -2,7 +2,6 @@ import { FC, useContext } from "react";
 import styles from "./Button.module.scss";
 import { statusContext } from "../../../StatusContext";
 import { Icon } from "../../General/Icon";
-import { If } from "../../General/If/If";
 
 const ResetButton: FC = () => {
   const { currentAction, resetClickHandler } = useContext(statusContext);
@@ -25,7 +24,7 @@ const ResetButton: FC = () => {
         {resetText}
         <Icon which="trash" />
       </button>
-      <If condition={currentAction.startsWith("reset")}>
+      {currentAction.startsWith("reset") ? (
         <button
           onClick={() => resetClickHandler(true)}
           className={`${styles.btn} ${disabled ? styles.disabled : ""}`}
@@ -33,7 +32,7 @@ const ResetButton: FC = () => {
         >
           CANCEL
         </button>
-      </If>
+      ) : null}
     </div>
   );
 };

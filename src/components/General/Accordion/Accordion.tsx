@@ -25,7 +25,12 @@ const Accordion: FC<AccordionProps> = ({ children, title, subtitle }) => {
       <div className={styles.summary} onClick={() => setOpen(!open)}>
         <span className={styles.title}>{title}</span>
         <span className={styles.subtitle} title={subtitle}>
-          {subtitle ? <>- {subtitle.slice(0,20)}{subtitle.length > 20 ? <> &hellip;</> : null}</> : null}
+          {subtitle ? (
+            <>
+              - {subtitle!.slice(0, 20)}
+              {subtitle.length > 20 ? <>&hellip;</> : null}
+            </>
+          ) : null}
         </span>
         <Icon
           which="up-chevron"

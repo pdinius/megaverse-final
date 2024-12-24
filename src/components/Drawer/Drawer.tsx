@@ -11,7 +11,6 @@ import Resources from "./Resources/Resources";
 import UnlockedHeroes from "./UnlockedHeroes/UnlockedHeroes";
 import Handle from "./Handle";
 import SaveLoadButton from "./Button/SaveLoadButton";
-import { If } from "../General/If/If";
 
 const Drawer: FC = () => {
   const { areHeroesDead, drawerOpen } = useContext(statusContext);
@@ -49,10 +48,12 @@ const Drawer: FC = () => {
           </DrawerContainer>
           <Divider />
           <UnlockedHeroes />
-          <If condition={areHeroesDead}>
-            <Divider />
-            <Graveyard />
-          </If>
+          {areHeroesDead ? (
+            <>
+              <Divider />
+              <Graveyard />
+            </>
+          ) : null}
         </div>
       </div>
       <Handle />

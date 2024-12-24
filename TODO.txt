@@ -18,6 +18,7 @@ flesh out debugging page
 Add links to doms rules
 Make desktop version
 Add the 5 points in next deadpool logic
+Hide DC stuff
 
 // Nice to haves -
 search for items

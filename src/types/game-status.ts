@@ -14,6 +14,8 @@ import { ChoiceSelectorProps } from "../components/GameSetup/ChoiceSelector/Choi
 import { VillainKey } from "./villain";
 import { Path } from "./svg";
 import { VillainInfo } from "../lib/villain-info";
+import { translations } from "../lib/translations";
+import { Dispatch, SetStateAction } from "react";
 
 export const ACHIEVEMENT_LIST = [
   "win_with_beast",
@@ -132,6 +134,8 @@ export const isHeroState = (o: unknown): o is HeroState => {
   );
 };
 
+export type Overlay = keyof typeof translations | ActionType | Tag;
+
 export interface IGameStatus {
   actionTokens: { [key in ActionType]: number };
   areGameResolutionButtonsClickable: () => boolean;
@@ -158,7 +162,7 @@ export interface IGameStatus {
   getCode: () => string | null;
   getCurrentVillain: () => VillainKey | null;
   getLegalHeroesForFight: () => Array<HeroKey>;
-  getPathSVGPathInfo: () => Array<{ key: string, props: Path | Array<Path> }>;
+  getPathSVGPathInfo: () => Array<{ key: string; props: Path | Array<Path> }>;
   getScore: () => number;
   getRewardSVGPathString: (s: string) => string;
   getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
@@ -198,4 +202,6 @@ export interface IGameStatus {
   usingDangerRoom: boolean;
   won: () => void;
   previousActions: Array<string>;
+  overlay: Overlay | null;
+  setOverlay: Dispatch<SetStateAction<Overlay | null>>;
 }

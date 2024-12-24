@@ -11,7 +11,6 @@ import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 import pjson from "../package.json";
 import { Search } from "./components/Search/Search";
-import { If } from "./components/General/If/If";
 
 const TESTING = false;
 
@@ -29,17 +28,15 @@ function App() {
             <Map />
           </div>
           <Modal>
-            <If condition={status.currentAction === "resolvingFight"}>
-              <GameSetup />
-            </If>
+            {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
           </Modal>
           <Search />
           <Toast />
-          <If condition={TESTING}>
+          {TESTING ? (
             <pre className={styles.debug}>
               {status.previousActions.join("\n")}
             </pre>
-          </If>
+          ) : null}
           {<div className={`${styles.version} noselect`}>v{pjson.version}</div>}
         </>
       )}

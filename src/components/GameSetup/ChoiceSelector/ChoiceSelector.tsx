@@ -5,7 +5,6 @@ import Accordion from "../../General/Accordion/Accordion";
 import { Icon } from "../../General/Icon";
 import Dots from "../../General/Dots/Dots";
 import { statusContext } from "../../../StatusContext";
-import { If } from "../../General/If/If";
 
 export interface ChoiceSelectorProps<T extends string> {
   title: string;
@@ -44,7 +43,7 @@ const ChoiceSelector = <T extends string>({
   return (
     <Accordion title={title} subtitle={subtitle}>
       <div className={styles.container}>
-        <If condition={pages.length > 1}>
+        {pages.length > 1 ? (
           <button
             disabled={page === 0}
             onClick={() => setPage(page - 1)}
@@ -52,7 +51,7 @@ const ChoiceSelector = <T extends string>({
           >
             <Icon which="left-chevron" />
           </button>
-        </If>
+        ) : null}
         <div
           className={styles.items}
           style={{
@@ -89,7 +88,7 @@ const ChoiceSelector = <T extends string>({
             </div>
           ))}
         </div>
-        <If condition={pages.length > 1}>
+        {pages.length > 1 ? (
           <button
             disabled={page + 1 === pageCount}
             onClick={() => setPage(page + 1)}
@@ -97,11 +96,9 @@ const ChoiceSelector = <T extends string>({
           >
             <Icon which="right-chevron" />
           </button>
-        </If>
+        ) : null}
       </div>
-      <If condition={pages.length > 1}>
-        <Dots count={pageCount} current={page} />
-      </If>
+      {pages.length > 1 ? <Dots count={pageCount} current={page} /> : null}
     </Accordion>
   );
 };

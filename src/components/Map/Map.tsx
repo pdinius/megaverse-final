@@ -9,6 +9,7 @@ import VillainOverlays from "./VillainOverlays/VillainOverlays";
 import Paths from "./Paths/Paths";
 import Buttons from "./Buttons/Buttons";
 import MkraanCrystalProgress from "./MkraanCrystalProgress/MkraanCrystalProgress";
+import Mask from "./Mask/Mask";
 
 export const Map: FC = () => {
   const [moved, setMoved] = useState(false);
@@ -24,6 +25,7 @@ export const Map: FC = () => {
       <Achievements />
       <Buttons moved={moved} />
       <InfinityStones />
+      <Mask />
     </DraggablePannableSvg>
   );
 };

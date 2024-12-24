@@ -5,6 +5,7 @@ import { MiscKey } from "../types/misc";
 import { PetKey } from "../types/pets";
 import { TeamKey } from "../types/teams";
 import { VillainKey } from "../types/villain";
+import { TypedEntries } from "./utils";
 import { Challenge } from "./villain-info";
 
 export const translations: {
@@ -18,6 +19,15 @@ export const translations: {
     | VillainKey
     | Challenge]: string;
 } = {
+  // DUPE HEROES
+  MAGNETO_X1: "Magneto - One Use",
+  BOB_AGENT_OF_HYDRA_2: "Bob, Agent of Hydra",
+  SILVER_SURFER_2: "Silver Surfer",
+  DEADPOOL_2: "Deadpool (Hero)",
+  SCARLET_WITCH_2: "Scarlet Witch",
+  QUICKSILVER_2: "Quicksilver",
+
+  // HEROES
   ADAM_WARLOCK: "Adam Warlock",
   AGATHA_HARKNESS: "Agatha Harkness",
   AGENT_VENOM: "Agent Venom",
@@ -58,7 +68,6 @@ export const translations: {
   BLOODSPORT: "Bloodsport",
   BLUE_BEETLE: "Blue Beetle",
   BOB_AGENT_OF_HYDRA: "Bob, Agent of Hydra",
-  BOB_AGENT_OF_HYDRA_2: "Bob, Agent of Hydra",
   BOOM_BOOM: "Boom Boom",
   BOOSTER_GOLD: "Booster Gold",
   CABLE: "Cable",
@@ -96,7 +105,7 @@ export const translations: {
   DAZZLER: "Dazzler",
   DEADMAN: "Deadman",
   DEADPOOL_X_FORCE: "Deadpool (X-Force)",
-  DEADPOOL: "Deadpool",
+  DEADPOOL: "Deadpool (Hero)",
   DEADSHOT: "Deadshot",
   DEATHLOK: "Deathlok",
   DOC_SAMSON: "Doc Samson",
@@ -269,7 +278,6 @@ export const translations: {
   SHURI: "Shuri",
   SILK: "Silk",
   SILVER_SURFER: "Silver Surfer",
-  SILVER_SURFER_2: "Silver Surfer",
   SIRYN: "Siryn",
   SNOWBIRD: "Snowbird",
   SONGBIRD: "Songbird",
@@ -311,7 +319,7 @@ export const translations: {
   TIGRA: "Tigra",
   TRITON: "Triton",
   URSA_MAJOR: "Ursa Major",
-  US_AGENT: "U.S.Agent",
+  US_AGENT: "U.S. Agent",
   VALKYRIE: "Valkyrie",
   VENOM_HERO: "Venom (Hero)",
   VISION: "Vision",
@@ -478,29 +486,22 @@ export const translations: {
   TEAM_XMEN: "X-Men",
   TEAM_YOUNG_AVENGERS: "Young Avengers",
 
-  // PETS
   PET_JEFF: "Jeff",
   PET_LOCKHEED: "Lockheed",
-  PET_ACE_THE_BAT_HOUND: "Ace the Bat-Hound",
   PET_ALLIGATOR_LOKI: "Alligator Loki",
-  PET_DETECTIVE_CHIMP: "Detective Chimp",
-  PET_DEX_STARR: "Dex-Starr",
   PET_REDWING: "Redwing",
   PET_THROG: "Throg",
   PET_COSMO: "Cosmo",
   PET_GOOSE: "Goose",
+  PET_ACE_THE_BAT_HOUND: "Ace the Bat-Hound",
+  PET_DETECTIVE_CHIMP: "Detective Chimp",
+  PET_DEX_STARR: "Dex-Starr",
 
-  // COMPANIONS
   COMPANION_ALFRED: "Alfred",
   COMPANION_BATMOBILE: "Batmobile",
   COMPANION_COMMISSIONER_GORDON: "Commissioner Gordon",
   COMPANION_LOIS_LANE: "Lois Lane",
 
-  // EXTRAS
-  DEADPOOL_2: "Deadpool",
-  MAGNETO_X1: "Magneto - One Use",
-  SCARLET_WITCH_2: "Scarlet Witch",
-  QUICKSILVER_2: "Quicksilver",
   HYBRID_DECK: "Hybrid Deck",
   PHAGE: "Phage",
   LASHER: "Lasher",
@@ -543,7 +544,7 @@ export const translations: {
   DARK_CARNAGE: "Dark Carnage",
   DARK_PHOENIX: "Dark Phoenix",
   DARKSEID: "Darkseid",
-  DEADPOOL_VILLAIN: "Deadpool",
+  DEADPOOL_VILLAIN: "Deadpool (Villain)",
   DEATH: "Death",
   DEATHBIRD: "Deathbird",
   DEATHSTROKE: "Deathstroke",
@@ -653,7 +654,7 @@ export const translations: {
   TRIGON: "Trigon",
   TWO_FACE: "Two-Face",
   ULTRON: "Ultron",
-  VENOM_VILLAIN: "Venom",
+  VENOM_VILLAIN: "Venom (Villain)",
   VULCAN: "Vulcan",
   VULTURE: "Vulture",
   WAR: "War",
@@ -665,20 +666,42 @@ export const translations: {
   // CHALLENGES
   carnage: "Carnage Challenge",
   complications: "Complications Challenge",
-  "endangeredLocations": "Endangered Locations",
-  "finFangFoom": "Fin Fang Foom Challenge",
+  endangeredLocations: "Endangered Locations",
+  finFangFoom: "Fin Fang Foom Challenge",
   hard: "Hard Challenge",
-  "hazardousLocations": "Hazardous Locations",
+  hazardousLocations: "Hazardous Locations",
   moderate: "Moderate Challenge",
-  "noEquipment": "No Equipment",
-  "planB": "Plan B Challenge",
+  noEquipment: "No Equipment",
+  planB: "Plan B Challenge",
   random: "Random Challenge",
-  "secretIdentity": "Secret Identity",
-  "sentinelI": "Sentinel I Challenge",
-  "sentinelII": "Sentinel II Challenge",
-  "sentinelIII": "Sentinel III Challenge",
+  secretIdentity: "Secret Identity",
+  sentinelI: "Sentinel I Challenge",
+  sentinelII: "Sentinel II Challenge",
+  sentinelIII: "Sentinel III Challenge",
   shapeshifter: "Shapeshifter Challenge",
   takeover: "Takeover Challenge",
   titania: "Titania Challenge",
-  "winterGuard": "Winter Guard Challenge",
+  winterGuard: "Winter Guard Challenge",
 };
+
+interface ReverseTranslations {
+  [key: string]:
+    | HeroKey
+    | EquipKey
+    | TeamKey
+    | PetKey
+    | CompanionKey
+    | MiscKey
+    | VillainKey
+    | Challenge;
+}
+
+export const reverseTranslations = TypedEntries(translations).reduce(
+  (a: ReverseTranslations, [key, value]) => {
+    return {
+      ...a,
+      [value]: key,
+    };
+  },
+  {}
+);
