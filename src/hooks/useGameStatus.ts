@@ -162,6 +162,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debugging, setDebugging] = useState(false);
   const [previousActions, setPreviousActions] = useState<Array<string>>([]);
+  const [skippedVillains, setSkippedVillains] = useState<Array<string>>([]);
 
   const blocked = currentAction !== "";
 
@@ -221,22 +222,19 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   };
 
   const getScore = () => {
-    return Array.from(completedBtns).reduce(
-      (a, b) => a + (villainInfo[b]?.points || 0),
-      0
-    );
+    return Array.from(completedBtns).reduce((a, b) => {
+      return skippedVillains.includes(b)
+        ? a
+        : a + (villainInfo[b]?.points || 0);
+    }, 0);
   };
   //#endregion
 
   //#region modal
-  const toggleModalOpen = (b?: boolean) => {
-    const newModalOpen = b === undefined ? !modalOpen : b;
-    setModalOpen(newModalOpen);
-    if (newModalOpen === false) {
-      setCurrentAction("");
-      setTeamRoster(new Set());
-      setChained([]);
-      resetFight();
+  const toggleModalOpen = (b = !modalOpen, reset = true) => {
+    setModalOpen(b);
+    if (reset) {
+      setTimeout(resetFight, ANIM_TIME);
     }
   };
   //#endregion
@@ -1063,58 +1061,79 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
 
   //#region fight resolution
   const won = () => {
-    handleMagnetoX1();
-    updateCooldown(heroRoster);
-    complete(currentBtnClicked);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      handleMagnetoX1();
+      updateCooldown(heroRoster);
+      complete(currentBtnClicked);
 
-    // HERO ACHIEVEMENTS
-    for (const hero of heroRoster) {
-      const achievement = heroWinToAchievementLookup[hero];
-      if (achievement && achievements[achievement] === false) {
-        completeAchievement(achievement);
+      // HERO ACHIEVEMENTS
+      for (const hero of heroRoster) {
+        const achievement = heroWinToAchievementLookup[hero];
+        if (achievement && achievements[achievement] === false) {
+          completeAchievement(achievement);
+        }
       }
-    }
 
-    // TEAM ACHIEVEMENTS
-    for (const team of teamRoster) {
-      const achievement = teamWinToAchievementLookup[team];
-      if (achievement && achievements[achievement] === false) {
-        completeAchievement(achievement);
+      // TEAM ACHIEVEMENTS
+      for (const team of teamRoster) {
+        const achievement = teamWinToAchievementLookup[team];
+        if (achievement && achievements[achievement] === false) {
+          completeAchievement(achievement);
+        }
       }
-    }
 
-    // EQUIPMENT
-    if (
-      !achievements.win_with_mjolnir &&
-      equipRoster.has("EQUIP_THOR_MJOLNIR")
-    ) {
-      completeAchievement("win_with_mjolnir");
-    }
-    if (
-      !achievements.win_with_ebony_blade &&
-      equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
-    ) {
-      completeAchievement("win_with_ebony_blade");
-    }
+      // EQUIPMENT
+      if (
+        !achievements.win_with_mjolnir &&
+        equipRoster.has("EQUIP_THOR_MJOLNIR")
+      ) {
+        completeAchievement("win_with_mjolnir");
+      }
+      if (
+        !achievements.win_with_ebony_blade &&
+        equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
+      ) {
+        completeAchievement("win_with_ebony_blade");
+      }
 
-    // PETS
-    if (!achievements.win_with_pet && petRoster.size > 0) {
-      completeAchievement("win_with_pet");
-    }
+      // PETS
+      if (!achievements.win_with_pet && petRoster.size > 0) {
+        completeAchievement("win_with_pet");
+      }
 
-    spendFightResources();
-    toggleModalOpen(false);
+      spendFightResources();
+      resetFight();
+    }, ANIM_TIME);
   };
 
   const lost = () => {
-    handleMagnetoX1();
-    heroRoster.forEach(killHero);
-    updateCooldown(new Set());
-    ACTION_TYPES.forEach((at) =>
-      modifyActionTokens(at, -spendingActionTokens[at])
-    );
-    spendFightResources();
-    toggleModalOpen(false);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      handleMagnetoX1();
+      heroRoster.forEach(killHero);
+      updateCooldown(new Set());
+      ACTION_TYPES.forEach((at) =>
+        modifyActionTokens(at, -spendingActionTokens[at])
+      );
+      spendFightResources();
+      resetFight();
+    }, ANIM_TIME);
+  };
+
+  const skip = () => {
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      setSkippedVillains((curr) => {
+        const res = curr.slice();
+        if (!res.includes(currentBtnClicked)) {
+          res.push(currentBtnClicked);
+        }
+        return res;
+      });
+      complete(currentBtnClicked);
+      resetFight();
+    }, ANIM_TIME);
   };
 
   const areGameResolutionButtonsClickable = () => {
@@ -1141,7 +1160,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       setHeroRoster(new Set());
     } else {
       // SUCCESS
-      toggleModalOpen(false);
+      toggleModalOpen(false, false);
       setTimeout(() => {
         updateCooldown(heroRoster);
         if (score >= 30) {
@@ -1154,20 +1173,22 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
         } else {
           complete(DEADPOOL_BTN_5_POINTS);
         }
-        toggleModalOpen(false);
+        resetFight();
       }, ANIM_TIME);
     }
   };
 
   const resolveDeadpoolVictim = () => {
-    const victim = heroRoster.keys().next().value;
-    if (victim === undefined) return;
-    killHero(victim);
-    toggleModalOpen(false);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      const victim = heroRoster.keys().next().value;
+      if (victim === undefined) return;
+      killHero(victim);
+    }, ANIM_TIME);
   };
 
   const startFight = (btn: string) => {
-    toggleModalOpen(true);
+    toggleModalOpen(true, false);
 
     if (btn in chainedHeroes) {
       setChained(chainedHeroes[btn]);
@@ -1527,6 +1548,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     areGameResolutionButtonsClickable,
     won,
     lost,
+    skip,
     resolveDeadpool,
     resolveDeadpoolVictim,
     team: teamRoster.keys().next().value,
