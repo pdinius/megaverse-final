@@ -131,8 +131,8 @@ const generateBlankStatus = (): IGameStatus => {
     testing: false,
     previousActions: [],
     getRewardSVGPathString: () => "",
-    overlay: null,
-    setOverlay: () => {},
+    overlays: null,
+    setOverlays: () => {},
   };
   return state;
 };

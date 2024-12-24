@@ -134,7 +134,7 @@ export const isHeroState = (o: unknown): o is HeroState => {
   );
 };
 
-export type Overlay = keyof typeof translations | ActionType | Tag;
+export type Overlays = Array<keyof typeof translations | ActionType | Tag>;
 
 export interface IGameStatus {
   actionTokens: { [key in ActionType]: number };
@@ -202,6 +202,6 @@ export interface IGameStatus {
   usingDangerRoom: boolean;
   won: () => void;
   previousActions: Array<string>;
-  overlay: Overlay | null;
-  setOverlay: Dispatch<SetStateAction<Overlay | null>>;
+  overlays: Overlays | null;
+  setOverlays: Dispatch<SetStateAction<Overlays | null>>;
 }

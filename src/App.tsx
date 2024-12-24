@@ -10,7 +10,6 @@ import Drawer from "./components/Drawer/Drawer";
 import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 import pjson from "../package.json";
-import { Search } from "./components/Search/Search";
 
 const TESTING = false;
 
@@ -30,7 +29,6 @@ function App() {
           <Modal>
             {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
           </Modal>
-          <Search />
           <Toast />
           {TESTING ? (
             <pre className={styles.debug}>

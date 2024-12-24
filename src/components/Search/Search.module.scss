@@ -1,12 +1,13 @@
 .container {
   --radius: 1rem;
-  position: fixed;
-  top: 5rem;
-  left: 2rem;
+  position: absolute;
+  top: 4rem;
+  left: 1.25rem;
   border-radius: var(--radius);
+  box-shadow: 3px 4px 5px rgb(0 0 0 / 0.5);
 
   & * {
-    font-family: Figtree;
+    font-family: Figtree, sans-serif;
   }
 }
 
@@ -16,7 +17,7 @@
 }
 
 .magnifyingIcon {
-  height: 100%;
+  height: calc(100% - 1rem);
   fill: #333;
 }
 
@@ -28,9 +29,9 @@
 }
 
 .magnifyingContainer {
-  --margin: 0.5rem;
+  --margin: 0rem;
   right: var(--margin);
-  background: none;
+  background: transparent;
 }
 
 .cancelContainer,
@@ -60,15 +61,20 @@
 }
 
 .option {
-  font-family: Figtree;
-  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
   cursor: pointer;
   background: #2a2830;
   color: #eee;
   font-size: 0.825rem;
 
+  & * {
+    color: #eee;
+  }
+
   &:last-child {
-    padding-bottom: 0.75rem;
+    padding-bottom: 1.25rem;
   }
 }
 

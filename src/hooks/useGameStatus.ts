@@ -11,7 +11,7 @@ import {
   isAchievement,
   isCounts,
   isHeroState,
-  Overlay,
+  Overlays,
 } from "../types/game-status";
 import {
   ACTION_TYPES,
@@ -163,7 +163,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debugging, setDebugging] = useState(false);
   const [previousActions, setPreviousActions] = useState<Array<string>>([]);
-  const [overlay, setOverlay] = useState<Overlay | null>(null);
+  const [overlays, setOverlays] = useState<Overlays | null>(null);
 
   const blocked = currentAction !== "";
 
@@ -1513,8 +1513,8 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     modalOpen,
     modifySpendingActionTokens,
     multiverseHeroes,
-    overlay,
-    setOverlay,
+    overlays,
+    setOverlays,
     portalButtonClickHandler,
     resetClickHandler,
     showActionTokensAccordion,

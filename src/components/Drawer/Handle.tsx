@@ -3,6 +3,7 @@ import styles from "./Handle.module.scss";
 import { TypedEntries } from "../../lib/utils";
 import { Icon } from "../General/Icon";
 import { statusContext } from "../../StatusContext";
+import { Search } from "../Search/Search";
 
 interface HandleProps {}
 
@@ -42,6 +43,7 @@ const Handle: FC<HandleProps> = () => {
       >
         <Icon which="bars" className={styles.bars} />
       </button>
+      <Search />
     </div>
   );
 };

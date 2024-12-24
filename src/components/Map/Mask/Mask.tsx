@@ -6,39 +6,23 @@ import { villainInfo } from "../../../lib/villain-info";
 interface MaskProps {}
 
 const Mask: FC<MaskProps> = () => {
-  const { overlay } = useContext(statusContext);
+  const { overlays } = useContext(statusContext);
 
-  if (overlay === null) return null;
+  if (overlays === null) return null;
 
-  const paths: Array<string> = [];
-  if (overlay in combinedOverlays) paths.push(combinedOverlays[overlay]);
-  if (overlay === "SILVER_SURFER") {
-    paths.push(combinedOverlays.SILVER_SURFER_2);
-  }
-  if (overlay === "SCARLET_WITCH") {
-    paths.push(combinedOverlays.SCARLET_WITCH_2);
-  }
-  if (overlay === "QUICKSILVER") {
-    paths.push(combinedOverlays.QUICKSILVER);
-  }
-  if (overlay === "BOB_AGENT_OF_HYDRA") {
-    paths.push(combinedOverlays.BOB_AGENT_OF_HYDRA_2);
-  }
-  if (overlay === "DEADPOOL") {
-    paths.push(combinedOverlays.DEADPOOL_2);
-  }
+  const paths: Array<string> = overlays.map((o) => combinedOverlays[o]);
 
   Object.values(villainInfo)
-    .filter((v) => v.key === overlay)
+    .filter((v) => overlays.includes(v.key))
     .forEach((v) => {
       paths.push(v.overlay);
     });
 
   if (paths.length === 0) {
-    console.log(overlay);
+    console.log(overlays);
   }
 
-  return overlay ? (
+  return (
     <>
       <defs>
         <mask id="maskmask">
@@ -55,7 +39,7 @@ const Mask: FC<MaskProps> = () => {
         mask="url(#maskmask)"
       />
     </>
-  ) : null;
+  );
 };
 
 export default Mask;
