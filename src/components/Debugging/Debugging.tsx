@@ -232,8 +232,7 @@ export const Debugging: FC = () => {
             <span className={styles.bold}>NOTE:</span> While your progress is saved in your browser's local storage,
             feel free to copy the entire text on this page into a file on your
             computer and then paste it in if you switch computers, browsers, or
-            just lose your progress for one reason another, and you can pick up
-            where you left off.
+            just lose your progress for some reason.
           </div>
         </div>
       </DebuggingModal>
