@@ -11,29 +11,29 @@ const Mask: FC = () => {
 
   if (overlays === null) return null;
 
-  const paths: Map<string, string> = overlays.reduce((a, b) => {
-    a.set(b, combinedOverlays[b]);
+  const paths = overlays.reduce((a: Array<[string, string]>, b) => {
+    a.push([b, combinedOverlays[b]]);
     return a;
-  }, new Map());
+  }, []);
 
   Object.values(villainInfo)
     .filter((v) => overlays.includes(v.key))
     .forEach((v) => {
-      paths.set(v.key, v.overlay);
+      paths.push([v.key, v.overlay]);
     });
 
   MAP_ITEMS.filter((v) => overlays.includes(v)).forEach((v) => {
-    paths.set(v, resourceOverlays[v]);
+    paths.push([v, resourceOverlays[v]]);
   });
 
   if (overlays.includes("INFINITY_GEMS")) {
     INFINITY_GEMS.forEach((v) => {
-      paths.set(v, resourceOverlays[v]);
+      paths.push([v, resourceOverlays[v]]);
     });
   }
   if (overlays.includes("ACTION_TOKENS")) {
     ACTION_TYPES.forEach((v) => {
-      paths.set(v, resourceOverlays[v]);
+      paths.push([v, resourceOverlays[v]]);
     });
   }
 
@@ -42,7 +42,7 @@ const Mask: FC = () => {
       <defs>
         <mask id="maskmask">
           <rect width="100%" height="100%" fill="white" />
-          {Array.from(paths).map((p, i) => (
+          {paths.map((p, i) => (
             <path
               key={i}
               id={`mask_${p[0]}`}
