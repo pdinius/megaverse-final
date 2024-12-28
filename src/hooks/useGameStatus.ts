@@ -139,7 +139,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     getStartingConnectedPaths()
   );
   const [achievements, setAchievements] = useState(getStartingAchievements());
-  const [counts, setCounts] = useState(getStartingCounts());
+  const [counts, setCounts] = useState(getStartingCounts(testing));
   const [availableButtons, setAvailableButtons] = useState(
     getStartingAvailableButtons()
   );
@@ -164,6 +164,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [debugging, setDebugging] = useState(false);
   const [previousActions, setPreviousActions] = useState<Array<string>>([]);
   const [overlays, setOverlays] = useState<Overlays | null>(null);
+  const [skippedVillains, setSkippedVillains] = useState<Array<string>>([]);
 
   const blocked = currentAction !== "";
 
@@ -223,22 +224,19 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   };
 
   const getScore = () => {
-    return Array.from(completedBtns).reduce(
-      (a, b) => a + (villainInfo[b]?.points || 0),
-      0
-    );
+    return Array.from(completedBtns).reduce((a, b) => {
+      return skippedVillains.includes(b)
+        ? a
+        : a + (villainInfo[b]?.points || 0);
+    }, 0);
   };
   //#endregion
 
   //#region modal
-  const toggleModalOpen = (b?: boolean) => {
-    const newModalOpen = b === undefined ? !modalOpen : b;
-    setModalOpen(newModalOpen);
-    if (newModalOpen === false) {
-      setCurrentAction("");
-      setTeamRoster(new Set());
-      setChained([]);
-      resetFight();
+  const toggleModalOpen = (b = !modalOpen, reset = true) => {
+    setModalOpen(b);
+    if (reset) {
+      setTimeout(resetFight, ANIM_TIME);
     }
   };
   //#endregion
@@ -254,7 +252,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   //#endregion
 
   //#region heroes
-  const unlockHero = (h: HeroKey, from: Area) => {
+  const unlockHero = (h: HeroKey, from: Area, skipped = false) => {
     if (h === "SCARLET_WITCH_2" && "SCARLET_WITCH" in heroes) return;
     if (h === "SCARLET_WITCH" && "SCARLET_WITCH_2" in heroes) return;
     if (h === "QUICKSILVER_2" && "QUICKSILVER" in heroes) return;
@@ -267,7 +265,8 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       } else if (h === "SILVER_SURFER" && "SILVER_SURFER_2" in res) {
         res.SILVER_SURFER_2!.crossover = true;
       } else {
-        res[h] = getNewHeroProps(chained.includes(h), from);
+        res[h] = getNewHeroProps(from);
+        if (!skipped && chained.includes(h)) res[h].cooldown = 2;
       }
 
       UNLOCK_ALL_ACHIEVEMENTS.forEach((a) => {
@@ -489,6 +488,16 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     return connectedPaths.has(p);
   };
 
+  // backwards void fix:
+  useEffect(() => {
+    if (
+      connectedPaths.has("WAR_PATH_17") &&
+      !connectedPaths.has("WAR_PATH_18")
+    ) {
+      connect("WAR_PATH_18");
+    }
+  }, [connectedPaths]);
+
   const connect = (p: string) => {
     if (isConnected(p)) return;
     setConnectedPaths((curr) => {
@@ -558,7 +567,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     return completedBtns.has(b);
   };
 
-  const complete = (btnKey: string) => {
+  const complete = (btnKey: string, skipped = false) => {
     // add connections and rewards
     setCompletedBtns(setAdder(btnKey));
     buttonToConnectedPaths(btnKey).forEach(connect);
@@ -568,7 +577,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       const { infinity } = villainInfo[btnKey];
 
       // chained heroes
-      chained.forEach((h) => unlockHero(h, getBtnArea(btnKey)));
+      chained.forEach((h) => unlockHero(h, getBtnArea(btnKey), skipped));
 
       // infinity stones
       if (infinity) {
@@ -932,7 +941,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     setCompletedBtns(new Set());
     setConnectedPaths(getStartingConnectedPaths());
     setAchievements(getStartingAchievements());
-    setCounts(getStartingCounts());
+    setCounts(getStartingCounts(testing));
     setModalOpen(false);
     setDrawerOpen(false);
     setAvailableButtons(getStartingAvailableButtons());
@@ -1065,58 +1074,79 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
 
   //#region fight resolution
   const won = () => {
-    handleMagnetoX1();
-    updateCooldown(heroRoster);
-    complete(currentBtnClicked);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      handleMagnetoX1();
+      updateCooldown(heroRoster);
+      complete(currentBtnClicked);
 
-    // HERO ACHIEVEMENTS
-    for (const hero of heroRoster) {
-      const achievement = heroWinToAchievementLookup[hero];
-      if (achievement && achievements[achievement] === false) {
-        completeAchievement(achievement);
+      // HERO ACHIEVEMENTS
+      for (const hero of heroRoster) {
+        const achievement = heroWinToAchievementLookup[hero];
+        if (achievement && achievements[achievement] === false) {
+          completeAchievement(achievement);
+        }
       }
-    }
 
-    // TEAM ACHIEVEMENTS
-    for (const team of teamRoster) {
-      const achievement = teamWinToAchievementLookup[team];
-      if (achievement && achievements[achievement] === false) {
-        completeAchievement(achievement);
+      // TEAM ACHIEVEMENTS
+      for (const team of teamRoster) {
+        const achievement = teamWinToAchievementLookup[team];
+        if (achievement && achievements[achievement] === false) {
+          completeAchievement(achievement);
+        }
       }
-    }
 
-    // EQUIPMENT
-    if (
-      !achievements.win_with_mjolnir &&
-      equipRoster.has("EQUIP_THOR_MJOLNIR")
-    ) {
-      completeAchievement("win_with_mjolnir");
-    }
-    if (
-      !achievements.win_with_ebony_blade &&
-      equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
-    ) {
-      completeAchievement("win_with_ebony_blade");
-    }
+      // EQUIPMENT
+      if (
+        !achievements.win_with_mjolnir &&
+        equipRoster.has("EQUIP_THOR_MJOLNIR")
+      ) {
+        completeAchievement("win_with_mjolnir");
+      }
+      if (
+        !achievements.win_with_ebony_blade &&
+        equipRoster.has("EQUIP_BLACK_KNIGHT_EBONY_BLADE")
+      ) {
+        completeAchievement("win_with_ebony_blade");
+      }
 
-    // PETS
-    if (!achievements.win_with_pet && petRoster.size > 0) {
-      completeAchievement("win_with_pet");
-    }
+      // PETS
+      if (!achievements.win_with_pet && petRoster.size > 0) {
+        completeAchievement("win_with_pet");
+      }
 
-    spendFightResources();
-    toggleModalOpen(false);
+      spendFightResources();
+      resetFight();
+    }, ANIM_TIME);
   };
 
   const lost = () => {
-    handleMagnetoX1();
-    heroRoster.forEach(killHero);
-    updateCooldown(new Set());
-    ACTION_TYPES.forEach((at) =>
-      modifyActionTokens(at, -spendingActionTokens[at])
-    );
-    spendFightResources();
-    toggleModalOpen(false);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      handleMagnetoX1();
+      heroRoster.forEach(killHero);
+      updateCooldown(new Set());
+      ACTION_TYPES.forEach((at) =>
+        modifyActionTokens(at, -spendingActionTokens[at])
+      );
+      spendFightResources();
+      resetFight();
+    }, ANIM_TIME);
+  };
+
+  const skip = () => {
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      setSkippedVillains((curr) => {
+        const res = curr.slice();
+        if (!res.includes(currentBtnClicked)) {
+          res.push(currentBtnClicked);
+        }
+        return res;
+      });
+      complete(currentBtnClicked, true);
+      resetFight();
+    }, ANIM_TIME);
   };
 
   const areGameResolutionButtonsClickable = () => {
@@ -1143,7 +1173,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       setHeroRoster(new Set());
     } else {
       // SUCCESS
-      toggleModalOpen(false);
+      toggleModalOpen(false, false);
       setTimeout(() => {
         updateCooldown(heroRoster);
         if (score >= 30) {
@@ -1156,20 +1186,22 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
         } else {
           complete(DEADPOOL_BTN_5_POINTS);
         }
-        toggleModalOpen(false);
+        resetFight();
       }, ANIM_TIME);
     }
   };
 
   const resolveDeadpoolVictim = () => {
-    const victim = heroRoster.keys().next().value;
-    if (victim === undefined) return;
-    killHero(victim);
-    toggleModalOpen(false);
+    toggleModalOpen(false, false);
+    setTimeout(() => {
+      const victim = heroRoster.keys().next().value;
+      if (victim === undefined) return;
+      killHero(victim);
+    }, ANIM_TIME);
   };
 
   const startFight = (btn: string) => {
-    toggleModalOpen(true);
+    toggleModalOpen(true, false);
 
     if (btn in chainedHeroes) {
       setChained(chainedHeroes[btn]);
@@ -1536,6 +1568,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     areGameResolutionButtonsClickable,
     won,
     lost,
+    skip,
     resolveDeadpool,
     resolveDeadpoolVictim,
     team: teamRoster.keys().next().value,

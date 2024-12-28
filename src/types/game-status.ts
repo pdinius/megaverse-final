@@ -202,6 +202,7 @@ export interface IGameStatus {
   resolveDeadpool: (score: number) => void;
   resolveDeadpoolVictim: () => void;
   showActionTokensAccordion: () => boolean;
+  skip: () => void;
   specialRewards: { [key in SpecialReward]: number };
   spendingActionTokens: { [key in ActionType]: number };
   tagClickHandler: (t: Tag) => void;

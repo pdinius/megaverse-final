@@ -133,6 +133,7 @@ const generateBlankStatus = (): IGameStatus => {
     getRewardSVGPathString: () => "",
     overlays: null,
     setOverlays: () => {},
+    skip: () => {},
   };
   return state;
 };

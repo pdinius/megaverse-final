@@ -3,18 +3,18 @@ import { Achievements, Counts, HeroState } from "../types/game-status";
 import { ActionType, Area, SpecialReward, Tag } from "../types/general";
 import { HeroKey } from "../types/heroes";
 
-export const getNewHeroProps = (isChained: boolean, area: Area): HeroState => ({
+export const getNewHeroProps = (area: Area): HeroState => ({
   dead: false,
   crossover: false,
-  cooldown: isChained ? 2 : 0,
+  cooldown: 0,
   area
 });
 
 export const getStartingHeroes = () => ({
-  BLACK_PANTHER_SHURI: getNewHeroProps(false, "MULTIVERSE"),
-  CAPTAIN_CARTER: getNewHeroProps(false, "MULTIVERSE"),
-  IRONHEART: getNewHeroProps(false, "MULTIVERSE"),
-  MIGHTY_THOR: getNewHeroProps(false, "MULTIVERSE"),
+  BLACK_PANTHER_SHURI: getNewHeroProps("MULTIVERSE"),
+  CAPTAIN_CARTER: getNewHeroProps("MULTIVERSE"),
+  IRONHEART: getNewHeroProps("MULTIVERSE"),
+  MIGHTY_THOR: getNewHeroProps("MULTIVERSE"),
 });
 
 export const getStartingTags = (testing: boolean): { [key in Tag]: number } => ({
@@ -106,10 +106,10 @@ export const getStartingAchievements = (): Achievements => ({
   unlock_chod_corsair_hepzibah_raza: false,
 });
 
-export const getStartingCounts = (): Counts => ({
-  bolts: 0,
-  portals: 0,
-  stars: 0,
+export const getStartingCounts = (testing = false): Counts => ({
+  bolts: testing ? 100 : 0,
+  portals: testing ? 100 : 0,
+  stars: testing ? 100 : 0,
   collector_items: 0,
   maple: 0,
 });
