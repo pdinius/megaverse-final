@@ -106,10 +106,10 @@ export const getStartingAchievements = (): Achievements => ({
   unlock_chod_corsair_hepzibah_raza: false,
 });
 
-export const getStartingCounts = (): Counts => ({
-  bolts: 0,
-  portals: 0,
-  stars: 0,
+export const getStartingCounts = (testing = false): Counts => ({
+  bolts: testing ? 100 : 0,
+  portals: testing ? 100 : 0,
+  stars: testing ? 100 : 0,
   collector_items: 0,
   maple: 0,
 });

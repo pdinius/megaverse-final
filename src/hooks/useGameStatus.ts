@@ -138,7 +138,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     getStartingConnectedPaths()
   );
   const [achievements, setAchievements] = useState(getStartingAchievements());
-  const [counts, setCounts] = useState(getStartingCounts());
+  const [counts, setCounts] = useState(getStartingCounts(testing));
   const [availableButtons, setAvailableButtons] = useState(
     getStartingAvailableButtons()
   );
@@ -485,6 +485,16 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const isConnected = (p: string) => {
     return connectedPaths.has(p);
   };
+
+  // backwards void fix:
+  useEffect(() => {
+    if (
+      connectedPaths.has("WAR_PATH_17") &&
+      !connectedPaths.has("WAR_PATH_18")
+    ) {
+      connect("WAR_PATH_18");
+    }
+  }, [connectedPaths]);
 
   const connect = (p: string) => {
     if (isConnected(p)) return;
@@ -929,7 +939,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     setCompletedBtns(new Set());
     setConnectedPaths(getStartingConnectedPaths());
     setAchievements(getStartingAchievements());
-    setCounts(getStartingCounts());
+    setCounts(getStartingCounts(testing));
     setModalOpen(false);
     setDrawerOpen(false);
     setAvailableButtons(getStartingAvailableButtons());
