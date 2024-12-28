@@ -30,8 +30,12 @@ function App() {
             {status.currentAction === "resolvingFight" ? <GameSetup /> : null}
           </Modal>
           <Toast />
-          { TESTING ? <pre className={styles.debug}>{status.previousActions.join("\n")}</pre> : null }
-          { <div className={`${styles.version} noselect`}>v{pjson.version}</div>}
+          {TESTING ? (
+            <pre className={styles.debug}>
+              {status.previousActions.join("\n")}
+            </pre>
+          ) : null}
+          {<div className={`${styles.version} noselect`}>v{pjson.version}</div>}
         </>
       )}
     </statusContext.Provider>

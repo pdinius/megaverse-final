@@ -51,9 +51,9 @@ const GameSetup: FC = () => {
             <ActionTokenSelection />
           </Accordion>
         ) : null}
-        {equipProps.data.length ? <ChoiceSelector {...equipProps} /> : null}
-        {teamProps.data.length ? <ChoiceSelector {...teamProps} /> : null}
-        {petProps.data.length ? <ChoiceSelector {...petProps} /> : null}
+        {equipProps.data.length > 0 ? <ChoiceSelector {...equipProps} /> : null}
+        {teamProps.data.length > 0 ? <ChoiceSelector {...teamProps} /> : null}
+        {petProps.data.length > 0 ? <ChoiceSelector {...petProps} /> : null}
         <GameSetupFooter />
       </div>
     </div>

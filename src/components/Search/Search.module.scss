@@ -1,0 +1,103 @@
+.container {
+  --radius: 1rem;
+  position: absolute;
+  top: 4rem;
+  left: 1.25rem;
+  border-radius: var(--radius);
+  box-shadow: 3px 4px 5px rgb(0 0 0 / 0.5);
+
+  & * {
+    font-family: Figtree, sans-serif;
+  }
+}
+
+.cancelIcon {
+  height: calc(100% - 0.625rem);
+  fill: white;
+}
+
+.magnifyingIcon {
+  height: calc(100% - 1rem);
+  fill: #333;
+}
+
+.cancelContainer {
+  --margin: 0.375rem;
+  left: var(--margin);
+  background: #aaa;
+  transition: opacity 0.2s ease;
+}
+
+.magnifyingContainer {
+  --margin: 0rem;
+  right: var(--margin);
+  background: transparent;
+}
+
+.cancelContainer,
+.magnifyingContainer {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: var(--margin);
+  height: calc(100% - 2 * var(--margin));
+  border-radius: 999px;
+  border: none;
+  outline: transparent;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  border-radius: 0 0 var(--radius) var(--radius);
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #eee;
+  border-top: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  background: #2a2830;
+  color: #eee;
+  font-size: 0.825rem;
+
+  & * {
+    color: #eee;
+  }
+
+  &:last-child {
+    padding-bottom: 1.25rem;
+  }
+}
+
+.hoverOption {
+  background: #423e4d;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.input {
+  background: #eee;
+  color: #222;
+  border: none;
+  outline: transparent;
+  padding-block: 0.5rem;
+  width: min(300px, calc(100vh - 2rem));
+  border-radius: var(--radius) var(--radius) 0 0;
+  transition: border-radius 0.1s ease, padding 0.2s ease, width 0.2s ease;
+}
+
+.inputContainer {
+  position: relative;
+  height: 2rem;
+}

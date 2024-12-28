@@ -8,7 +8,7 @@ import {
 } from "../types/game-status";
 import {
   ActionType,
-  INFINITY_STONES,
+  INFINITY_GEMS,
   InfinityStone,
   SpecialReward,
   Tag,
@@ -131,7 +131,7 @@ const deserializeInfinityStones = (inf: string): Array<InfinityStone> => {
     .toString()
     .slice(1)
     .split("")
-    .map((isIdx) => INFINITY_STONES[+isIdx]);
+    .map((isIdx) => INFINITY_GEMS[+isIdx]);
 };
 const deserializeCompletedBtns = (b: string): Array<string> => {
   return b

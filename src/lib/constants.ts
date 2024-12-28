@@ -1,5 +1,6 @@
 import { Achievement } from "../types/game-status";
 
+export const MAX_LENGTH_DROPDOWN = 24;
 export const PATH_COLOR = "#ff2a52";
 export const STAR_BTNS = [
   "FLAME_START",

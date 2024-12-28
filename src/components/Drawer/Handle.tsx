@@ -3,6 +3,7 @@ import styles from "./Handle.module.scss";
 import { TypedEntries } from "../../lib/utils";
 import { Icon } from "../General/Icon";
 import { statusContext } from "../../StatusContext";
+import { Search } from "../Search/Search";
 
 interface HandleProps {}
 
@@ -26,9 +27,7 @@ const Handle: FC<HandleProps> = () => {
         {Object.values(tags).some((n) => n > 0) ? (
           <div className={styles.tags}>
             {TypedEntries(tags).map(([t, v]) =>
-              v > 0 ? (
-                <Icon key={t} which={t} className={styles.infoIcon} />
-              ) : null
+              v > 0 ? <Icon which={t} className={styles.infoIcon} /> : null
             )}
           </div>
         ) : null}
@@ -44,6 +43,7 @@ const Handle: FC<HandleProps> = () => {
       >
         <Icon which="bars" className={styles.bars} />
       </button>
+      <Search />
     </div>
   );
 };

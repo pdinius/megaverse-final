@@ -11,6 +11,7 @@ import {
   isAchievement,
   isCounts,
   isHeroState,
+  Overlays,
 } from "../types/game-status";
 import {
   ACTION_TYPES,
@@ -162,6 +163,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debugging, setDebugging] = useState(false);
   const [previousActions, setPreviousActions] = useState<Array<string>>([]);
+  const [overlays, setOverlays] = useState<Overlays | null>(null);
   const [skippedVillains, setSkippedVillains] = useState<Array<string>>([]);
 
   const blocked = currentAction !== "";
@@ -1407,6 +1409,10 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     }
   };
 
+  const getRewardSVGPathString = (key: string) => {
+    return combinedOverlays[key];
+  };
+
   const getUnearnedRewardOverlaySVGPathStrings = () => {
     const combinedRewards: Array<string> = [
       ...TypedKeys(heroes),
@@ -1524,6 +1530,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     getAchievementSVGPathStrings,
     getCode,
     getCurrentVillain,
+    getRewardSVGPathString,
     getLegalHeroesForFight,
     getPathSVGPathInfo,
     getScore,
@@ -1538,6 +1545,8 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
     modalOpen,
     modifySpendingActionTokens,
     multiverseHeroes,
+    overlays,
+    setOverlays,
     portalButtonClickHandler,
     resetClickHandler,
     showActionTokensAccordion,

@@ -1,10 +1,13 @@
 import {
+  ACTION_TYPES,
   ActionType,
   Area,
+  INFINITY_GEMS,
   InfinityStone,
   isArea,
   SpecialReward,
   Tag,
+  TAGS,
 } from "./general";
 import { TeamKey } from "./teams";
 import { PetKey } from "./pets";
@@ -14,6 +17,8 @@ import { ChoiceSelectorProps } from "../components/GameSetup/ChoiceSelector/Choi
 import { VillainKey } from "./villain";
 import { Path } from "./svg";
 import { VillainInfo } from "../lib/villain-info";
+import { translations } from "../lib/translations";
+import { Dispatch, SetStateAction } from "react";
 
 export const ACHIEVEMENT_LIST = [
   "win_with_beast",
@@ -132,6 +137,22 @@ export const isHeroState = (o: unknown): o is HeroState => {
   );
 };
 
+export const MAP_ITEMS = [
+  ...TAGS,
+  ...INFINITY_GEMS,
+  ...ACTION_TYPES,
+  "PORTAL",
+  "MKRAAN",
+  "RECOVER",
+  "DANGER_ROOM",
+  "CAMP_HAMMOND",
+] as const;
+
+export type MapItem = (typeof MAP_ITEMS)[number];
+export type MapCompositeItem = "INFINITY_GEMS" | "ACTION_TOKENS";
+
+export type Overlays = Array<keyof typeof translations | ActionType | MapItem>;
+
 export interface IGameStatus {
   actionTokens: { [key in ActionType]: number };
   areGameResolutionButtonsClickable: () => boolean;
@@ -158,8 +179,9 @@ export interface IGameStatus {
   getCode: () => string | null;
   getCurrentVillain: () => VillainKey | null;
   getLegalHeroesForFight: () => Array<HeroKey>;
-  getPathSVGPathInfo: () => Array<{ key: string, props: Path | Array<Path> }>;
+  getPathSVGPathInfo: () => Array<{ key: string; props: Path | Array<Path> }>;
   getScore: () => number;
+  getRewardSVGPathString: (s: string) => string;
   getUnearnedRewardOverlaySVGPathStrings: () => Array<string>;
   getVillainOverlaySVGPathStrings: () => Array<VillainInfo>;
   heroClickHandler: (h: HeroKey) => void;
@@ -198,4 +220,6 @@ export interface IGameStatus {
   usingDangerRoom: boolean;
   won: () => void;
   previousActions: Array<string>;
+  overlays: Overlays | null;
+  setOverlays: Dispatch<SetStateAction<Overlays | null>>;
 }

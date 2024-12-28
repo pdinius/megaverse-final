@@ -20,7 +20,7 @@ export const Challenge: FC<ChallengeProps> = ({ challenges }) => {
         onMouseOut={() => setShowCard(false)}
       />
       <div className={styles.cardContainer}>
-        {challenges.map((c, i) => (
+        {challenges!.map((c, i) => (
           <img
             key={i}
             src={challengeSrcs[c]}
