@@ -5,6 +5,7 @@ import CloseButton from "./CloseButton/CloseButton";
 import { translations } from "../../../lib/translations";
 import { villainInfo } from "../../../lib/villain-info";
 import { Challenge } from "./Challenge/Challenge";
+import { wikiTranslations } from "../../../lib/wikiTranslations";
 
 export const GameSetupHeader: FC = () => {
   const {
@@ -25,7 +26,17 @@ export const GameSetupHeader: FC = () => {
             : "PICK YOUR ROSTER"}
         </div>
         {currentAction === "resolvingFight" ? (
-          <div className={styles.subtitle}>vs. {translations[villain!]}</div>
+          <div className={styles.subtitle}>
+            vs.{" "}
+            <a
+              href={`https://marvel-united.fandom.com/wiki/${
+                wikiTranslations[villain!]
+              }`}
+              target="_blank"
+            >
+              {translations[villain!]}
+            </a>
+          </div>
         ) : null}
       </div>
       <Challenge challenges={villainInfo[currentBtnClicked].challenge} />

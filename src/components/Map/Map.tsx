@@ -20,8 +20,8 @@ export const Map: FC = () => {
       <GradientDefs />
       <MkraanCrystalProgress />
       <Overlays />
-      <VillainOverlays />
       <Paths />
+      <VillainOverlays />
       <Achievements />
       <Buttons moved={moved} />
       <InfinityStones />
