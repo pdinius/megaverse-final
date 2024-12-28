@@ -1,5 +1,6 @@
 import { CompanionKey } from "../types/companions";
 import { EquipKey } from "../types/equipment";
+import { MapCompositeItem, MapItem } from "../types/game-status";
 import { HeroKey } from "../types/heroes";
 import { MiscKey } from "../types/misc";
 import { PetKey } from "../types/pets";
@@ -8,16 +9,20 @@ import { VillainKey } from "../types/villain";
 import { TypedEntries } from "./utils";
 import { Challenge } from "./villain-info";
 
+type TranslationKey =
+  | HeroKey
+  | EquipKey
+  | TeamKey
+  | PetKey
+  | CompanionKey
+  | MiscKey
+  | VillainKey
+  | Challenge
+  | MapItem
+  | MapCompositeItem;
+
 export const translations: {
-  [key in
-    | HeroKey
-    | EquipKey
-    | TeamKey
-    | PetKey
-    | CompanionKey
-    | MiscKey
-    | VillainKey
-    | Challenge]: string;
+  [key in TranslationKey]: string;
 } = {
   // DUPE HEROES
   MAGNETO_X1: "Magneto - One Use",
@@ -278,8 +283,10 @@ export const translations: {
   EQUIP_BLACK_WIDOW_WIDOWS_BITE: "Widow's Bite",
   EQUIP_BLADES_SWORD: "Blade's Sword",
   EQUIP_CAPTAIN_AMERICAS_SHIELD: "Captain America's Shield",
-  EQUIP_CAPTAIN_AMERICA_CLASSIC_CAPTAIN_AMERICAS_SHIELD: "Captain America's Shield",
-  EQUIP_CAPTAIN_AMERICA_SAM_WILSON_CAPTAIN_AMERICAS_SHIELD: "Captain America's Shield",
+  EQUIP_CAPTAIN_AMERICA_CLASSIC_CAPTAIN_AMERICAS_SHIELD:
+    "Captain America's Shield",
+  EQUIP_CAPTAIN_AMERICA_SAM_WILSON_CAPTAIN_AMERICAS_SHIELD:
+    "Captain America's Shield",
   EQUIP_CAPTAIN_BRITAIN_BETSY_BRADDOCK_STARLIGHT_SWORD: "Starlight Sword",
   EQUIP_CAPTAIN_CARTERS_SHIELD: "Captain Carter's Shield",
   EQUIP_COSMIC_GHOST_RIDER_HELL_CYCLE: "Hell Cycle",
@@ -391,7 +398,8 @@ export const translations: {
   TEAM_SPIDER_ARMY: "Spider-Army",
   TEAM_STARJAMMERS: "Starjammers",
   TEAM_SWORDBEARERS_OF_KRAKOA: "Swordbearers of Krakoa",
-  TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS: "Team Captain America - Secret Avengers",
+  TEAM_CAPTAIN_AMERICA_SECRET_AVENGERS:
+    "Team Captain America - Secret Avengers",
   TEAM_IRON_MAN_PROREGISTRATION: "Team Iron Man - Pro-Registration",
   TEAM_UNCANNY_XFORCE: "X-Force",
   TEAM_UNITED_HEROES: "United Heroes",
@@ -682,19 +690,46 @@ export const translations: {
   THE_PENGUIN: "",
   THE_RIDDLER: "",
   TRIGON: "",
-  TWO_FACE: ""
+  TWO_FACE: "",
+
+  // Map Items
+  BOLT: "Bolt (Resource)",
+  BRAIN: "Brain (Resource)",
+  CHIMI: "Chimichanga (Resource)",
+  CHOICE: "Choice (Resource)",
+  DNA: "DNA (Resource)",
+  EYE: "Eye (Resource)",
+  FLAG: "Flag (Resource)",
+  MAGIC: "Magic (Resource)",
+  GEAR: "Gear (Resource)",
+  HOURGLASS: "Hourglass (Resource)",
+  KEY: "Key (Resource)",
+  MAPLE: "Maple (Resource)",
+  PLANET: "Planet (Resource)",
+  PUZZLE: "Puzzle (Resource)",
+  STAR: "Star (Resource)",
+  SPARKLE: "Sparkle (Resource)",
+  INFINITY_RED: "Infinity Gem (Red)",
+  INFINITY_ORANGE: "Infinity Gem (Orange)",
+  INFINITY_YELLOW: "Infinity Gem (Yellow)",
+  INFINITY_GREEN: "Infinity Gem (Green)",
+  INFINITY_BLUE: "Infinity Gem (Blue)",
+  INFINITY_PURPLE: "Infinity Gem (Purple)",
+  PORTAL: "Portals",
+  MKRAAN: "M'Kraan Crystal",
+  RECOVER: "Hero Recover",
+  MOVE: "Move (Action Token)",
+  FIGHT: "Fight (Action Token)",
+  HEROIC: "Heroic (Action Token)",
+  WILD: "Wild (Action Token)",
+  DANGER_ROOM: "Danger Room",
+  CAMP_HAMMOND: "Camp Hammond",
+  INFINITY_GEMS: "Infinity Gems",
+  ACTION_TOKENS: "Action Tokens",
 };
 
 interface ReverseTranslations {
-  [key: string]:
-    | HeroKey
-    | EquipKey
-    | TeamKey
-    | PetKey
-    | CompanionKey
-    | MiscKey
-    | VillainKey
-    | Challenge;
+  [key: string]: TranslationKey;
 }
 
 export const reverseTranslations = TypedEntries(translations).reduce(

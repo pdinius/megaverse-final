@@ -29,9 +29,10 @@ export const GameSetupHeader: FC = () => {
           <div className={styles.subtitle}>
             vs.{" "}
             <a
+              className={styles.link}
               href={`https://marvel-united.fandom.com/wiki/${
                 wikiTranslations[villain!]
-              }`}
+              }#Master_Plan_cards`}
               target="_blank"
             >
               {translations[villain!]}

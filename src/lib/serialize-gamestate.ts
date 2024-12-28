@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EQUIP_LIST } from "../types/equipment";
 import { Achievement, isHeroState } from "../types/game-status";
-import { INFINITY_STONES, InfinityStone } from "../types/general";
+import { INFINITY_GEMS, InfinityStone } from "../types/general";
 import { HERO_LIST, HeroKey } from "../types/heroes";
 import { MISC_LIST, MiscKey } from "../types/misc";
 import { PET_LIST, PetKey } from "../types/pets";
@@ -46,7 +46,7 @@ const serializeInfinityStones = (inf: any) =>
   Number(
     "1" +
       (inf as Array<InfinityStone>)
-        .map((inf) => INFINITY_STONES.indexOf(inf))
+        .map((inf) => INFINITY_GEMS.indexOf(inf))
         .join("")
   ).toString(36);
 const serializeCompletedBtns = (b: any) =>

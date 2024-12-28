@@ -258,7 +258,7 @@ export const wikiTranslations: { [key in VillainKey | HeroKey]: string } = {
   CRIMSON_DYNAMO: "Crimson_Dynamo",
   CROSSBONES: "Crossbones",
   CYCLOPS_PHOENIX_FIVE: "Cyclops_Phoenix_Five",
-  DARK_AVENGERS: "Dark_Avengers",
+  DARK_AVENGERS: "Dark_Avengers_(Villain)",
   DARK_BEAST: "Dark_Beast",
   DARK_CARNAGE: "Dark_Carnage",
   DARK_PHOENIX: "Dark_Phoenix",

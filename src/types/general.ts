@@ -62,7 +62,7 @@ export type SpecialReward = (typeof SPECIAL_REWARD)[number];
 export const isSpecialReward = (s: string): s is SpecialReward =>
   SPECIAL_REWARD.includes(s as SpecialReward);
 
-export const INFINITY_STONES = [
+export const INFINITY_GEMS = [
   "INFINITY_RED",
   "INFINITY_ORANGE",
   "INFINITY_YELLOW",
@@ -70,6 +70,6 @@ export const INFINITY_STONES = [
   "INFINITY_BLUE",
   "INFINITY_PURPLE",
 ] as const;
-export type InfinityStone = (typeof INFINITY_STONES)[number];
+export type InfinityStone = (typeof INFINITY_GEMS)[number];
 export const isInfinityKey = (s: string): s is InfinityStone =>
-  INFINITY_STONES.includes(s as InfinityStone);
+  INFINITY_GEMS.includes(s as InfinityStone);

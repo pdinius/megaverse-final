@@ -6,7 +6,7 @@ import { Icon } from "../General/Icon";
 import { MAX_LENGTH_DROPDOWN } from "../../lib/constants";
 import { TypedKeys } from "../../lib/utils";
 
-const names = Object.keys(reverseTranslations);
+const names = [...Object.keys(reverseTranslations)];
 
 export const Search: FC = () => {
   const { overlays, setOverlays } = useContext(statusContext);

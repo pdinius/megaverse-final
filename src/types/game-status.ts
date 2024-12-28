@@ -1,10 +1,13 @@
 import {
+  ACTION_TYPES,
   ActionType,
   Area,
+  INFINITY_GEMS,
   InfinityStone,
   isArea,
   SpecialReward,
   Tag,
+  TAGS,
 } from "./general";
 import { TeamKey } from "./teams";
 import { PetKey } from "./pets";
@@ -134,7 +137,21 @@ export const isHeroState = (o: unknown): o is HeroState => {
   );
 };
 
-export type Overlays = Array<keyof typeof translations | ActionType | Tag>;
+export const MAP_ITEMS = [
+  ...TAGS,
+  ...INFINITY_GEMS,
+  ...ACTION_TYPES,
+  "PORTAL",
+  "MKRAAN",
+  "RECOVER",
+  "DANGER_ROOM",
+  "CAMP_HAMMOND",
+] as const;
+
+export type MapItem = (typeof MAP_ITEMS)[number];
+export type MapCompositeItem = "INFINITY_GEMS" | "ACTION_TOKENS";
+
+export type Overlays = Array<keyof typeof translations | ActionType | MapItem>;
 
 export interface IGameStatus {
   actionTokens: { [key in ActionType]: number };
