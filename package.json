@@ -1,6 +1,6 @@
 {
-  "name": "vite-react-template",
-  "version": "1.2.2",
+  "name": "megaverse",
+  "version": "1.2.3",
   "type": "module",
   "scripts": {
     "dev": "vite",

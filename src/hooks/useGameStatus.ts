@@ -266,7 +266,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
         res.SILVER_SURFER_2!.crossover = true;
       } else {
         res[h] = getNewHeroProps(from);
-        if (!skipped && chained.includes(h)) res[h].cooldown = 2;
+        if (!skipped && heroRoster.has(h)) res[h].cooldown = 2;
       }
 
       UNLOCK_ALL_ACHIEVEMENTS.forEach((a) => {
@@ -373,20 +373,18 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
       }, chained);
   };
 
-  const isHeroClickable = (h: HeroKey) => {
+  const isHeroClickable = (h: HeroKey): boolean => {
     const data = heroes[h];
-    if (data === undefined) return false;
-    const { dead, crossover } = data;
     switch (currentAction) {
       case "resolvingRecover":
-        return dead;
+        return Boolean(data && data.dead);
       case "resolvingRecoverF4":
-        return isFantasticHero(h) && data.dead;
+        return Boolean(data && isFantasticHero(h) && data.dead);
       case "spendingPortal":
-        return !(crossover || dead);
+        return Boolean(data && !(data.crossover || data.dead));
       case "tradingHero":
       case "removingHero":
-        return !dead;
+        return Boolean(data && !data.dead);
       case "resolvingFight":
         return (
           getLegalHeroesForFight() &&
@@ -1205,10 +1203,8 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
 
     if (btn in chainedHeroes) {
       setChained(chainedHeroes[btn]);
-      setHeroRoster(new Set(chainedHeroes[btn]));
-    } else {
-      setHeroRoster(new Set());
     }
+    setHeroRoster(new Set());
   };
 
   const spendFightResources = () => {
