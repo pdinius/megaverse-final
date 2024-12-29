@@ -11,7 +11,7 @@ import styles from "./App.module.scss";
 import { Debugging } from "./components/Debugging/Debugging";
 import pjson from "../package.json";
 
-const TESTING = false;
+const TESTING = true;
 
 function App() {
   const status = useGameStatus(TESTING);
