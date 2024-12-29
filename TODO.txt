@@ -1,3 +1,14 @@
+scan sentinel activation protocol card for nimrod fight
+when equipment is selected, it should be clickable and in color
+Make desktop version ?
+Add the 5 points in next deadpool logic ?
+
+// Nice to haves -
+search for items
+add links to wiki for villains
+add kofi link
+Add links to Dom2Ds rules
+add progress info on all count gates
 finish making pictures for other special rules:
   startWithMove
   startWithTwoMove
