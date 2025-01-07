@@ -309,7 +309,7 @@ export const useGameStatus = (testing: boolean): IGameStatus => {
   const killHero = (h: HeroKey) => {
     if (chained.includes(h)) return;
 
-    if (!achievements["war_machine_removed"] && "WAR_MACHINE") {
+    if (!achievements["war_machine_removed"] && h === "WAR_MACHINE") {
       completeAchievement("war_machine_removed");
     }
 
