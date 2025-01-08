@@ -1382,7 +1382,7 @@ const btnToPathConnections: { [key: string]: Array<string> } = {
     "AVX_PATH_166",
     "AVX_PATH_203",
   ],
-  AVX_LOKI_186: ["AVX_PATH_204", "AVX_PATH_136"],
+  AVX_LOKI_186: ["AVX_PATH_204", "AVX_PATH_136", "AVX_PATH_137"],
   AVX_GATE_40: ["AVX_PATH_206", "AVX_PATH_207"],
   AVX_HELA_179: ["AVX_PATH_207", "AVX_PATH_203", "AVX_PATH_202"],
   AVX_LOKI_178: [
