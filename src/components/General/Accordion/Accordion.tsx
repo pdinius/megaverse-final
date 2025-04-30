@@ -39,6 +39,7 @@ const Accordion: FC<AccordionProps> = ({ children, title, subtitle }) => {
         className={styles.contentContainer}
         style={{
           height: open ? `${contentRef.current?.clientHeight}px` : "0px",
+          marginBottom: open ? "0.5rem" : undefined,
         }}
       >
         <div ref={contentRef} className={styles.content}>
