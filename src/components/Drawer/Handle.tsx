@@ -26,8 +26,10 @@ const Handle: FC<HandleProps> = () => {
         </div>
         {Object.values(tags).some((n) => n > 0) ? (
           <div className={styles.tags}>
-            {TypedEntries(tags).map(([t, v]) =>
-              v > 0 ? <Icon which={t} className={styles.infoIcon} /> : null
+            {TypedEntries(tags).map(([t, v], i) =>
+              v > 0 ? (
+                <Icon key={i} which={t} className={styles.infoIcon} />
+              ) : null
             )}
           </div>
         ) : null}

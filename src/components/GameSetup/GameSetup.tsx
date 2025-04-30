@@ -30,21 +30,23 @@ const GameSetup: FC = () => {
       <VillainBackdrop />
       <div className={styles.innerContainer}>
         <GameSetupHeader />
-        <HeroGrid
-          heroes={getLegalHeroesForFight()}
-          containerClass={styles.grid}
-          conditionalHeroClass={(h) => {
-            const res: Array<string> = [];
-            if (isHeroClickable(h)) {
-              res.push("clickable");
-            }
-            if (!heroRoster.has(h)) {
-              res.push("semi-transparent");
-            }
-            return res.join(" ");
-          }}
-          maxRowSize={Math.min(getLegalHeroesForFight().length, 7)}
-        />
+        <div className={styles.heroesContainer}>
+          <HeroGrid
+            heroes={getLegalHeroesForFight()}
+            containerClass={styles.grid}
+            conditionalHeroClass={(h) => {
+              const res: Array<string> = [];
+              if (isHeroClickable(h)) {
+                res.push("clickable");
+              }
+              if (!heroRoster.has(h)) {
+                res.push("semi-transparent");
+              }
+              return res.join(" ");
+            }}
+            maxRowSize={Math.min(getLegalHeroesForFight().length, 7)}
+          />
+        </div>
         <SpecialLocations />
         {showActionTokensAccordion() ? (
           <Accordion title="Action Tokens">
