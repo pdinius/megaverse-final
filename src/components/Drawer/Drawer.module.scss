@@ -7,7 +7,6 @@
   border-bottom: 2px solid $dark-blue;
   display: flex;
   flex-direction: column;
-  align-items: center;
   box-shadow: 0 5px 3px rgb(0 0 0 / 0.3);
   z-index: 1;
 }
@@ -16,6 +15,8 @@
   width: 100%;
   transition: height 0.2s ease;
   overflow: hidden;
+  max-height: calc(100vh - 4rem);
+  overflow-y: scroll;
 }
 
 .content {
@@ -59,4 +60,5 @@
   display: flex;
   gap: 0.5rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
