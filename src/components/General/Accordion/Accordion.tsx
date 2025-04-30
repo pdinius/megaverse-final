@@ -18,10 +18,7 @@ const Accordion: FC<AccordionProps> = ({ children, title, subtitle }) => {
   }, [currentAction]);
 
   return (
-    <div
-      className={styles.container}
-      style={{ marginBlock: open ? "0.5rem" : "0rem" }}
-    >
+    <div className={styles.container}>
       <div className={styles.summary} onClick={() => setOpen(!open)}>
         <span className={styles.title}>{title}</span>
         <span className={styles.subtitle} title={subtitle}>
